@@ -1,0 +1,758 @@
+FORMAT: 1A
+HOST: https://pis-api.ehealth.com.ua/
+
+# eHealth PIS API
+
+Polls is a simple API allowing consumers to view polls and vote in them.
+
+# Group Private. Patient Information System
+
+##Sign-in [/api/sign-in]
+
+### Patient login [POST /auth/login]
+This endpoint should be reachable only by the eHealth authorization front-end application.
+
++ Request (application/json)
+
+    + Attributes (object)
+        + token (object, required)
+            + `client_id`: `6498d88e-97fb-47e2-85a5-99e884f888aa` (string, required) - auth application client_id in mithril
+            + `grant_type`: `pis_auth` (enum, fixed, required) - oAuth Grant Type.
+            + `signed_content`: `eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJFSGVhbHRoIiwibm9uY2UiOiIxMjM0NSIsImV4cCI6MTUyMjM0MTExOSwiaWF0IjoxNTIyMDgxOTE5LCJpc3MiOiJFSGVhbHRoIiwianRpIjoiNWZlNzhiNzUtODQ5Zi00M2UzLTlmMzYtZWRhZWY1MmVkNzNjIiwibmJmIjoxNTIyMDgxOTE4LCJzdWIiOiIxMjM0NSIsInR5cCI6ImFjY2VzcyJ9.N_RALR_8QMzY637pzQfSAM57pW4IFCU3eGJeqfry34_me0gJbJRVhYx8NltSoBFkmCM3ROMpdp-ARUUWYNyfkA` (string, required) - encoded sign-in content.
+            + `signed_content_encoding`: `base64` (string, required) - signed content encoding type.
+            + `scope`: `app:authorize profile:read` (string, required) - list of scopes that is required in application business logic, separated by space.
+
++ Response 201 (application/json)
+    + Attributes (Response_OK)
+        + meta (Response__Meta)
+            + code: 201 (number)
+        + data (Access_Token)
+            + urgent (object, required)
+            + `next_step`: `REQUEST_FACTOR` (enum, required) - Next step of authorization process.
+                - REQUEST_FACTOR
+                - REQUEST_OTP
+                - REQUEST_APPS
+                - RESEND_OTP
+
+### Confidant patient login [POST /api/pis/confidant/login]
+
+This endpoint is used to create authorization token for confidant person to approve or reject scopes request for related person
+
+> **Note:** It could be done ONLY by already authenticated person AND there is a registered relation between actor (authenticated person) and related person
+
+This endpoint must be used only by Auth UI client.
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+
+    + Attributes (object)
+        + `signed_content`: `ewogICAgImZpcnN0X25hbWUiOiAi0J/QtdGC0YDQviIsCiAgICAibGFzdF9uYW1lIjogItCG0LLQsNC90L7QsiIsCiAgICAic2Vjb25kX25hbWUiOiAi0JzQuNC60L7Qu9Cw0LnQvtCy0LjRhyIsCiAgICAiYmlydGhfZGF0ZSI6ICIxOTkxLTA4LTE5IiwKICAgICJiaXJ0aF9jb3VudHJ5IjogItCj0LrRgNCw0ZfQvdCwIiwKICAgICJiaXJ0aF9zZXR0bGVtZW50IjogItCS0ZbQvdC90LjRhtGPIiwKICAgICJnZW5kZXIiOiAiTUFMRSIsCiAgICAiZW1haWwiOiAiZW1haWxAZXhhbXBsZS5jb20iLAogICAgInRheF9pZCI6ICIzMTI2NTA5ODE2IiwKICAgICJzZWNyZXQiOiAic2VjcmV0IiwKICAgICJkb2N1bWVudHMiOiBbCiAgICAgIHsKICAgICAgICAidHlwZSI6ICJQQVNTUE9SVCIsCiAgICAgICAgIm51bWJlciI6ICIxMjA1MTgiLAogICAgICAgICJpc3N1ZWRfYnkiOiAi0KDQvtC60LjRgtC90Y/QvdGB0YzQutC40Lwg0KDQkiDQk9CjINCc0JLQoSDQmtC40ZfQstGB0YzQutC+0Zcg0L7QsdC70LDRgdGC0ZYiLAogICAgICAgICJpc3N1ZWRfYXQiOiAiMjAxNy0wMi0yOCIKICAgICAgfQogICAgXSwKICAgICJhZGRyZXNzZXMiOiBbCiAgICAgIHsKICAgICAgICAidHlwZSI6ICJSRVNJREVOQ0UiLAogICAgICAgICJjb3VudHJ5IjogIlVBIiwKICAgICAgICAiYXJlYSI6ICLQltC40YLQvtC80LjRgNGB0YzQutCwIiwKICAgICAgICAicmVnaW9uIjogItCR0LXRgNC00LjRh9GW0LLRgdGM0LrQuNC5IiwKICAgICAgICAic2V0dGxlbWVudCI6ICLQmtC40ZfQsiIsCiAgICAgICAgInNldHRsZW1lbnRfdHlwZSI6ICJDSVRZIiwKICAgICAgICAic2V0dGxlbWVudF9pZCI6ICI0MzQzMjQzMiIsCiAgICAgICAgInN0cmVldF90eXBlIjogIlNUUkVFVCIsCiAgICAgICAgInN0cmVldCI6ICLQstGD0LsuINCd0ZbQttC40L3RgdGM0LrQsCIsCiAgICAgICAgImJ1aWxkaW5nIjogIjE1IiwKICAgICAgICAiYXBhcnRtZW50IjogIjIzIiwKICAgICAgICAiemlwIjogIjAyMDkwIgogICAgICB9CiAgICBdLAogICAgInBob25lcyI6IFsKICAgICAgewogICAgICAgICJ0eXBlIjogIk1PQklMRSIsCiAgICAgICAgIm51bWJlciI6ICIrMzgwNTAzNDEwODcwIgogICAgICB9CiAgICBdLAogICAgImF1dGhlbnRpY2F0aW9uX21ldGhvZHMiOiBbCiAgICAgIHsKICAgICAgICAidHlwZSI6ICJPVFAiLAogICAgICAgICJwaG9uZV9udW1iZXIiOiAiKzM4MDUwODg4NzcwMCIKICAgICAgfQogICAgXSwKICAgICJwcmVmZXJyZWRfd2F5X2NvbW11bmljYXRpb24iOiAiZW1haWwiLAogICAgImVtZXJnZW5jeV9jb250YWN0IjogewogICAgICAiZmlyc3RfbmFtZSI6ICLQn9C10YLRgNC+IiwKICAgICAgImxhc3RfbmFtZSI6ICLQhtCy0LDQvdC+0LIiLAogICAgICAic2Vjb25kX25hbWUiOiAi0JzQuNC60L7Qu9Cw0LnQvtCy0LjRhyIsCiAgICAgICJwaG9uZXMiOiBbCiAgICAgICAgewogICAgICAgICAgInR5cGUiOiAiTU9CSUxFIiwKICAgICAgICAgICJudW1iZXIiOiAiKzM4MDUwMzQxMDg3MCIKICAgICAgICB9CiAgICAgIF0KICAgIH0sCiAgICAicHJvY2Vzc19kaXNjbG9zdXJlX2RhdGFfY29uc2VudCI6IHRydWUKICB9Cn0=` (string, required)
+        + `signed_content_encoding`: base64 (string, required)
+        + `client_id`: `7673eb5a-0cae-4fa8-9f81-e6da46aa2941` (string, required)
+        + `grant_type`: `pis-auth` (string, required)
+        + `scope`: `app:authorize` (string, required)
+
++ Response 201 (application/json)
+    + Attributes (`Response_OK`)
+        + meta (`Response__Meta`)
+            + code: 201 (number)
+        + data (object, required)
+            + user (object, required)
+                + `id`: `7673eb5a-0cae-4fa8-9f81-e6da46aa2940` (string, optional)
+                + tax_id: 3000080053 (string, required)
+            + access_token: `my-oauth-token` (string, required) - access token
+
+##Sign-up [/api/sign-up]
+
+### Patient sign-up validation [POST /api/pis/sign-up_validation]
+
+This endpoint is used to validate signed content as a part of patient registration process, extract patient data if it is valid and create session token to do further steps.
+
+This endpoint must be used only by Auth UI client.
+
+Signed content must contain patient data and nonce that was generated for PIS.
+
+Look at [**Dummy patient sign-up validation**](https://ehealthpisapi.docs.apiary.io/#reference/private.-dummy-methods/dummy-patient-sign-up-validation/dummy-patient-sign-up-validation) for more details.
+
++ Request (application/json)
+
+    + Attributes (object)
+        + `signed_content`: `ewogICAgImZpcnN0X25hbWUiOiAi0J/QtdGC0YDQviIsCiAgICAibGFzdF9uYW1lIjogItCG0LLQsNC90L7QsiIsCiAgICAic2Vjb25kX25hbWUiOiAi0JzQuNC60L7Qu9Cw0LnQvtCy0LjRhyIsCiAgICAiYmlydGhfZGF0ZSI6ICIxOTkxLTA4LTE5IiwKICAgICJiaXJ0aF9jb3VudHJ5IjogItCj0LrRgNCw0ZfQvdCwIiwKICAgICJiaXJ0aF9zZXR0bGVtZW50IjogItCS0ZbQvdC90LjRhtGPIiwKICAgICJnZW5kZXIiOiAiTUFMRSIsCiAgICAiZW1haWwiOiAiZW1haWxAZXhhbXBsZS5jb20iLAogICAgInRheF9pZCI6ICIzMTI2NTA5ODE2IiwKICAgICJzZWNyZXQiOiAic2VjcmV0IiwKICAgICJkb2N1bWVudHMiOiBbCiAgICAgIHsKICAgICAgICAidHlwZSI6ICJQQVNTUE9SVCIsCiAgICAgICAgIm51bWJlciI6ICIxMjA1MTgiLAogICAgICAgICJpc3N1ZWRfYnkiOiAi0KDQvtC60LjRgtC90Y/QvdGB0YzQutC40Lwg0KDQkiDQk9CjINCc0JLQoSDQmtC40ZfQstGB0YzQutC+0Zcg0L7QsdC70LDRgdGC0ZYiLAogICAgICAgICJpc3N1ZWRfYXQiOiAiMjAxNy0wMi0yOCIKICAgICAgfQogICAgXSwKICAgICJhZGRyZXNzZXMiOiBbCiAgICAgIHsKICAgICAgICAidHlwZSI6ICJSRVNJREVOQ0UiLAogICAgICAgICJjb3VudHJ5IjogIlVBIiwKICAgICAgICAiYXJlYSI6ICLQltC40YLQvtC80LjRgNGB0YzQutCwIiwKICAgICAgICAicmVnaW9uIjogItCR0LXRgNC00LjRh9GW0LLRgdGM0LrQuNC5IiwKICAgICAgICAic2V0dGxlbWVudCI6ICLQmtC40ZfQsiIsCiAgICAgICAgInNldHRsZW1lbnRfdHlwZSI6ICJDSVRZIiwKICAgICAgICAic2V0dGxlbWVudF9pZCI6ICI0MzQzMjQzMiIsCiAgICAgICAgInN0cmVldF90eXBlIjogIlNUUkVFVCIsCiAgICAgICAgInN0cmVldCI6ICLQstGD0LsuINCd0ZbQttC40L3RgdGM0LrQsCIsCiAgICAgICAgImJ1aWxkaW5nIjogIjE1IiwKICAgICAgICAiYXBhcnRtZW50IjogIjIzIiwKICAgICAgICAiemlwIjogIjAyMDkwIgogICAgICB9CiAgICBdLAogICAgInBob25lcyI6IFsKICAgICAgewogICAgICAgICJ0eXBlIjogIk1PQklMRSIsCiAgICAgICAgIm51bWJlciI6ICIrMzgwNTAzNDEwODcwIgogICAgICB9CiAgICBdLAogICAgImF1dGhlbnRpY2F0aW9uX21ldGhvZHMiOiBbCiAgICAgIHsKICAgICAgICAidHlwZSI6ICJPVFAiLAogICAgICAgICJwaG9uZV9udW1iZXIiOiAiKzM4MDUwODg4NzcwMCIKICAgICAgfQogICAgXSwKICAgICJwcmVmZXJyZWRfd2F5X2NvbW11bmljYXRpb24iOiAiZW1haWwiLAogICAgImVtZXJnZW5jeV9jb250YWN0IjogewogICAgICAiZmlyc3RfbmFtZSI6ICLQn9C10YLRgNC+IiwKICAgICAgImxhc3RfbmFtZSI6ICLQhtCy0LDQvdC+0LIiLAogICAgICAic2Vjb25kX25hbWUiOiAi0JzQuNC60L7Qu9Cw0LnQvtCy0LjRhyIsCiAgICAgICJwaG9uZXMiOiBbCiAgICAgICAgewogICAgICAgICAgInR5cGUiOiAiTU9CSUxFIiwKICAgICAgICAgICJudW1iZXIiOiAiKzM4MDUwMzQxMDg3MCIKICAgICAgICB9CiAgICAgIF0KICAgIH0sCiAgICAicHJvY2Vzc19kaXNjbG9zdXJlX2RhdGFfY29uc2VudCI6IHRydWUKICB9Cn0=` (string, required)
+        + `signed_content_encoding`: base64 (string, required)
+
++ Response 200 (application/json)
+    + Attributes (`Response_OK`)
+        + meta (Response__Meta)
+            + code: 200 (number)
+        + data (object, required)
+            + person (object, required)
+                + include `Person`
+                + emergency_contact (object, required)
+                    + include `Emergency_Contact`
+            + `token`: `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNwLnZpcm55QGdtYWlsLmNvbSIsInRpbWVzdGFtcCI6IjIwMTgtMDItMjggMTA6Mzg6MDAifQ.LJRLTqK-zf9gxDNMONcI8cMCSYosDtmAIZqhzZUdhz4` (string, required)
+
++ Response 409 (application/json)
+    + Attributes (`Response_Error`)
+        + meta (Response__Meta, fixed-type)
+            + code: 409 (number)
+        + error (Response__Error, fixed-type)
+            + type: `conflict`
+            + message: `User with such tax_id already exists` (string)
+
+### Patient sign-up registration [POST /api/pis/register]
+
+This endpoint is used to register patient in the system based on data received from Patient Information System.
+
+This endpoint must be used only by Auth UI client.
+
+Signed content must contain patient data. Request authorization header must contain JWT that was generated as a result of [Sign-up validation](https://ehealthpisapi.docs.apiary.io/#reference/private.-dummy-methods/dummy-patient-sign-up-validation/dummy-patient-sign-up-validation) endpoint.
+
+Look at [**Dummy patient sign-up registration**](https://ehealthpisapi.docs.apiary.io/#reference/private.-dummy-methods/dummy-patient-sign-up-registration/dummy-patient-sign-up-registration) for more details.
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNwLnZpcm55QGdtYWlsLmNvbSIsInRpbWVzdGFtcCI6IjIwMTgtMDItMjggMTA6Mzg6MDAifQ.LJRLTqK-zf9gxDNMONcI8cMCSYosDtmAIZqhzZUdhz4
+
+    + Attributes (object)
+        + `signed_content`: `ewogICAgImZpcnN0X25hbWUiOiAi0J/QtdGC0YDQviIsCiAgICAibGFzdF9uYW1lIjogItCG0LLQsNC90L7QsiIsCiAgICAic2Vjb25kX25hbWUiOiAi0JzQuNC60L7Qu9Cw0LnQvtCy0LjRhyIsCiAgICAiYmlydGhfZGF0ZSI6ICIxOTkxLTA4LTE5IiwKICAgICJiaXJ0aF9jb3VudHJ5IjogItCj0LrRgNCw0ZfQvdCwIiwKICAgICJiaXJ0aF9zZXR0bGVtZW50IjogItCS0ZbQvdC90LjRhtGPIiwKICAgICJnZW5kZXIiOiAiTUFMRSIsCiAgICAiZW1haWwiOiAiZW1haWxAZXhhbXBsZS5jb20iLAogICAgInRheF9pZCI6ICIzMTI2NTA5ODE2IiwKICAgICJzZWNyZXQiOiAic2VjcmV0IiwKICAgICJkb2N1bWVudHMiOiBbCiAgICAgIHsKICAgICAgICAidHlwZSI6ICJQQVNTUE9SVCIsCiAgICAgICAgIm51bWJlciI6ICIxMjA1MTgiLAogICAgICAgICJpc3N1ZWRfYnkiOiAi0KDQvtC60LjRgtC90Y/QvdGB0YzQutC40Lwg0KDQkiDQk9CjINCc0JLQoSDQmtC40ZfQstGB0YzQutC+0Zcg0L7QsdC70LDRgdGC0ZYiLAogICAgICAgICJpc3N1ZWRfYXQiOiAiMjAxNy0wMi0yOCIKICAgICAgfQogICAgXSwKICAgICJhZGRyZXNzZXMiOiBbCiAgICAgIHsKICAgICAgICAidHlwZSI6ICJSRVNJREVOQ0UiLAogICAgICAgICJjb3VudHJ5IjogIlVBIiwKICAgICAgICAiYXJlYSI6ICLQltC40YLQvtC80LjRgNGB0YzQutCwIiwKICAgICAgICAicmVnaW9uIjogItCR0LXRgNC00LjRh9GW0LLRgdGM0LrQuNC5IiwKICAgICAgICAic2V0dGxlbWVudCI6ICLQmtC40ZfQsiIsCiAgICAgICAgInNldHRsZW1lbnRfdHlwZSI6ICJDSVRZIiwKICAgICAgICAic2V0dGxlbWVudF9pZCI6ICI0MzQzMjQzMiIsCiAgICAgICAgInN0cmVldF90eXBlIjogIlNUUkVFVCIsCiAgICAgICAgInN0cmVldCI6ICLQstGD0LsuINCd0ZbQttC40L3RgdGM0LrQsCIsCiAgICAgICAgImJ1aWxkaW5nIjogIjE1IiwKICAgICAgICAiYXBhcnRtZW50IjogIjIzIiwKICAgICAgICAiemlwIjogIjAyMDkwIgogICAgICB9CiAgICBdLAogICAgInBob25lcyI6IFsKICAgICAgewogICAgICAgICJ0eXBlIjogIk1PQklMRSIsCiAgICAgICAgIm51bWJlciI6ICIrMzgwNTAzNDEwODcwIgogICAgICB9CiAgICBdLAogICAgImF1dGhlbnRpY2F0aW9uX21ldGhvZHMiOiBbCiAgICAgIHsKICAgICAgICAidHlwZSI6ICJPVFAiLAogICAgICAgICJwaG9uZV9udW1iZXIiOiAiKzM4MDUwODg4NzcwMCIKICAgICAgfQogICAgXSwKICAgICJwcmVmZXJyZWRfd2F5X2NvbW11bmljYXRpb24iOiAiZW1haWwiLAogICAgImVtZXJnZW5jeV9jb250YWN0IjogewogICAgICAiZmlyc3RfbmFtZSI6ICLQn9C10YLRgNC+IiwKICAgICAgImxhc3RfbmFtZSI6ICLQhtCy0LDQvdC+0LIiLAogICAgICAic2Vjb25kX25hbWUiOiAi0JzQuNC60L7Qu9Cw0LnQvtCy0LjRhyIsCiAgICAgICJwaG9uZXMiOiBbCiAgICAgICAgewogICAgICAgICAgInR5cGUiOiAiTU9CSUxFIiwKICAgICAgICAgICJudW1iZXIiOiAiKzM4MDUwMzQxMDg3MCIKICAgICAgICB9CiAgICAgIF0KICAgIH0sCiAgICAicHJvY2Vzc19kaXNjbG9zdXJlX2RhdGFfY29uc2VudCI6IHRydWUKICB9Cn0=` (string, required)
+        + `signed_content_encoding`: base64 (string, required)
+        + otp: `1234` (string, optional)
+
++ Response 201 (application/json)
+    + Attributes (`Response_OK`)
+        + meta (`Response__Meta`)
+            + code: 201 (number)
+        + data (object, required)
+            + person (object, required)
+                + include `Person`
+                + emergency_contact (object, required)
+                    + include `Emergency_Contact`
+            + user (object, required)
+                + `id`: `7673eb5a-0cae-4fa8-9f81-e6da46aa2940` (string, optional)
+                + tax_id: 3000080053 (string, required)
+            + access_token: `my-oauth-token` (string, required) - access token
+
+### Confidant patient sign-up validation [POST /api/pis/confidant/sign-up_validation]
+
+This endpoint is used to validate signed content as a part of patient registration via confidant person process, extract patient data if it is valid and create session token to do further steps.
+
+This endpoint must be used only by Auth UI client.
+
+Signed content must contain patient data and nonce that was generated for PIS.
+
+Confidant person's access token must be provided as well
+
+Look at [**Dummy confidant patient sign-up validation**](https://ehealthpisapi.docs.apiary.io/#reference/private.-dummy-methods/dummy-confidant-patient-sign-up-validation/dummy-confidant-patient-sign-up-validation) for more details.
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+
+    + Attributes (object)
+        + `signed_content`: `ewogICAgImZpcnN0X25hbWUiOiAi0J/QtdGC0YDQviIsCiAgICAibGFzdF9uYW1lIjogItCG0LLQsNC90L7QsiIsCiAgICAic2Vjb25kX25hbWUiOiAi0JzQuNC60L7Qu9Cw0LnQvtCy0LjRhyIsCiAgICAiYmlydGhfZGF0ZSI6ICIxOTkxLTA4LTE5IiwKICAgICJiaXJ0aF9jb3VudHJ5IjogItCj0LrRgNCw0ZfQvdCwIiwKICAgICJiaXJ0aF9zZXR0bGVtZW50IjogItCS0ZbQvdC90LjRhtGPIiwKICAgICJnZW5kZXIiOiAiTUFMRSIsCiAgICAiZW1haWwiOiAiZW1haWxAZXhhbXBsZS5jb20iLAogICAgInRheF9pZCI6ICIzMTI2NTA5ODE2IiwKICAgICJzZWNyZXQiOiAic2VjcmV0IiwKICAgICJkb2N1bWVudHMiOiBbCiAgICAgIHsKICAgICAgICAidHlwZSI6ICJQQVNTUE9SVCIsCiAgICAgICAgIm51bWJlciI6ICIxMjA1MTgiLAogICAgICAgICJpc3N1ZWRfYnkiOiAi0KDQvtC60LjRgtC90Y/QvdGB0YzQutC40Lwg0KDQkiDQk9CjINCc0JLQoSDQmtC40ZfQstGB0YzQutC+0Zcg0L7QsdC70LDRgdGC0ZYiLAogICAgICAgICJpc3N1ZWRfYXQiOiAiMjAxNy0wMi0yOCIKICAgICAgfQogICAgXSwKICAgICJhZGRyZXNzZXMiOiBbCiAgICAgIHsKICAgICAgICAidHlwZSI6ICJSRVNJREVOQ0UiLAogICAgICAgICJjb3VudHJ5IjogIlVBIiwKICAgICAgICAiYXJlYSI6ICLQltC40YLQvtC80LjRgNGB0YzQutCwIiwKICAgICAgICAicmVnaW9uIjogItCR0LXRgNC00LjRh9GW0LLRgdGM0LrQuNC5IiwKICAgICAgICAic2V0dGxlbWVudCI6ICLQmtC40ZfQsiIsCiAgICAgICAgInNldHRsZW1lbnRfdHlwZSI6ICJDSVRZIiwKICAgICAgICAic2V0dGxlbWVudF9pZCI6ICI0MzQzMjQzMiIsCiAgICAgICAgInN0cmVldF90eXBlIjogIlNUUkVFVCIsCiAgICAgICAgInN0cmVldCI6ICLQstGD0LsuINCd0ZbQttC40L3RgdGM0LrQsCIsCiAgICAgICAgImJ1aWxkaW5nIjogIjE1IiwKICAgICAgICAiYXBhcnRtZW50IjogIjIzIiwKICAgICAgICAiemlwIjogIjAyMDkwIgogICAgICB9CiAgICBdLAogICAgInBob25lcyI6IFsKICAgICAgewogICAgICAgICJ0eXBlIjogIk1PQklMRSIsCiAgICAgICAgIm51bWJlciI6ICIrMzgwNTAzNDEwODcwIgogICAgICB9CiAgICBdLAogICAgImF1dGhlbnRpY2F0aW9uX21ldGhvZHMiOiBbCiAgICAgIHsKICAgICAgICAidHlwZSI6ICJPVFAiLAogICAgICAgICJwaG9uZV9udW1iZXIiOiAiKzM4MDUwODg4NzcwMCIKICAgICAgfQogICAgXSwKICAgICJwcmVmZXJyZWRfd2F5X2NvbW11bmljYXRpb24iOiAiZW1haWwiLAogICAgImVtZXJnZW5jeV9jb250YWN0IjogewogICAgICAiZmlyc3RfbmFtZSI6ICLQn9C10YLRgNC+IiwKICAgICAgImxhc3RfbmFtZSI6ICLQhtCy0LDQvdC+0LIiLAogICAgICAic2Vjb25kX25hbWUiOiAi0JzQuNC60L7Qu9Cw0LnQvtCy0LjRhyIsCiAgICAgICJwaG9uZXMiOiBbCiAgICAgICAgewogICAgICAgICAgInR5cGUiOiAiTU9CSUxFIiwKICAgICAgICAgICJudW1iZXIiOiAiKzM4MDUwMzQxMDg3MCIKICAgICAgICB9CiAgICAgIF0KICAgIH0sCiAgICAicHJvY2Vzc19kaXNjbG9zdXJlX2RhdGFfY29uc2VudCI6IHRydWUKICB9Cn0=` (string, required)
+        + `signed_content_encoding`: base64 (string, required)
+
++ Response 200 (application/json)
+    + Attributes (`Response_OK`)
+        + meta (Response__Meta)
+            + code: 200 (number)
+        + data (object, required)
+            + person (object, required)
+                + include `Person`
+                + emergency_contact (object, required)
+                    + include `Emergency_Contact`
+            + `token`: `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNwLnZpcm55QGdtYWlsLmNvbSIsInRpbWVzdGFtcCI6IjIwMTgtMDItMjggMTA6Mzg6MDAifQ.LJRLTqK-zf9gxDNMONcI8cMCSYosDtmAIZqhzZUdhz4` (string, required)
+
++ Response 409 (application/json)
+    + Attributes (`Response_Error`)
+        + meta (Response__Meta, fixed-type)
+            + code: 409 (number)
+        + error (Response__Error, fixed-type)
+            + type: `conflict`
+            + message: `User with such tax_id already exists` (string)
+
+### Confidant patient sign-up registration [POST /api/pis/confidant/register]
+
+This endpoint is used to register patient in the system via confidant person based on data received from Patient Information System.
+
+This endpoint must be used only by Auth UI client.
+
+Signed content must contain patient data as well as authenticated patient details. Request authorization header must contain confidant patient's token
+
+Look at [**Dummy confidant patient sign-up registration**](https://ehealthpisapi.docs.apiary.io/#reference/private.-dummy-methods/dummy-patient-sign-up-validation/dummy-confidant-patient-sign-up-registration) for more details.
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+
+    + Attributes (object)
+        + `signed_content`: `ewogICAgImZpcnN0X25hbWUiOiAi0J/QtdGC0YDQviIsCiAgICAibGFzdF9uYW1lIjogItCG0LLQsNC90L7QsiIsCiAgICAic2Vjb25kX25hbWUiOiAi0JzQuNC60L7Qu9Cw0LnQvtCy0LjRhyIsCiAgICAiYmlydGhfZGF0ZSI6ICIxOTkxLTA4LTE5IiwKICAgICJiaXJ0aF9jb3VudHJ5IjogItCj0LrRgNCw0ZfQvdCwIiwKICAgICJiaXJ0aF9zZXR0bGVtZW50IjogItCS0ZbQvdC90LjRhtGPIiwKICAgICJnZW5kZXIiOiAiTUFMRSIsCiAgICAiZW1haWwiOiAiZW1haWxAZXhhbXBsZS5jb20iLAogICAgInRheF9pZCI6ICIzMTI2NTA5ODE2IiwKICAgICJzZWNyZXQiOiAic2VjcmV0IiwKICAgICJkb2N1bWVudHMiOiBbCiAgICAgIHsKICAgICAgICAidHlwZSI6ICJQQVNTUE9SVCIsCiAgICAgICAgIm51bWJlciI6ICIxMjA1MTgiLAogICAgICAgICJpc3N1ZWRfYnkiOiAi0KDQvtC60LjRgtC90Y/QvdGB0YzQutC40Lwg0KDQkiDQk9CjINCc0JLQoSDQmtC40ZfQstGB0YzQutC+0Zcg0L7QsdC70LDRgdGC0ZYiLAogICAgICAgICJpc3N1ZWRfYXQiOiAiMjAxNy0wMi0yOCIKICAgICAgfQogICAgXSwKICAgICJhZGRyZXNzZXMiOiBbCiAgICAgIHsKICAgICAgICAidHlwZSI6ICJSRVNJREVOQ0UiLAogICAgICAgICJjb3VudHJ5IjogIlVBIiwKICAgICAgICAiYXJlYSI6ICLQltC40YLQvtC80LjRgNGB0YzQutCwIiwKICAgICAgICAicmVnaW9uIjogItCR0LXRgNC00LjRh9GW0LLRgdGM0LrQuNC5IiwKICAgICAgICAic2V0dGxlbWVudCI6ICLQmtC40ZfQsiIsCiAgICAgICAgInNldHRsZW1lbnRfdHlwZSI6ICJDSVRZIiwKICAgICAgICAic2V0dGxlbWVudF9pZCI6ICI0MzQzMjQzMiIsCiAgICAgICAgInN0cmVldF90eXBlIjogIlNUUkVFVCIsCiAgICAgICAgInN0cmVldCI6ICLQstGD0LsuINCd0ZbQttC40L3RgdGM0LrQsCIsCiAgICAgICAgImJ1aWxkaW5nIjogIjE1IiwKICAgICAgICAiYXBhcnRtZW50IjogIjIzIiwKICAgICAgICAiemlwIjogIjAyMDkwIgogICAgICB9CiAgICBdLAogICAgInBob25lcyI6IFsKICAgICAgewogICAgICAgICJ0eXBlIjogIk1PQklMRSIsCiAgICAgICAgIm51bWJlciI6ICIrMzgwNTAzNDEwODcwIgogICAgICB9CiAgICBdLAogICAgImF1dGhlbnRpY2F0aW9uX21ldGhvZHMiOiBbCiAgICAgIHsKICAgICAgICAidHlwZSI6ICJPVFAiLAogICAgICAgICJwaG9uZV9udW1iZXIiOiAiKzM4MDUwODg4NzcwMCIKICAgICAgfQogICAgXSwKICAgICJwcmVmZXJyZWRfd2F5X2NvbW11bmljYXRpb24iOiAiZW1haWwiLAogICAgImVtZXJnZW5jeV9jb250YWN0IjogewogICAgICAiZmlyc3RfbmFtZSI6ICLQn9C10YLRgNC+IiwKICAgICAgImxhc3RfbmFtZSI6ICLQhtCy0LDQvdC+0LIiLAogICAgICAic2Vjb25kX25hbWUiOiAi0JzQuNC60L7Qu9Cw0LnQvtCy0LjRhyIsCiAgICAgICJwaG9uZXMiOiBbCiAgICAgICAgewogICAgICAgICAgInR5cGUiOiAiTU9CSUxFIiwKICAgICAgICAgICJudW1iZXIiOiAiKzM4MDUwMzQxMDg3MCIKICAgICAgICB9CiAgICAgIF0KICAgIH0sCiAgICAicHJvY2Vzc19kaXNjbG9zdXJlX2RhdGFfY29uc2VudCI6IHRydWUKICB9Cn0=` (string, required)
+        + `signed_content_encoding`: base64 (string, required)
+
++ Response 201 (application/json)
+    + Attributes (`Response_OK`)
+        + meta (`Response__Meta`)
+            + code: 201 (number)
+        + data (object, required)
+            + person (object, required)
+                + include `Person`
+                + emergency_contact (object, required)
+                    + include `Emergency_Contact`
+            + user (object, required)
+                + `id`: `7673eb5a-0cae-4fa8-9f81-e6da46aa2940` (string, optional)
+                + tax_id: 3000080053 (string, required)
+            + access_token: `my-oauth-token` (string, required) - access token
+
+# Group Private. Dummy methods
+
+##Dummy sign-in [/sign-in]
+
+### Dummy confidant patient sign-in [POST /dummy/pis/confidant/login]
+
++ Request (application/json)
+    + Attributes (object)
+        + `last_name`: `Петров` (string, required)
+        + `first_name`: `Петро Петрович` (string, required)
+        + `tax_id`: `2323232323` (string, optional)
+        + `document` (object, optional)
+            + `type`: PASSPORT (string, required) - `Dictionary DOCUMENT_TYPE`
+            + `number`: АА120518 (string, required) - document issue number
+
++ Response 201 (application/json)
+    + Attributes (`Response_OK`)
+        + meta (`Response__Meta`)
+            + code: 201 (number)
+        + data (object, required)
+            + user (object, required)
+                + `id`: `7673eb5a-0cae-4fa8-9f81-e6da46aa2940` (string, optional)
+                + tax_id: 3000080053 (string, required)
+            + access_token: `my-oauth-token` (string, required) - access token
+
+##Dummy sign-up [/sign-up]
+
+### Dummy patient sign-up validation [POST /dummy/pis/sign-up_validation]
+
++ Request (application/json)
+    + Attributes (object)
+        + `person` (object, required)
+            + include (`Person_info_Public`, required)
+        + `patient_signed`: true (boolean, required)
+        + `process_disclosure_data_consent`: true (boolean, required)
+        + `jwt`: `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNwLnZpcm55QGdtYWlsLmNvbSIsInRpbWVzdGFtcCI6IjIwMTgtMDItMjggMTA6Mzg6MDAifQ.LJRLTqK-zf9gxDNMONcI8cMCSYosDtmAIZqhzZUdhz4` (string, required)
+
++ Response 200 (application/json)
+    + Attributes (`Response_OK`)
+        + meta (Response__Meta)
+            + code: 200 (number)
+        + data (object, required)
+            + person (object, required)
+                + include `Person`
+                + emergency_contact (object, required)
+                    + include `Emergency_Contact`
+            + `token`: `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNwLnZpcm55QGdtYWlsLmNvbSIsInRpbWVzdGFtcCI6IjIwMTgtMDItMjggMTA6Mzg6MDAifQ.LJRLTqK-zf9gxDNMONcI8cMCSYosDtmAIZqhzZUdhz4` (string, required)
+
+### Dummy patient sign-up registration [POST /dummy/pis/register]
+
++ Request (application/json)
+    + Attributes (object)
+        + `person` (object, required)
+            + include `Person`
+            + emergency_contact (object, required)
+                + include `Emergency_Contact`
+        + `patient_signed`: true (boolean, required)
+        + `process_disclosure_data_consent`: true (boolean, required)
+
++ Response 201 (application/json)
+    + Attributes (`Response_OK`)
+        + meta (`Response__Meta`)
+            + code: 201 (number)
+        + data (object, required)
+            + person (object, required)
+                + include `Person`
+                + emergency_contact (object, required)
+                    + include `Emergency_Contact`
+            + user (object, required)
+                + `id`: `7673eb5a-0cae-4fa8-9f81-e6da46aa2940` (string, optional)
+                + tax_id: 3000080053 (string, required)
+            + access_token: `my-oauth-token` (string, required) - access token
+
+### Dummy confidant patient sign-up validation [POST /dummy/pis/confidant/sign-up_validation]
+
++ Request (application/json)
+    + Attributes (object)
+        + `person` (object, required)
+            + include (`Person_info_Public_PIS`, required)
+        + `patient_signed`: true (boolean, required)
+        + `process_disclosure_data_consent`: true (boolean, required)
+
++ Response 200 (application/json)
+    + Attributes (`Response_OK`)
+        + meta (Response__Meta)
+            + code: 200 (number)
+        + data (object, required)
+            + person (object, required)
+                + include `Person`
+                + emergency_contact (object, required)
+                    + include `Emergency_Contact`
+            + `token`: `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNwLnZpcm55QGdtYWlsLmNvbSIsInRpbWVzdGFtcCI6IjIwMTgtMDItMjggMTA6Mzg6MDAifQ.LJRLTqK-zf9gxDNMONcI8cMCSYosDtmAIZqhzZUdhz4` (string, required)
+
+### Dummy confidant patient sign-up registration [POST /dummy/pis/confidant/register]
+
++ Request (application/json)
+    + Attributes (object)
+        + `person` (object, required)
+            + include `Person_info_Public_PIS`
+        + `patient_signed`: true (boolean, required)
+        + `process_disclosure_data_consent`: true (boolean, required)
+
++ Response 201 (application/json)
+    + Attributes (`Response_OK`)
+        + meta (`Response__Meta`)
+            + code: 201 (number)
+        + data (object, required)
+            + person (object, required)
+                + include `Person`
+                + emergency_contact (object, required)
+                    + include `Emergency_Contact`
+            + user (object, required)
+                + `id`: `7673eb5a-0cae-4fa8-9f81-e6da46aa2940` (string, optional)
+                + tax_id: 3000080053 (string, required)
+            + access_token: `my-oauth-token` (string, required) - access token
+
+# Group Public. Patient Information System
+
+##Sign-in [/api/sign-in]
+
+### Patient sign-in [GET /sign-in{?client_id,redirect_uri,scope,user_data}]
+
+You MUST redirect your users to this URL to obtain oAuth Code Grant (which is later exchanged to Access Token).
+
+User will see rendered login page, which structure differ by a list of requested scopes and security measures applied by DevOps team.
+
+For security purposes, we will set `X-Frame-Options: deny` header that will disallow opening this page in an iframe.
+
++ Parameters
+    + `client_id`: `6498d88e-97fb-47e2-85a5-99e884f888aa` (string, required) - Medical Service provider ID issued after legal_entity registration. Used to identify the context of the MSP/Pharmacy.
+    + `redirect_uri`: https://example.com/ (string, required) - URL where user will be redirected after authentification. This url will receive `code` and `state` parameters in query string.
+    + scope: `capitation_contracts:view capitation_contracts:create patients:view patients:create` (string, required) - List of scopes that is required in application business logic, separated by space. Different login forms will be shown based on scopes that you requested.
+    + `user_data`: `base64_string` - Auth request signed on client side
+
++ Response 200 (text/html; charset=UTF-8)
+
+    + Headers
+
+            X-CSRF-Token: my-csrf-token
+
+### Confidant patient sign-in [GET /confidant/sign-in{?client_id,redirect_uri,scope,user_data,token}]
+
+**Note!**
+Only to login as confidant patient in a context of related patient as this page requires valid access token of confidant person itself
+
+You MUST redirect your users to this URL to obtain oAuth Code Grant (which is later exchanged to Access Token).
+
+User will see rendered login page, which structure differ by a list of requested scopes and security measures applied by DevOps team.
+
+For security purposes, we will set `X-Frame-Options: deny` header that will disallow opening this page in an iframe.
+
++ Parameters
+    + `client_id`: `6498d88e-97fb-47e2-85a5-99e884f888aa` (string, required) - Medical Service provider ID issued after legal_entity registration. Used to identify the context of the MSP/Pharmacy.
+    + `redirect_uri`: https://example.com/ (string, required) - URL where user will be redirected after authentification. This url will receive `code` and `state` parameters in query string.
+    + scope: `capitation_contracts:view capitation_contracts:create patients:view patients:create` (string, required) - List of scopes that is required in application business logic, separated by space. Different login forms will be shown based on scopes that you requested.
+    + `user_data`: `base64_string` - Auth request signed on client side
+    + `token`: `eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9`
+
++ Response 200 (text/html; charset=UTF-8)
+
+    + Headers
+
+            X-CSRF-Token: my-csrf-token
+
+##Sign-up [/api/sign-up]
+
+### Patient sign-up [GET /sign-up{?client_id,redirect_uri,scope,user_data}]
+
+You MUST redirect your users to this URL to register in the system
+
+User will see rendered registration page signed on PIS side and provided via query_params and will be able to confirm or reject this request
+
++ Parameters
+    + `client_id`: `6498d88e-97fb-47e2-85a5-99e884f888aa` (string, required) - Medical Service provider ID issued after legal_entity registration. Used to identify the context of the MSP/Pharmacy.
+    + `redirect_uri`: https://example.com/ (string, required) - URL where user will be redirected after authentification. This url will receive `code` and `state` parameters in query string.
+    + scope: `capitation_contracts:view capitation_contracts:create patients:view patients:create` (string, required) - List of scopes that is required in application business logic, separated by space. Different login forms will be shown based on scopes that you requested.
+    + `user_data`: `base64_string` - Auth request signed on client side
+
++ Response 200 (text/html; charset=UTF-8)
+
+    + Headers
+
+            X-CSRF-Token: my-csrf-token
+
+### Confidant patient sign-up [GET /confidant/sign-up{?client_id,redirect_uri,scope,user_data,token}]
+
+You MUST redirect your authenticated users to this URL to register patient in the system via confidant patient
+
+User will see rendered registration page signed on PIS side and provided via query_params and will be able to confirm or reject this request
+
++ Parameters
+    + `client_id`: `6498d88e-97fb-47e2-85a5-99e884f888aa` (string, required) - Medical Service provider ID issued after legal_entity registration. Used to identify the context of the MSP/Pharmacy.
+    + `redirect_uri`: https://example.com/ (string, required) - URL where user will be redirected after authentification. This url will receive `code` and `state` parameters in query string.
+    + scope: `capitation_contracts:view capitation_contracts:create patients:view patients:create` (string, required) - List of scopes that is required in application business logic, separated by space. Different login forms will be shown based on scopes that you requested.
+    + `user_data`: `base64_string` - Auth request signed on client side
+    + `token`: `eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9`
+
++ Response 200 (text/html; charset=UTF-8)
+
+    + Headers
+
+            X-CSRF-Token: my-csrf-token
+
+##Approvals [/api/pis/apps]
+
+### Get Approvals [GET /api/pis/apps{?client_ids,client_names,page_number,page_size}]
+
+This endpoint is used to show all active approvals made by the user to different clients.
+
+Approvals are filtered by user from Authorization token. 
+
++ Parameters
+    + `client_names`: `client_name-Clinic N1,client_name-Clinic N2`(string, optional) - List of Client name's separated by comma.
+    + client_ids: `client-1380df72-275a-11e7-93ae-92361f002671,client-1380e1de-275a-11e7-93ae-92361f002671` (string, optional) - List of Client ID's separated by comma.
+    + `page_number`: 2 (number) - Page number.
+    + `page_size`: 50 (number) - A limit on the number of objects to be returned, between 1 and 100. Default: 50
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9
+
++ Response 200 (application/json)
+    + Attributes (`Response_Collection`)
+        + data (array[`Approval_Response`])
+
+### Get Approval by ID [GET /api/pis/apps/{id}]
+
+This endpoint is used to show active approval by ID made by the user to client.
+
+Approval is filtered by user from Authorization token. 
+
++ Parameters
+    + id: `approval-1380df72-275a-11e7-93ae-92361f002671` (string, required)
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9
+
++ Response 200 (application/json)
+    + Attributes (`Response_OK`)
+        + data (`Approval_Response`)
+
+### Delete Approval [DELETE /api/pis/apps/{id}]
+
+This endpoint is used to deauthorize approval made by the user to client. 
+
+By deleting Approval all further exchanges of refresh token to access token will be prohibited. But existing access tokens (in JWT format) will be active till the expiration time occurs.
+
++ Parameters
+    + id: `approval-1380df72-275a-11e7-93ae-92361f002671` (string, required)
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9
+
++ Response 204 (application/json)
+
+##Documents [/api/pis/documents]
+
+### Initialize Person documents upload [POST /api/pis/documents]
+
+This endpoint is used to initialize person documents uploading proccess. Person is obtained from Authorization token.
+
+Endpoint returns list of documents that need to be uploaded for person and urls. In case no documents must be uploaded - empty list is returned.
+
+After documents upload to urls, [Complete Person documents upload](https://ehealthpisapi.docs.apiary.io/#reference/public.-patient-information-system/documents/complete-person-documents-upload) method must be called.
+
++ Request (application/json)
+    + Headers
+            Authorization: Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9
+
++ Response 201 (application/json)
+    + Attributes (`Response_OK`)
+        + meta (`Response__Meta`)
+            + code: 200 (number)
+        + data (array[`media_content`])
+
+### Complete Person documents upload [PATCH /api/pis/documents/actions/complete]
+
+This endpoint must be used to complete person documents uploading proccess, after user uploaded documents to generated urls. Person is obtained from Authorization token.
+
+Endpoint checks list of documents that needs to be uploaded for person. In case all person documents were be uploaded - empty list is returned, persons nhs verification status is updated. In case more person documents must be uploaded - list of documents is returned.
+
++ Request (application/json)
+    + Headers
+            Authorization: Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9
+
++ Response 200 (application/json)
+    + Attributes (`Response_OK`)
+        + meta (`Response__Meta`)
+            + code: 200 (number)
+        + data (array[`media_content`])
+
+# Data Structures
+
+### `Response_OK`
++ meta (Response__Meta, fixed-type)
++ data (object, fixed-type)
+
+### `Response__Meta`
++ code: 200 (number) - HTTP response code.
++ url: https://example.com/resource (string) - URL to requested resource.
++ type (enum) - Type of data that is located in `data` attribute.
+    - object (string) - `data` attribute is a JSON object.
+    - list (string) - `data` attribute is a list.
++ `request_id`: `6617aeec-15e2-4d6f-b9bd-53559c358f97#17810` (string) - [Request ID](https://docs.apimanifest.apiary.io/#introduction/interacting-with-api/request-id). Send it with `X-Request-ID` header.
+
+### `Access_Token_1`
++ value: `SnNRdCtvU0tTOENBV2dLRUZwNmIzZz09` (string, required) - oAuth access token.
++ user_id: `3ff33ced-69dc-415a-b231-c6446898335a` (string, required) - User identifier
++ name: `change_password_token` (string, required) - oAuth token name
++ id: `3ff33ced-69dc-415a-b231-c6446898335a` - oAuth token identifier
++ expires_at: 1498749591 (number, required) - expiration date-time timestamp
++ details (object)
+    + scope: `capitation_contracts:view capitation_contracts:create patients:view patients:create` (string, required) - List of scopes that is required in application business logic, separated by space
+    + `grant_type`: `refresh_token`
+    + client_id: `d290f1ee-6c54-4b01-90e6-d701748f0851` (string, required) - Client ID of authorized user.
+
+### `Access_Token`
++ value: `SnNRdCtvU0tTOENBV2dLRUZwNmIzZz09` (string, required) - oAuth access token.
++ user_id: `3ff33ced-69dc-415a-b231-c6446898335a` (string, required) - User identifier
++ name: `access_token` (string, required) - oAuth token name
++ id: `3ff33ced-69dc-415a-b231-c6446898335a` - oAuth token identifier
++ expires_at: 1498749591 (number, required) - expiration date-time timestamp
++ details (object)
+    + scope: `capitation_contracts:view capitation_contracts:create patients:view patients:create` (string, required) - List of scopes that is required in application business logic, separated by space
+    + refresh_token: `my-oauth-refresh-token` (string, required) - oAuth refresh token
+    + redirect_uri: `https://example.com/` (string, required) - Redirect URI
+    + `grant_type`: `authorization_code`
+    + client_id: `d290f1ee-6c54-4b01-90e6-d701748f0851` (string, required) - Client ID of authorized user.
+
+### `media_content`
++ type: `PASSPORT` (string, required)
++ url: `https://storage.ehealth.world` (string, required)
+
+### Approval
++ user_id: `user-1380df72-275a-11e7-93ae-92361f002671` (string, required) - Internal user ID, a UUID string.
++ client_name: `Clinic N1` (string, required) - Internal client name, string.
++ client_id: `client-1380df72-275a-11e7-93ae-92361f002671` (string, required) - Internal client ID, a UUID string.
++ scope: `notebooks:read notebooks:create patients:read` (string, required) - Scope, in a space-delimited format.
+
+### `Approval_Response`
++ id: `approval-1380df72-275a-11e7-93ae-92361f002671` (string) - Internal app ID, a UUID string.
++ `created_at`: `2017-04-20T19:14:13Z` (string, required) - ISO 8601 date and time in UTC timezone.
++ `updated_at`: `2017-04-20T19:14:13Z` (string, required) - ISO 8601 date and time in UTC timezone.
+
+### `Response_Collection`
++ meta (Response__Meta, fixed-type)
++ data (array[], fixed-type)
++ paging (Response__Pagination, fixed-type)
+
+### `Response__Pagination`
++ limit: 20 (number) - A limit on the number of objects to be returned, between 1 and 100. Default: 50.
++ cursors (object)
+    + `starting_after`: 56c31536a60ad644060041af (string) - A cursor for use in pagination. An object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `obj_foo`, your subsequent call can include `starting_after=obj_foo` in order to fetch the next page of the list.
+    + `ending_before`: 56c31536a60ad644060041aa (string) - A cursor for use in pagination. An object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with `obj_bar`, your subsequent call can include `ending_before=obj_bar` in order to fetch the previous page of the list.
++ size: 50 (number) - Total number of objects in collection.
++ has_more: false (boolean) - Is this collection have more data to load in the same style as last request loaded it.
+
+### `Emergency_Contact`
++ first_name: Петро (string, required)
++ last_name: Іванов (string, required)
++ second_name: Миколайович (string, optional)
++ phones (array[`Phone`], required)
+
+### Phone
++ type: MOBILE (string, required) - `Dictionary PHONE_TYPE` type of phone Land Line or Mobile. At least one of type must be present. Each type can be represented only once.
++ number: `+380503410870` (string, required) - phone number in format '+38/'
+
+### `Person`
++ first_name: Петро (string, required)
++ last_name: Іванов (string, required)
++ second_name: Миколайович (string, optional)
++ birth_date: `1991-08-19` (string, required)
++ birth_country: `Україна` (string, required)
++ birth_settlement: `Вінниця` (string, required)
++ gender: MALE, FEMALE (enum[string], required)
++ email: email@example.com (string, optional)
++ tax_id: 3126509816 (string, optional)
++ secret: secret (string, required)
++ documents (array[`Document`], required)
++ addresses (array[`Address`], required)
++ phones (array[`Phone`], optional)
++ `authentication_methods` (array[`Authentication_Method`], required)
++ preferred_way_communication: email (enum, optional) - the way how a patient wants to be reached
+    - email
+    - phone
+
+### `Authentication_Method`
++ type (enum, required)
+    - OTP
+    - OFFLINE
+    - NA
++ phone_number: `+38093*****85` (string, optional)
+
+### Address
++ type: RESIDENCE (string, required) - `Dictionary ADDRESS_TYPE`. 
++ country: UA (enum[string], required) - `Dictionary COUNTRY`
++ area: Житомирська (string, required) - one of Ukraianian area
++ region: Бердичівський (string, optional) - district of area
++ settlement: Київ (string, required) - city name
++ `settlement_type`: CITY (string, required) - `Dictionary SETTLEMENT_TYPE` - type of settlement as city/town/village etc
++ `settlement_id`: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required) - settlement identificator from uaadresses
++ `street_type`: STREET (string, optional) - `Dictionary STREET_TYPE` - type of street as street/road/line etc
++ street: `вул. Ніжинська` (string, optional) - street name
++ building: 15 (string, optional) - number of building
++ apartment: 23 (string, optional) - number of appartment
++ zip: 02090 (string, optional) - system of postal codes
+
+### Document
++ type: PASSPORT (string, required) - `Dictionary DOCUMENT_TYPE`
++ number: АА120518 (string, required) - document issue number
++ `expiration_date`: `2021-02-28` (string, optional) - `document expiration date. Required for NATIONAL_ID document type`
++ issued_by: `Рокитнянським РВ ГУ МВС Київської області` (string, optional) - authority which issued the document
++ issued_at: `2017-02-28` (string, optional) - the date when document was issued
+
+### `Response__Error`
++ type: type_atom (string) - Atom that represents error type.
++ message: Error description (string) - Human-readable error message. This is for developers, not end-users.
+
+### `Response_Error`
++ meta (Response__Meta, fixed-type)
+    + code: 400 (number)
++ error (Response__Error, fixed-type)
+
+### `Person_info_Public_PIS`
++ first_name: Петро (string, required)
++ last_name: Іванов (string, required)
++ second_name: Миколайович (string, optional)
++ birth_date: `2009-07-05` (string, required)
++ birth_country: `Україна` (string, required)
++ birth_settlement: `Вінниця` (string, required)
++ gender: MALE, FEMALE (enum[string], required)
++ email: email@example.com (string, optional)
++ no_tax_id: false (boolean, required)
++ tax_id: 3999869394 (string, optional)
++ secret: secret (string, required)
++ documents (array, required)
+    + (object)
+        + type: BIRTH_CERTIFICATE (string, required) - `Dictionary DOCUMENT_TYPE`
+        + number: АА120518 (string, required) - document issue number
+        + issued_by: `Рокитнянським РВ ГУ МВС Київської області` (string, required) - authority which issued the document
+        + issued_at: `2017-02-28` (string, required) - the date when document was issued
+        + expiration_date: `2027-02-28` (string, optional) - the date when document expired, is necessery for those documents which has this date, ex, Temporary certificate, etc.
++ addresses (array[`Address`], required)
++ phones (array[`Phone`], optional)
++ `authentication_methods` (array[`Authentication_Method_Patient_Request`], optional)
++ unzr: `20090705-00011` (string, optional) - the record number in the demographic register
++ emergency_contact (object, required)
+    + include `Emergency_Contact`
++ `confidant_person` (object, required)
+    + include `Confidant_Person_PIS`
++ preferred_way_communication: email (enum, optional) - the way how a patient wants to be reached
+    - email
+    - phone
+
+### `Confidant_Person_PIS`
++ person_id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required)
++ relation_type: PRIMARY (enum, required)
+    - PRIMARY
+    - SECONDARY
++ documents_relationship (array[`RelationshipDocument`], required)
+
+### RelationshipDocument
++ type: BIRTH_CERTIFICATE (string, required) - `Dictionary DOCUMENT_RELATIONSHIP_TYPE`
++ number: АА120518 (string, required) - document issue number
++ issued_by: `Рокитнянським РВ ГУ МВС Київської області` (string, optional) - authority which issued the document
++ issued_at: `2017-02-28` (string, optional) - the date when document was issued
+
+### `Authentication_Method_Patient_Request`
++ type (enum, required)
+    - THIRD_PERSON
+    - OTP
+    - OFFLINE
+    - NA
++ phone_number: `+380508887700` (string, optional) - required for type = OTP
++ value: `c282f8a9-e709-40aa-94b4-dde1402bf4b6` (string, optional) - requered for type = THIRD_PERSON
++ alias: `husband` (string, optional) - required it type = THIRD_PERSON,  and optional for type = OTP or OFFLINE
+
+### `Person_info_Public`
++ first_name: Петро (string, required)
++ last_name: Іванов (string, required)
++ second_name: Миколайович (string, optional)
++ birth_date: `2009-07-05` (string, required)
++ birth_country: `Україна` (string, required)
++ birth_settlement: `Вінниця` (string, required)
++ gender: MALE, FEMALE (enum[string], required)
++ email: email@example.com (string, optional)
++ no_tax_id: false (boolean, required)
++ tax_id: 3999869394 (string, optional)
++ secret: secret (string, required)
++ documents (array, required)
+    + (object)
+        + type: BIRTH_CERTIFICATE (string, required) - `Dictionary DOCUMENT_TYPE`
+        + number: АА120518 (string, required) - document issue number
+        + issued_by: `Рокитнянським РВ ГУ МВС Київської області` (string, required) - authority which issued the document
+        + issued_at: `2017-02-28` (string, required) - the date when document was issued
+        + expiration_date: `2027-02-28` (string, optional) - the date when document expired, is necessery for those documents which has this date, ex, Temporary certificate, etc.
++ addresses (array[`Address`], required)
++ phones (array[`Phone`], optional)
++ `authentication_methods` (array[`Authentication_Method_Patient_Request`], optional)
++ unzr: `20090705-00011` (string, optional) - the record number in the demographic register
++ emergency_contact (object, required)
+    + include `Emergency_Contact`
+- One of
+    + `confidant_person` (array, optional) - Should be set if this Person is disabled, underage, etc.
+        + (object)
+            + person_id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, optional)
+            + relation_type: PRIMARY (enum, required)
+                - PRIMARY
+                - SECONDARY
+            + documents_relationship (array[`RelationshipDocument`], required)
+            + first_name: Петро (string, optional)
+            + last_name: Іванов (string, optional)
+            + second_name: Миколайович (string, optional)
+            + birth_date: `1972-10-26` (string, optional)
+            + birth_country: `Україна` (string, optional)
+            + birth_settlement: `Вінниця` (string, optional)
+            + gender: MALE, FEMALE (enum[string], optional)
+            + tax_id: 2659719350 (string, optional)
+            + secret: `secret` (string, optional)
+            + unzr: `19900101-00099` (string, optional)
+            + preferred_way_communication: email (enum, optional) - the way how a patient wants to be reached
+                - email
+                - phone
+            + documents_person (array[`Document`], optional)
+            + phones (array[`Phone`], optional)
+            + email: emaill@example.com (string, optional)
+    + `confidant_person` (array, optional)
+        + (object)
+            + person_id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required)
+            + relation_type: PRIMARY (enum, required)
+                - PRIMARY
+                - SECONDARY
+            + documents_relationship (array[`RelationshipDocument`], required)
++ preferred_way_communication: email (enum, optional) - the way how a patient wants to be reached
+    - email
+    - phone

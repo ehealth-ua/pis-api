@@ -165,9 +165,8 @@ Look at [**Dummy confidant patient sign-up validation**](https://ehealthpisapi.d
             + code: 200 (number)
         + data (object, required)
             + person (object, required)
-                + include `Person`
-                + emergency_contact (object, required)
-                    + include `Emergency_Contact`
+                + id: `1380df72-275a-11e7-93ae-92361f002671` (string, required)
+                + include `Person_Request_PIS_With_Confidant_Response`
             + `token`: `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNwLnZpcm55QGdtYWlsLmNvbSIsInRpbWVzdGFtcCI6IjIwMTgtMDItMjggMTA6Mzg6MDAifQ.LJRLTqK-zf9gxDNMONcI8cMCSYosDtmAIZqhzZUdhz4` (string, required)
 
 + Response 409 (application/json)
@@ -205,9 +204,8 @@ Look at [**Dummy confidant patient sign-up registration**](https://ehealthpisapi
             + code: 201 (number)
         + data (object, required)
             + person (object, required)
-                + include `Person`
-                + emergency_contact (object, required)
-                    + include `Emergency_Contact`
+                + id: `1380df72-275a-11e7-93ae-92361f002671` (string, required)
+                + include `Person_Request_PIS_With_Confidant_Response`
             + user (object, required)
                 + `id`: `7673eb5a-0cae-4fa8-9f81-e6da46aa2940` (string, optional)
                 + tax_id: 3000080053 (string, required)
@@ -299,9 +297,8 @@ Look at [**Dummy confidant patient sign-up registration**](https://ehealthpisapi
             + code: 200 (number)
         + data (object, required)
             + person (object, required)
-                + include `Person`
-                + emergency_contact (object, required)
-                    + include `Emergency_Contact`
+                + id: `1380df72-275a-11e7-93ae-92361f002671` (string, required)
+                + include `Person_Request_PIS_With_Confidant_Response`
             + `token`: `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNwLnZpcm55QGdtYWlsLmNvbSIsInRpbWVzdGFtcCI6IjIwMTgtMDItMjggMTA6Mzg6MDAifQ.LJRLTqK-zf9gxDNMONcI8cMCSYosDtmAIZqhzZUdhz4` (string, required)
 
 ### Dummy confidant patient sign-up registration [POST /dummy/pis/confidant/register]
@@ -319,9 +316,8 @@ Look at [**Dummy confidant patient sign-up registration**](https://ehealthpisapi
             + code: 201 (number)
         + data (object, required)
             + person (object, required)
-                + include `Person`
-                + emergency_contact (object, required)
-                    + include `Emergency_Contact`
+                + id: `1380df72-275a-11e7-93ae-92361f002671` (string, required)
+                + include `Person_Request_PIS_With_Confidant_Response`
             + user (object, required)
                 + `id`: `7673eb5a-0cae-4fa8-9f81-e6da46aa2940` (string, optional)
                 + tax_id: 3000080053 (string, required)
@@ -790,6 +786,44 @@ Endpoint checks list of documents that needs to be uploaded for person. In case 
     + include `Emergency_Contact`
 + `confidant_person` (object, required)
     + person_id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required)
+    + relation_type: PRIMARY (enum, required)
+        - PRIMARY
+        - SECONDARY
+    + documents_relationship (array[`RelationshipDocument`], required)
++ preferred_way_communication: email (enum, optional) - the way how a patient wants to be reached
+    - email
+    - phone
+
+### `Person_Request_PIS_With_Confidant_Response`
++ first_name: Петро (string, required)
++ last_name: Іванов (string, required)
++ second_name: Миколайович (string, optional)
++ birth_date: `2009-07-05` (string, required)
++ birth_country: `Україна` (string, required)
++ birth_settlement: `Вінниця` (string, required)
++ gender: MALE, FEMALE (enum[string], required)
++ email: email@example.com (string, optional)
++ no_tax_id: false (boolean, required)
++ tax_id: 3999869394 (string, optional)
++ secret: secret (string, required)
++ documents (array, required)
+    + (object)
+        + type: BIRTH_CERTIFICATE (string, required) - `Dictionary DOCUMENT_TYPE`
+        + number: АА120518 (string, required) - document issue number
+        + issued_by: `Рокитнянським РВ ГУ МВС Київської області` (string, required) - authority which issued the document
+        + issued_at: `2017-02-28` (string, required) - the date when document was issued
+        + expiration_date: `2027-02-28` (string, optional) - the date when document expired, is necessery for those documents which has this date, ex, Temporary certificate, etc.
++ addresses (array[`Address`], required)
++ phones (array[`Phone`], optional)
++ `authentication_methods` (array[`Authentication_Method_PIS_Patient_With_Confidant`], optional)
++ unzr: `20090705-00011` (string, optional) - the record number in the demographic register
++ emergency_contact (object, required)
+    + include `Emergency_Contact`
++ `confidant_person` (object, required)
+    + person_id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required)
+    + first_name: Петро (string, required)
+    + last_name: Іванов (string, required)
+    + second_name: Миколайович (string, optional)
     + relation_type: PRIMARY (enum, required)
         - PRIMARY
         - SECONDARY

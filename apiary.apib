@@ -553,16 +553,18 @@ Endpoint checks list of documents that needs to be uploaded for person. In case 
 + type: `PASSPORT` (string, required)
 + url: `https://storage.ehealth.world` (string, required)
 
-### Approval
-+ user_id: `user-1380df72-275a-11e7-93ae-92361f002671` (string, required) - Internal user ID, a UUID string.
+### `Approval`
++ user_id: `1380df72-275a-11e7-93ae-92361f002671` (string, required) - Internal user ID, a UUID string.
++ applicant_user_id: `1380df72-275a-11e7-93ae-92361f002671` (string, required) - Internal user ID, a UUID string.
 + client_name: `Clinic N1` (string, required) - Internal client name, string.
-+ client_id: `client-1380df72-275a-11e7-93ae-92361f002671` (string, required) - Internal client ID, a UUID string.
++ client_id: `1380df72-275a-11e7-93ae-92361f002671` (string, required) - Internal client ID, a UUID string.
 + scope: `notebooks:read notebooks:create patients:read` (string, required) - Scope, in a space-delimited format.
 
 ### `Approval_Response`
-+ id: `approval-1380df72-275a-11e7-93ae-92361f002671` (string) - Internal app ID, a UUID string.
++ `id`: `1380df72-275a-11e7-93ae-92361f002671` (string) - Internal app ID, a UUID string.
 + `created_at`: `2017-04-20T19:14:13Z` (string, required) - ISO 8601 date and time in UTC timezone.
 + `updated_at`: `2017-04-20T19:14:13Z` (string, required) - ISO 8601 date and time in UTC timezone.
++ include `Approval`
 
 ### `Response_Collection`
 + meta (Response__Meta, fixed-type)

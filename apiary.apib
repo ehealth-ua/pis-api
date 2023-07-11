@@ -211,57 +211,6 @@ Look at [**Dummy confidant patient sign-up registration**](https://ehealthpisapi
                 + tax_id: 3000080053 (string, required)
             + access_token: `my-oauth-token` (string, required) - access token
 
-## Person information [api/persons]
-
-
-### Get Person details [GET /api/persons/details]
-This WS designed to get information of person by token.
-
-+ Response 200 (application/json)
-    + Attributes (`Response_OK`)
-        + data (`cabinet_person_response`)
-        + id: `7e9cffd9-c75f-45fb-badf-6e8d20b6a8a8` (string, required) - person id
-
-### Get Person Authentication methods [GET /api/persons/{id}/authentication_methods]
-This method allows to find the active person's authentication methods.
-
-
-+ Parameters
-    + id: `030d5c41-a945-41ac-89d1-b7c6d1c226c7` (string, required)
-
-+ Request (application/json)
-
-    + Headers
-
-            Authorization: Bearer c2778f3064753ea70de870a53795f5c9
-            api-key: uXhEczJ56adsfh3Ri9SUkc4en
-
-+ Response 200 (application/json)
-    + Attributes (`Response_OK`)
-        + data (array[`Person_auth_methods`, `Person_auth_methods_v2`])
-        
-
-+ Response 403 (application/json)
-    + Attributes (`Response_Error`)
-        + meta (Response__Meta, fixed-type)
-            + code: 403 (number)
-        + error (Response__Error, fixed-type)
-            + type: `forbidden`
-            + message: `Such person not found` (string)
-
-## Declaration [api/declarations]
-
-###Get declaration details [GET /api/declarations/{id}]
-
-Current WS allows to see details of declaration knowing its' id.
-
-+ Parameters
-    + id: 7e9cffd9-c75f-45fb-badf-6e8d20b6a8a8 (uuid)
-
-+ Response 200 (application/json)
-    + Attributes (`Response_OK`)
-        + data (`Declaration_Details_Cabinet`)
-
 # Group Private. Dummy methods
 
 ##Dummy sign-in [/sign-in]
@@ -561,6 +510,64 @@ Endpoint checks list of documents that needs to be uploaded for person. In case 
         + meta (`Response__Meta`)
             + code: 200 (number)
         + data (array[`media_content`])
+
+##Person information [api/persons]
+
+### Get Person details [GET /api/persons/details]
+
+This WS designed to get information of person by token.
+
++ Request (application/json)
+    + Headers
+            Authorization: Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9
+            api-key: uXhEczJ56adsfh3Ri9SUkc4en
+
++ Response 200 (application/json)
+    + Attributes (`Response_OK`)
+        + data (`cabinet_person_response`)
+        + id: `7e9cffd9-c75f-45fb-badf-6e8d20b6a8a8` (string, required) - person id
+
+### Get Person Authentication methods [GET /api/persons/{id}/authentication_methods]
+
+This method allows to find the active person's authentication methods.
+
++ Parameters
+    + id: `030d5c41-a945-41ac-89d1-b7c6d1c226c7` (string, required)
+
++ Request (application/json)
+    + Headers
+            Authorization: Bearer c2778f3064753ea70de870a53795f5c9
+            api-key: uXhEczJ56adsfh3Ri9SUkc4en
+
++ Response 200 (application/json)
+    + Attributes (`Response_OK`)
+        + data (array[`Person_auth_methods`, `Person_auth_methods_v2`])
+
++ Response 403 (application/json)
+    + Attributes (`Response_Error`)
+        + meta (Response__Meta, fixed-type)
+            + code: 403 (number)
+        + error (Response__Error, fixed-type)
+            + type: `forbidden`
+            + message: `Such person not found` (string)
+
+##Declaration [api/declarations]
+
+###Get declaration details [GET /api/declarations/{id}]
+
+Current WS allows to see details of declaration knowing its' id.
+
++ Request (application/json)
+    + Headers
+            Authorization: Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9
+            api-key: uXhEczJ56adsfh3Ri9SUkc4en
+
++ Parameters
+    + id: 7e9cffd9-c75f-45fb-badf-6e8d20b6a8a8 (uuid)
+
++ Response 200 (application/json)
+    + Attributes (`Response_OK`)
+        + data (`Declaration_Details_Cabinet`)
 
 # Data Structures
 

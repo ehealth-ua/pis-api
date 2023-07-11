@@ -511,7 +511,8 @@ Endpoint checks list of documents that needs to be uploaded for person. In case 
             + code: 200 (number)
         + data (array[`media_content`])
 
-##Person information [api/persons]
+
+## Person information [/api/persons]
 
 ### Get Person details [GET /api/persons/details]
 
@@ -551,9 +552,9 @@ This method allows to find the active person's authentication methods.
             + type: `forbidden`
             + message: `Such person not found` (string)
 
-##Declaration [api/declarations]
+## Declarations [/api/declarations]
 
-###Get declaration details [GET /api/declarations/{id}]
+### Get declaration details [GET /api/declarations/{id}]
 
 Current WS allows to see details of declaration knowing its' id.
 
@@ -568,6 +569,9 @@ Current WS allows to see details of declaration knowing its' id.
 + Response 200 (application/json)
     + Attributes (`Response_OK`)
         + data (`Declaration_Details_Cabinet`)
+
+
+
 
 # Data Structures
 

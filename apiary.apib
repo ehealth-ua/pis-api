@@ -210,6 +210,44 @@ Look at [**Dummy confidant patient sign-up registration**](https://ehealthpisapi
                 + `id`: `7673eb5a-0cae-4fa8-9f81-e6da46aa2940` (string, optional)
                 + tax_id: 3000080053 (string, required)
             + access_token: `my-oauth-token` (string, required) - access token
+            
+
+## Person information
+
+### Get Person details [GET /api/persons/details]
+This WS designed to get information of person by token.
+
++ Response 200 (application/json)
+    + Attributes (`Response_OK`)
+        + data (`cabinet_person_response`)
+        + id: `7e9cffd9-c75f-45fb-badf-6e8d20b6a8a8` (string, required) - person id
+
+### Get Person Authentication methods [GET /api/persons/{id}/authentication_methods]
+This method allows to find the active person's authentication methods.
+
+
++ Parameters
+    + id: `030d5c41-a945-41ac-89d1-b7c6d1c226c7` (string, required)
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer c2778f3064753ea70de870a53795f5c9
+            api-key: uXhEczJ56adsfh3Ri9SUkc4en
+
++ Response 200 (application/json)
+    + Attributes (`Response_OK`)
+        + data (array[`Person_auth_methods`, `Person_auth_methods_v2`])
+        
+
++ Response 403 (application/json)
+    + Attributes (`Response_Error`)
+        + meta (Response__Meta, fixed-type)
+            + code: 403 (number)
+        + error (Response__Error, fixed-type)
+            + type: `forbidden`
+            + message: `Such person not found` (string)
 
 # Group Private. Dummy methods
 
@@ -833,3 +871,62 @@ Endpoint checks list of documents that needs to be uploaded for person. In case 
 + preferred_way_communication: email (enum, optional) - the way how a patient wants to be reached
     - email
     - phone
+    
+
+### `Person_auth_methods_v2`
+
++ id: `b84893f5-b66b-4431-b023-d5b5c037caef` (string, required)
++ type (enum, required)
+    - OTP
+    - THIRD_PERSON
+    - OFFLINE
++ phone_number: `+38093*****85` (string, optional) - it's required for type = OTP
++ ended_at: `2020-01-10 18:23:34.217335` (string, optional) - ISO Datetime
++ started_at: `2020-01-01 18:23:34.217335` (string, optional) - ISO Datetime
++ is_active: true (boolean, required)
++ inserted_by: `A65C8369-CE3A-44D6-839B-8856E3DC4CA3` (string, required)
++ updated_by: `A65C8369-CE3A-44D6-839B-8856E3DC4CA3` (string, optional)
++ person_id: `50320ee5-2bca-472c-a1a0-28e2e003ec2a` (string, optional)
++ inserted_at: `2021-11-09T00:00:00.000Z` (string, required) - ISO Datetime
++ updated_at: `2021-11-09T00:00:00.000Z` (string, optional) - ISO Datetime
+
+### `Person_auth_methods`
+
++ id: `b94893f5-b66b-4431-b023-d5b5c037caef` (string, required)
++ type (enum, required)
+    - THIRD_PERSON
+    - OTP
+    - OFFLINE
++ value: `34d4aca0-ee15-4d2d-9ab8-336e5ba1f9c7` (string, optional) - mpi identifier of `third_person`. It s required for type = `THIRD_PERSON`
++ alias: `husband` (string, optional)
++ ended_at: `2020-01-10 18:23:34.217335` (string, optional) - ISO Datetime
++ started_at: `2020-01-01 18:23:34.217335` (string, optional) - ISO Datetime
++ is_active: true (boolean, required)
++ inserted_by: `A65C8369-CE3A-44D6-839B-8856E3DC4CA3` (string, required)
++ updated_by: `A65C8369-CE3A-44D6-839B-8856E3DC4CA3` (string, optional)
++ person_id: `50320ee5-2bca-472c-a1a0-28e2e003ec2a` (string, optional)
++ inserted_at: `2021-11-09T00:00:00.000Z` (string, required) - ISO Datetime
++ updated_at: `2021-11-09T00:00:00.000Z` (string, optional) - ISO Datetime
+
+### `Person_Verification_Details`
++ `verification_status`: `NOT_VERIFIED` (string, required) - status of person verification according to `PERSON_VERIFICATION_STATUSES` dictionary
++ `details` (object)
+    + `drfo` (object)
+        + `verification_status`: `NOT_VERIFIED` (string, required) - status of person DRFO verification according to `PERSON_VERIFICATION_STATUSES` dictionary
+        + `verification_reason`: `AUTO` (string, required) - how current DRFO verification status has been set according to `PERSON_VERIFICATION_STATUS_REASONS` dictionary
+        + `result`: `12` (string, optional) - result of person DRFO synchronization according to `DRFO_RESULT` dictionary
+    + `dracs_death` (object)
+        + `verification_status`: `NOT_VERIFIED` (string, required) - status of person DRACS death verification according to `PERSON_VERIFICATION_STATUSES` dictionary
+        + `verification_reason`: `AUTO` (string, required) - how current DRACS death verification status has been set according to `PERSON_VERIFICATION_STATUS_REASONS` dictionary
+        + `verification_comment`: `Необхідно повторно підтвердити факт смерті у пацієнта` (string, optional) - DRACS death verification status description set by NHS or Doctor
+    + `nhs` (object)
+        + `verification_status`: `NOT_VERIFIED` (string, required) - status of person manual NHS verification according to `PERSON_VERIFICATION_STATUSES` dictionary
+        + `verification_reason`: `AUTO` (string, required) - how current manual NHS verification status has been set according to `PERSON_VERIFICATION_STATUS_REASONS` dictionary
+        + `verification_comment`: `Бракує даних паспорту пацієнта та його ІПН` (string, optional) - verification status description set by NHS in case NOT_VERIFIED
+
+### `cabinet_person_response`
++ include `Person`
++ unzr: `19900101-00099` (string, optional)
++ `emergency_contact`(`Emergency_Contact`)
++ `process_disclosure_data_consent`: true (boolean, required)
++ `verification`(`Person_Verification_Details`)

@@ -210,9 +210,9 @@ Look at [**Dummy confidant patient sign-up registration**](https://ehealthpisapi
                 + `id`: `7673eb5a-0cae-4fa8-9f81-e6da46aa2940` (string, optional)
                 + tax_id: 3000080053 (string, required)
             + access_token: `my-oauth-token` (string, required) - access token
-            
 
-## Person information
+## Person information [api/persons]
+
 
 ### Get Person details [GET /api/persons/details]
 This WS designed to get information of person by token.
@@ -248,6 +248,19 @@ This method allows to find the active person's authentication methods.
         + error (Response__Error, fixed-type)
             + type: `forbidden`
             + message: `Such person not found` (string)
+
+## Declaration [api/declarations]
+
+###Get declaration details [GET /api/declarations/{id}]
+
+Current WS allows to see details of declaration knowing its' id.
+
++ Parameters
+    + id: 7e9cffd9-c75f-45fb-badf-6e8d20b6a8a8 (uuid)
+
++ Response 200 (application/json)
+    + Attributes (`Response_OK`)
+        + data (`Declaration_Details_Cabinet`)
 
 # Group Private. Dummy methods
 
@@ -930,3 +943,193 @@ Endpoint checks list of documents that needs to be uploaded for person. In case 
 + `emergency_contact`(`Emergency_Contact`)
 + `process_disclosure_data_consent`: true (boolean, required)
 + `verification`(`Person_Verification_Details`)
+
+### `Declaration_Details_Cabinet`
++ id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required)
++ declaration_number: `0000-12H4-245D` (string, required) - unique number of declaration.
++ start_date: `2017-03-02` (string, required)
++ end_date: `2017-03-02` (string, required)
++ signed_at: `2017-03-02T00:00:00.000Z` (string, required)
++ person (`Person`)
+    + unzr: `19910819-00011` (string, optional) - the record number in the demographic register
+    + `emergency_contact` (`Emergency_Contact`, required)
+    + `confidant_person` (array[`Confidant_Person`], optional) - Should be set if this Person is disabled, underage, etc.
++ employee (`Employee_Declaration_Short`)
++ division (`Division_Declaration`)
++ `legal_entity` (MSP_Details)
++ status (enum, required)
+    - active
+    - pending_verification
+    - terminated
++ scope (enum, required)
+    - family_doctor
++ `declaration_request_id`: `74a6fae6-4207-4e03-a136-f2e70c6b0c02` (string, required)
++ content: `Declaration content` (string, required) - HTML document that MUST be shown to a end-user and signed by hes key. - Should be defined on the client side.
++ inserted_at: `2017-03-02T10:45:16.000Z` (string, optional)
++ updated_at: `2017-03-02T10:45:16.000Z` (string, optional)
++ reason: `manual_employee` (string, optional)
++ reason_description: `Згідно постанови 1 від 10.01.2017` (string, optional)
+
+### `MSP_Details`
++ id: d290f1ee-6c54-4b01-90e6-d701748f0851
++ name: Клініка ЦПМСД №1 (string, required)
++ short_name: ЦПМСД №1 (string, required)
++ `legal_form`: 140 (string, required) - `Dictionary LEGAL_FORM`
++ public_name: ЦПМСД №1 (string, optional)
++ edrpou: 5432345432 (string, required)
++ status: `ACTIVE` (enum, required)
+    + ACTIVE
+    + CLOSED
++ accreditation (MSP_Accreditation, optional)
+- One of
+    + license (object, required)
+        + type: MSP (string, required) - License type `Dictionary LICENSE_TYPE`
+        + license_number: fd123443 (string, optional)
+        + issued_by: Кваліфікацйна комісія (string, required)
+        + issued_date: `2017-02-28` (string, required)
+        + expiry_date: `2017-02-28` (string, optional)
+        + `active_from_date`: `2017-02-28` (string, required)
+        + what_licensed: реалізація наркотичних засобів (string, optional)
+        + order_no: ВА43234 (string, required) - номер наказу
+    + license (object, required)
+        + id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required)
++ email: `email@example.com` (string, required)
++ phones (array[`Phone`], required)
++ addresses (array[`Address`], optional)
+
+### `Division_Details_Cabinet`
++ id: `d290f1ee-6c54-4b01-90e6-d701748f0851` (string, required)
++ name: Бориспільське відділення Клініки Ноунейм (string, required) - the full name of division
++ addresses (array[`Address`], required)
++ phones (array[`Phone`], required)
++ email: email@example.com (string, required) - division's email
++ location (Location, optional) - geographical location, if it's empty, division won't be shown on a map.
++ legal_entity_id: `09106b70-18b0-4726-b0ed-6bda1369fd52` (string, required) - Legal entity id
++ dls_id: `2872985` (string, optional)
++ dls_verified: true (boolean, optional)
+
+# Location
++ latitude: 30.1233 (number, required)
++ longitude: 50.32423 (number, required)
+
+### `Employee_Declaration_Short`
++ id: `d290f1ee-6c54-4b01-90e6-d701748f0851` (string, required)
++ position: P1 (string, required) - `Dictionary: POSITION`
++ `employee_type`: DOCTOR (string) - `Dictionary: EMPLOYEE_TYPE`
++ status: APPROVED, DISMISSED (enum, required) - Employee status
++ start_date: `2017-03-02T10:45:16.000Z` (string, required)
++ end_date: `2018-03-02T10:45:16.000Z` (string, optional)
++ email: email@example.com (string, optional)
++ phones (array[`Phone`], optional)
++ party (object)
+    + id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required)
+    + include `Party_Short`
++ division_id: `4cffa825-8b5b-4cba-9a38-fb57733e14b2` (string, optional) - division identifier
++ `legal_entity_id`: `be3a154c-3e07-496d-9680-f22c443f5d0c` (string, required) - legal entity identifier
++ doctor (DoctorNew)
+
+### DoctorNew
++ educations (array[`Education`], required)  - освіта
++ qualifications (array[`Qualification`], optional) - підвищення кваліфікації
++ specialities (array[`Speciality`], required)  - блок інформації про отримання сертифікату спеціалісту та проходження атестацій
++ science_degree (ScienceDegree, optional)
+
+### ScienceDegree
++ country: UA (string, required) - `Dictionary COUNTRY`
++ city: Київ (string, required)
++ degree (string, required) - `Dictionary SCIENCE_DEGREE`
++ institution_name: Академія Богомольця (string, required)
++ diploma_number: DD123543 (string, required)
++ speciality: Педіатр (string, required)
++ issued_date: `2017-02-28` (string, optional)
+
+### Speciality
++ speciality: THERAPIST (string, required) - `Dictionary SPECIALITY_TYPE`
++ speciality_officio: true (boolean, required) - основна спеціалазація, лише одна має бути true
++ level: FIRST (string, required) - `Dictionary SPECIALITY_LEVEL`
++ `qualification_type`: AWARDING (string, required) - `Dictionary SPEC_QUALIFICATION_TYPE`
++ attestation_name: Академія Богомольця (string, required) - орган що видав
++ attestation_date: `2017-02-28` (string, required) - дата отримання
++ valid_to_date: `2020-02-28` (string, optional) - дата дії до
++ certificate_number: AB/21331 (string, required)
+
+### Qualification
++ type: SPECIALIZATION (string, required) - `Dictionary QUALIFICATION_TYPE`
++ institution_name: Академія Богомольця (string, required)
++ speciality: Педіатр (string, required)
++ issued_date: `2017-02-28` (string, required) - дата отримання сертифікату
++ certificate_number: `2017-02-28` (string, required)
++ valid_to: `2017-02-28` (string, optional) - дійсний до
++ additional_info: додаткова інофрмація (string, optional) - додаткова інформація
+
+### Education
++ country: UA (string, required) - `Dictionary COUNTRY`
++ city: Київ (string, required)
++ institution_name: Академія Богомольця (string, required)
++ issued_date: `2017-02-28` (string, optional)
++ diploma_number: DD123543 (string, required)
++ degree: MASTER (string, required) - `Dictionary EDUCATION_DEGREE`
++ speciality: Педіатр (string, required)
+
+### `Party_Short`
++ first_name: Петро (string, required)
++ last_name: Іванов (string, required)
++ second_name: Миколайович (string, optional)
+
+### `Confidant_Person`
++ relation_type: PRIMARY (enum, required)
+    - PRIMARY
+    - SECONDARY
++ first_name: Петро (string, required)
++ last_name: Іванов (string, required)
++ second_name: Миколайович (string, optional)
++ birth_date: `1991-08-19` (string, required)
++ birth_country: `Україна` (string, required)
++ birth_settlement: `Вінниця` (string, required)
++ gender: MALE, FEMALE (enum[string], required)
++ email: confidant_person@example.com (string, optional)
++ tax_id: 3126509816 (string, optional)
++ secret: `secret` (string, required)
++ unzr: `19900101-00099` (string, optional)
++ preferred_way_communication: email (enum, optional) - the way how a patient wants to be reached
+    - email
+    - phone
++ documents_person (array[`Document`], required)
++ documents_relationship (array[`RelationshipDocument`], required)
++ phones (array[`Phone`], optional)
+
+### `Person_Short`
++ id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required)
++ first_name: Петро (string, required)
++ last_name: Іванов (string, required)
++ second_name: Миколайович (string, optional)
++ birth_date: `1991-08-19` (string, required) - ISO Datetime.
++ gender (enum, required)
+    - FEMALE
+    - MALE
++ tax_id: 3126509816 (string, optional)
++ phones (array[`Phone`], optional)
++ birth_settlement: Вінниця (string, required)
++ birth_country: Україна (string, required) - країна народження
+
+### `MSP_Accreditation`
++ category: SECOND (string, required) - `Dictionary ACCREDITATION_CATEGORY` category of accreditation legal entity. At least one of type must be present. Each type can be represented only once.
++ issued_date: `2017-02-28` (string, optional) - дата видачі
++ expiry_date: `2017-02-28` (string, optional)
++ order_no: fd123443 (string, required) - номер наказу МОЗ
++ order_date: `2017-02-28` (string, required) - дата наказу МОЗ
+
+### `Division_Declaration`
++ id: `d290f1ee-6c54-4b01-90e6-d701748f0851` (string, required)
++ `legal_entity_id`: `c8aadb87-ecb9-41ca-9ad4-ffdfe1dd89c9` (string, required)
++ name: Бориспільське відділення Клініки Ноунейм (string, required) - the full name of division
++ addresses (array[`Address`], required)
++ phones (array[`Phone`], required)
++ email: email@example.com (string, required) - division's email
++ type: clinic (enum, required) - division type
+    - CLINIC
+    - AMBULANT_CLINIC
+    - FAP
++ external_id: `3213213` (string, optional)
++ dls_id: `2872985` (string, optional)
++ dls_verified: true (boolean, optional)

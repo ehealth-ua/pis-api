@@ -514,7 +514,7 @@ Endpoint checks list of documents that needs to be uploaded for person. In case 
 
 ## Person information [/api/persons]
 
-### Get Person details [GET /api/persons/details]
+### Get Person details [GET /api/pis/persons/details]
 
 This WS designed to get information of person by token.
 
@@ -528,7 +528,7 @@ This WS designed to get information of person by token.
         + data (`cabinet_person_response`)
         + id: `7e9cffd9-c75f-45fb-badf-6e8d20b6a8a8` (string, required) - person id
 
-### Get Person Authentication methods [GET /api/persons/{id}/authentication_methods]
+### Get Person Authentication methods [GET /api/pis/persons/{id}/authentication_methods]
 
 This method allows to find the active person's authentication methods.
 
@@ -554,7 +554,7 @@ This method allows to find the active person's authentication methods.
 
 ## Declarations [/api/declarations]
 
-### Get declaration details [GET /api/declarations/{id}]
+### Get declaration details [GET /api/pis/declarations/{id}]
 
 Current WS allows to see details of declaration knowing its' id.
 
@@ -569,8 +569,43 @@ Current WS allows to see details of declaration knowing its' id.
 + Response 200 (application/json)
     + Attributes (`Response_OK`)
         + data (`Declaration_Details_Cabinet`)
+        
 
+### Get declaration Request details [GET /api/pis/declaration_requests/{id}]
 
+Current WS allows to see details of declaration request knowing its' id.
+
++ Parameters
+    + id: 7e9cffd9-c75f-45fb-badf-6e8d20b6a8a8 (uuid)
+
++ Response 200 (application/json)
+    + Attributes (`Response_OK`)
+        + data (object)
+            + id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required)
+            + start_date: `2017-03-02` (string, required) - Should be defined on the client side.
+            + end_date: `2017-03-02` (string, required) - Will be defined on eHealth side if it's not set.
+            + scope (enum, required)
+              - family doctor
+            + status: `NEW` (string, required)
+            + current_declaration_count: 1 (number)
+            + system_declaration_limit: 200 (number)
+            + `person_id`: `4d0d790c-cbf1-44f5-ab21-ba8db67da161` (optional, required) - Person ID
+            + `employee_id`: `1a8b10ea-ba09-40f2-8f9e-55608e9208c6` (string, required) - Employee ID with `type=DOCTOR` selected from available Employees as a third contract party.
+            + `division_id`: `d290f1ee-6c54-4b01-90e6-d701748f0851` (string, required)
+            + `legal_entity_id`: `d290f1ee-6c54-4b01-90e6-d701748f0851` (string, required) - MSP ID.
+            + declaration_number: `0000-12H4-245D` (string, required) - unique number of declaration.
+            + declaration_id: `8311ab82-e341-4da0-8a95-235ec9885e23` (string, required) - presetted id for future declaration
+            + reason: `manual_employee` (string, optional)
+            + content (`content`, required) 
+            + channel: `CABINET` (enum, required) - channel that invoke declaration create service
+            + urgent (object, required)
+                + `authentication_method_current` (object, required)
+                    + type: `NA` (enum, required)
+                        - OTP
+                        - OFFLINE
+                        - NA
+                    + number: `+38093*****85` (string, required)
+         
 
 
 # Data Structures
@@ -652,6 +687,26 @@ Current WS allows to see details of declaration knowing its' id.
 + number: `+380503410870` (string, required) - phone number in format '+38/'
 
 ### `Person`
++ first_name: Петро (string, required)
++ last_name: Іванов (string, required)
++ second_name: Миколайович (string, optional)
++ birth_date: `1991-08-19` (string, required)
++ birth_country: `Україна` (string, required)
++ birth_settlement: `Вінниця` (string, required)
++ gender: MALE, FEMALE (enum[string], required)
++ email: email@example.com (string, optional)
++ tax_id: 3126509816 (string, optional)
++ secret: secret (string, required)
++ documents (array[`Document`], required)
++ addresses (array[`Address`], required)
++ phones (array[`Phone`], optional)
++ `authentication_methods` (array[`Authentication_Method`], required)
++ preferred_way_communication: email (enum, optional) - the way how a patient wants to be reached
+    - email
+    - phone
+    
+
+### `Person_v2`
 + first_name: Петро (string, required)
 + last_name: Іванов (string, required)
 + second_name: Миколайович (string, optional)
@@ -1144,3 +1199,66 @@ Current WS allows to see details of declaration knowing its' id.
 + external_id: `3213213` (string, optional)
 + dls_id: `2872985` (string, optional)
 + dls_verified: true (boolean, optional)
+
+### `Medical_Service_Provider`
++ name: Клініка Ноунейм (string, required)
++ short_name: Ноунейм (string, required)
++ `legal_form`: 140 (string, required) - `Dictionary LEGAL_FORM`
++ public_name: ЦПМСД №1 (string, optional)
++ edrpou: 5432345432 (string, required)
++ licenses (array[`MSP_License`], required)
++ accreditation (MSP_Accreditation, optional)
++ addresses (array[`Address`], required)
++ phones (array[`Phone`], required)
++ email: `email@example.com` (string, required)
+
+### `MSP_License`
++ license_number: fd123443 (string, optional)
++ issued_by: Кваліфікацйна комісія (string, required)
++ issued_date: `2017-02-28` (string, required)
++ expiry_date: `2017-02-28` (string, optional)
++ `active_from_date`: `2017-02-28` (string, required)
++ what_licensed: реалізація наркотичних засобів (string, optional)
++ order_no: ВА43234 (string, required) - номер наказу
+
+### `Employee_Minimal`
++ id: `d290f1ee-6c54-4b01-90e6-d701748f0851` (string, required)
++ position: P6 (string, required) - `Dictionary POSITION`
++ party (object)
+    + id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required)
+    + no_tax_id: true (boolean, required)
+    + include `Party_Short`
+    + email: email@example.com (string, optional)
+    + phones (array[`Phone`], optional)
+    
+
+### `Declaration_Request_Public_ResponseV2`
+
++ person(`Person_info_Public`, required) - Object that described a Patient. Confidant person should be set for disabled persons, underage persons, etc.
+    + id: `5fb57a5d-1457-430e-9678-c81cec72779f` (string,required )
+    + patient_signed: false (boolean, required) - Факт подписания заявки на декларацию.
+    + `process_disclosure_data_consent`: true (boolean, required) - Согласие на раскрытие персональных данных
+
+
+
+### `Person_Request`
++ include `Person_v2`
++ emergency_contact (object, required)
+    + include `Emergency_Contact`
++ `confidant_person` (array[`Confidant_Person`], optional) - Should be set if this Person is disabled, underage, etc.
+
+### `content`
++ include `Declaration_Request_Public_ResponseV2`
++ division (`Division_Declaration`, required)
++ employee (`Employee_Minimal`, required)
+                + speciality: `FAMILY_DOCTOR` (string, required) - інформація про спеціальність лікаря
++ `legal_entity` (`Medical_Service_Provider`, required)
+                + id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required) 
++ seed: hash (string, required)
++ urgent (object, required)
+    + `authentication_method_current` (object, required)
+        + type: `NA` (enum, required)
+            - OTP
+            - OFFLINE
+            - NA
+        + number: `+38093*****85` (string, required)

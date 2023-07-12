@@ -64,6 +64,8 @@ This endpoint must be used only by Auth UI client.
                 + `id`: `7673eb5a-0cae-4fa8-9f81-e6da46aa2940` (string, optional)
                 + tax_id: 3000080053 (string, required)
             + access_token: `my-oauth-token` (string, required) - access token
+            + token (object, required)
+                + include `Access_Token`
 
 ##Sign-up [/api/sign-up]
 
@@ -137,6 +139,8 @@ Look at [**Dummy patient sign-up registration**](https://ehealthpisapi.docs.apia
                 + `id`: `7673eb5a-0cae-4fa8-9f81-e6da46aa2940` (string, optional)
                 + tax_id: 3000080053 (string, required)
             + access_token: `my-oauth-token` (string, required) - access token
+            + token (object, required)
+                + include `Access_Token`
 
 ### Confidant patient sign-up validation [POST /api/pis/confidant/sign-up_validation]
 

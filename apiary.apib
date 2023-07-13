@@ -575,6 +575,24 @@ Current WS allows to see details of declaration knowing its' id.
         + data (`Declaration_Details_Cabinet`)
         
 
+### Get declaration list [GET /api/pis/declarations{?status,start_date_from,start_date_to,end_date_from,end_date_to,page,page_size}]
+
+This WS allows to see history of all patient's declarations and filter them.
+
++ Parameters
+    + status: active (string, optional)
+    + start_date_from: `2022-08-19` (string, optional)
+    + start_date_to: `2023-08-19` (string, optional)
+    + end_date_from: `2023-09-19` (string, optional)
+    + end_date_to: `2023-10-19` (string, optional)
+    + page: 2 (number, optional) - Page number.
+    + page_size: 50 (number, optional) - A limit on the number of objects to be returned, between 1 and 300. Default: 50
+
++ Response 200 (application/json)
+    + Attributes (`Response_Collection_V2`)
+        + data (array[`Declaration_list_cabinet`])
+        
+
 ## Declaration requests [/api/declaration_requests]
 
 ### Get declaration Request details [GET /api/pis/declaration_requests/{id}]
@@ -1349,3 +1367,21 @@ This WS allows to see patient's declaration requests and filter them.
 + page_size: 50 (number) - A limit on the number of objects to be returned, between 1 and 300. Default: 50
 + total_entries: 1000 (number) - Total number of objects in collection.
 + total_pages: 23 (number) - Total number of pages.
+
+### `Declaration_list_cabinet`
++ id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required) - unique id of declaration
++ declaration_number: `0000-12H4-245D` (string, required) - unique number of declaration.
++ start_date: `2017-03-02` (string, required)
++ end_date: `2017-02-28` (string, optional)
++ status (enum, required)
+    - active
+    - pending_verification
+    - terminated
++ reason: `manual_employee` (string, optional)
++ reason_description: `Згідно постанови 1 від 10.01.2017` (string, optional)
++ person (Person_Minimal)
++ employee (`Employee_Minimal_cabinet`)
++ `legal_entity` (`MSP_Short`)
++ division (`Division_Short_List`)
++ inserted_at: `1991-08-19T00:00:00.000Z` (string, required)
++ updated_at: `1991-08-19T00:00:00.000Z` (string, required)

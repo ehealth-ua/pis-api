@@ -611,7 +611,25 @@ Current WS allows to see details of declaration request knowing its' id.
                         - OFFLINE
                         - NA
                     + number: `+38093*****85` (string, required)
-         
+ 
+ 
+
+### Get declaration request list [GET /api/pis/declaration_requests{?status,start_date_from,start_date_to,end_date_from,end_date_to,page,page_size}]
+
+This WS allows to see patient's declaration requests and filter them.
+
++ Parameters
+    + status: active (string, optional)
+    + start_date_from: `2022-08-19` (string, optional)
+    + start_date_to: `2023-08-19` (string, optional)
+    + end_date_from: `2023-09-19` (string, optional)
+    + end_date_to: `2023-10-19` (string, optional)
+    + page: 2 (number, optional) - Page number.
+    + page_size: 50 (number, optional) - A limit on the number of objects to be returned, between 1 and 300. Default: 50
+
++ Response 200 (application/json)
+    + Attributes (`Response_Collection_V2`)
+        + data (array[`Declaration_requests_list_cabinet`])
 
 
 # Data Structures
@@ -1269,3 +1287,65 @@ Current WS allows to see details of declaration request knowing its' id.
             - OFFLINE
             - NA
         + number: `+38093*****85` (string, required)
+        
+
+### `Division_Short_List`
++ id: `d290f1ee-6c54-4b01-90e6-d701748f0851` (string, required)
++ name: Бориспільське відділення Клініки Ноунейм (string, required)
++ type: clinic (enum, required)
+    - CLINIC
+    - AMBULANT_CLINIC
+    - FAP
++ status: ACTIVE (enum, required)
+    - ACTIVE
+    - INACTIVE
++ dls_id: `2872985` (string, optional)
++ dls_verified: true (boolean, optional)  
+
+### `MSP_Short`
++ id: d290f1ee-6c54-4b01-90e6-d701748f0851
++ name: Клініка Ноунейм (string, required)
++ short_name: Ноунейм (string, required)
++ `legal_form`: 140 (string, required) - `Dictionary LEGAL_FORM`
++ edrpou: 5432345432 (string, required)
+
+### `Employee_Minimal_cabinet`
++ id: `d290f1ee-6c54-4b01-90e6-d701748f0851` (string, required)
++ position: P6 (string, required) - `Dictionary POSITION`
++ party (object)
+    + id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required)
+    + include `Party_Short`
+    
+
+### `Person_Minimal`
++ id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required)
++ first_name: Петро (string, required)
++ last_name: Іванов (string, required)
++ second_name: Миколайович (string, optional)
+
+### `Declaration_requests_list_cabinet`
++ id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required) - unique id of declaration request
++ declaration_number: `0000-12H4-245D` (string, required) - unique number of declaration.
++ start_date: `2017-03-02` (string, required)
++ end_date: `2017-02-28` (string, optional)
++ reason: `manual_employee` (string, optional)
++ status (enum, required)
+    - new
+    - approved
+    - signed
+    - expired
++ person (Person_Minimal)
++ employee (`Employee_Minimal_cabinet`)
++ `legal_entity` (`MSP_Short`)
++ division (`Division_Short_List`)
+
+### `Response_Collection_V2`
++ meta (Response__Meta, fixed-type)
++ data (array[], fixed-type)
++ paging (`Response__Pagination__V2`, fixed-type)
+
+### `Response__Pagination__V2`
++ page_number: 2 (number) - Page number.
++ page_size: 50 (number) - A limit on the number of objects to be returned, between 1 and 300. Default: 50
++ total_entries: 1000 (number) - Total number of objects in collection.
++ total_pages: 23 (number) - Total number of pages.

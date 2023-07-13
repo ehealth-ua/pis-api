@@ -575,6 +575,8 @@ Current WS allows to see details of declaration knowing its' id.
         + data (`Declaration_Details_Cabinet`)
         
 
+## Declaration requests [/api/declaration_requests]
+
 ### Get declaration Request details [GET /api/pis/declaration_requests/{id}]
 
 Current WS allows to see details of declaration request knowing its' id.
@@ -1021,6 +1023,7 @@ Current WS allows to see details of declaration request knowing its' id.
 + end_date: `2017-03-02` (string, required)
 + signed_at: `2017-03-02T00:00:00.000Z` (string, required)
 + person (`Person`)
+    + id: `b075f148-7f93-4fc2-b2ec-3d81b19a9b7b` (string, required)
     + unzr: `19910819-00011` (string, optional) - the record number in the demographic register
     + `emergency_contact` (`Emergency_Contact`, required)
     + `confidant_person` (array[`Confidant_Person`], optional) - Should be set if this Person is disabled, underage, etc.
@@ -1089,11 +1092,11 @@ Current WS allows to see details of declaration request knowing its' id.
 + status: APPROVED, DISMISSED (enum, required) - Employee status
 + start_date: `2017-03-02T10:45:16.000Z` (string, required)
 + end_date: `2018-03-02T10:45:16.000Z` (string, optional)
-+ email: email@example.com (string, optional)
-+ phones (array[`Phone`], optional)
 + party (object)
     + id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required)
     + include `Party_Short`
+    + email: email@example.com (string, optional)
+    + phones (array[`Phone`], optional)
 + division_id: `4cffa825-8b5b-4cba-9a38-fb57733e14b2` (string, optional) - division identifier
 + `legal_entity_id`: `be3a154c-3e07-496d-9680-f22c443f5d0c` (string, required) - legal entity identifier
 + doctor (DoctorNew)

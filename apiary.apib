@@ -619,7 +619,7 @@ Current WS allows to see details of declaration request knowing its' id.
             + `legal_entity_id`: `d290f1ee-6c54-4b01-90e6-d701748f0851` (string, required) - MSP ID.
             + declaration_number: `0000-12H4-245D` (string, required) - unique number of declaration.
             + declaration_id: `8311ab82-e341-4da0-8a95-235ec9885e23` (string, required) - presetted id for future declaration
-            + reason: `manual_employee` (string, optional)
+            + `status_reason`: `manual_employee` (string, optional)
             + content (`content`, required) 
             + channel: `CABINET` (enum, required) - channel that invoke declaration create service
             + urgent (object, required)
@@ -1046,7 +1046,7 @@ This WS allows to see patient's declaration requests and filter them.
         + `verification_comment`: `Бракує даних паспорту пацієнта та його ІПН` (string, optional) - verification status description set by NHS in case NOT_VERIFIED
 
 ### `cabinet_person_response`
-+ include `Person`
++ include `Person_cabinet`
 + unzr: `19900101-00099` (string, optional)
 + `emergency_contact`(`Emergency_Contact`)
 + `process_disclosure_data_consent`: true (boolean, required)
@@ -1346,7 +1346,7 @@ This WS allows to see patient's declaration requests and filter them.
 + declaration_number: `0000-12H4-245D` (string, required) - unique number of declaration.
 + start_date: `2017-03-02` (string, required)
 + end_date: `2017-02-28` (string, optional)
-+ reason: `manual_employee` (string, optional)
++ `status_reason`: `manual_employee` (string, optional)
 + status (enum, required)
     - new
     - approved
@@ -1385,3 +1385,21 @@ This WS allows to see patient's declaration requests and filter them.
 + division (`Division_Short_List`)
 + inserted_at: `1991-08-19T00:00:00.000Z` (string, required)
 + updated_at: `1991-08-19T00:00:00.000Z` (string, required)
+
+### `Person_cabinet`
++ first_name: Петро (string, required)
++ last_name: Іванов (string, required)
++ second_name: Миколайович (string, optional)
++ birth_date: `1991-08-19` (string, required)
++ birth_country: `Україна` (string, required)
++ birth_settlement: `Вінниця` (string, required)
++ gender: MALE, FEMALE (enum[string], required)
++ email: email@example.com (string, optional)
++ tax_id: 3126509816 (string, optional)
++ secret: secret (string, required)
++ documents (array[`Document`], required)
++ addresses (array[`Address`], required)
++ phones (array[`Phone`], optional)
++ preferred_way_communication: email (enum, optional) - the way how a patient wants to be reached
+    - email
+    - phone

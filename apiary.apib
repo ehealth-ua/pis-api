@@ -530,7 +530,7 @@ This WS designed to get information of person by token.
 + Response 200 (application/json)
     + Attributes (`Response_OK`)
         + data (`cabinet_person_response`)
-        + id: `7e9cffd9-c75f-45fb-badf-6e8d20b6a8a8` (string, required) - person id
+       
 
 ### Get Person Authentication methods [GET /api/pis/persons/{id}/authentication_methods]
 
@@ -632,7 +632,7 @@ Current WS allows to see details of declaration request knowing its' id.
  
  
 
-### Get declaration request list [GET /api/pis/declaration_requests{?status,start_date_from,start_date_to,end_date_from,end_date_to,page,page_size}]
+### Get declaration request list [GET /api/pis/declaration_requests{?status,start_date_from,start_date_to,end_date_from,end_date_to,page,page_size,channel}]
 
 This WS allows to see patient's declaration requests and filter them.
 
@@ -642,6 +642,7 @@ This WS allows to see patient's declaration requests and filter them.
     + start_date_to: `2023-08-19` (string, optional)
     + end_date_from: `2023-09-19` (string, optional)
     + end_date_to: `2023-10-19` (string, optional)
+    + channel: `PIS` (string, optional)
     + page: 2 (number, optional) - Page number.
     + page_size: 50 (number, optional) - A limit on the number of objects to be returned, between 1 and 300. Default: 50
 
@@ -1007,7 +1008,7 @@ This WS allows to see patient's declaration requests and filter them.
 + is_active: true (boolean, required)
 + inserted_by: `A65C8369-CE3A-44D6-839B-8856E3DC4CA3` (string, required)
 + updated_by: `A65C8369-CE3A-44D6-839B-8856E3DC4CA3` (string, optional)
-+ person_id: `50320ee5-2bca-472c-a1a0-28e2e003ec2a` (string, optional)
++ person_id: `50320ee5-2bca-472c-a1a0-28e2e003ec2a` (string, required)
 + inserted_at: `2021-11-09T00:00:00.000Z` (string, required) - ISO Datetime
 + updated_at: `2021-11-09T00:00:00.000Z` (string, optional) - ISO Datetime
 
@@ -1025,7 +1026,7 @@ This WS allows to see patient's declaration requests and filter them.
 + is_active: true (boolean, required)
 + inserted_by: `A65C8369-CE3A-44D6-839B-8856E3DC4CA3` (string, required)
 + updated_by: `A65C8369-CE3A-44D6-839B-8856E3DC4CA3` (string, optional)
-+ person_id: `50320ee5-2bca-472c-a1a0-28e2e003ec2a` (string, optional)
++ person_id: `50320ee5-2bca-472c-a1a0-28e2e003ec2a` (string, required)
 + inserted_at: `2021-11-09T00:00:00.000Z` (string, required) - ISO Datetime
 + updated_at: `2021-11-09T00:00:00.000Z` (string, optional) - ISO Datetime
 
@@ -1046,9 +1047,10 @@ This WS allows to see patient's declaration requests and filter them.
         + `verification_comment`: `Бракує даних паспорту пацієнта та його ІПН` (string, optional) - verification status description set by NHS in case NOT_VERIFIED
 
 ### `cabinet_person_response`
++ id: `7e9cffd9-c75f-45fb-badf-6e8d20b6a8a8` (string, required) - person id
 + include `Person_cabinet`
 + unzr: `19900101-00099` (string, optional)
-+ `emergency_contact`(`Emergency_Contact`)
++ `emergency_contact`(`Emergency_Contact`, required)
 + `process_disclosure_data_consent`: true (boolean, required)
 + `verification`(`Person_Verification_Details`)
 
@@ -1345,7 +1347,8 @@ This WS allows to see patient's declaration requests and filter them.
 + id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required) - unique id of declaration request
 + declaration_number: `0000-12H4-245D` (string, required) - unique number of declaration.
 + start_date: `2017-03-02` (string, required)
-+ end_date: `2017-02-28` (string, optional)
++ end_date: `2017-02-28` (string, required)
++ channel: `PIS`
 + `status_reason`: `manual_employee` (string, optional)
 + status (enum, required)
     - new
@@ -1396,6 +1399,7 @@ This WS allows to see patient's declaration requests and filter them.
 + gender: MALE, FEMALE (enum[string], required)
 + email: email@example.com (string, optional)
 + tax_id: 3126509816 (string, optional)
++ no_tax_id: true (boolean, required)
 + secret: secret (string, required)
 + documents (array[`Document`], required)
 + addresses (array[`Address`], required)

@@ -572,7 +572,7 @@ Current WS allows to see details of declaration knowing its' id.
 
 + Response 200 (application/json)
     + Attributes (`Response_OK`)
-        + data (`Declaration_Details_Cabinet`)
+        + data (`Declaration_Details_PIS`)
         
 
 ### Get declaration list [GET /api/pis/declarations{?status,start_date_from,start_date_to,end_date_from,end_date_to,page,page_size}]
@@ -590,8 +590,9 @@ This WS allows to see history of all patient's declarations and filter them.
 
 + Response 200 (application/json)
     + Attributes (`Response_Collection_V2`)
-        + data (array[`Declaration_list_cabinet`])
+        + data (array[`Declaration_list`])
         
+
 
 ## Declaration requests [/api/declaration_requests]
 
@@ -621,14 +622,14 @@ Current WS allows to see details of declaration request knowing its' id.
             + declaration_id: `8311ab82-e341-4da0-8a95-235ec9885e23` (string, required) - presetted id for future declaration
             + `status_reason`: `manual_employee` (string, optional)
             + content (`content`, required) 
-            + channel: `CABINET` (enum, required) - channel that invoke declaration create service
+            + channel: `PIS` (enum, required) - channel that invoke declaration create service
             + urgent (object, required)
                 + `authentication_method_current` (object, required)
                     + type: `NA` (enum, required)
                         - OTP
                         - OFFLINE
                         - NA
-                    + number: `+38093*****85` (string, required)
+                    + number: `+38093*****85` (string, optional)
  
  
 
@@ -648,7 +649,51 @@ This WS allows to see patient's declaration requests and filter them.
 
 + Response 200 (application/json)
     + Attributes (`Response_Collection_V2`)
-        + data (array[`Declaration_requests_list_cabinet`])
+        + data (array[`Declaration_requests_list`])
+        
+                
+
+### Reject declaration request  [PATCH /api/pis/declaration_request/{id}/actions/reject]
+ 
+This WS is designed to reject previously created Declaration Request by patient
+
++ Parameters
+    + id: `d290f1ee-6c54-4b01-90e6-d701748f0851` (string, required)
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer c2778f3064753ea70de870a53795f5c9
+
++ Response 201 (application/json)
+    + Attributes (`Response_OK`)
+        + data (object)
+            + id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required)
+            + start_date: `2017-03-02` (string, required) - Should be defined on the client side.
+            + end_date: `2017-03-02` (string, required) - Will be defined on eHealth side if it's not set.
+            + scope (enum, required)
+              - family doctor
+            + status: `NEW` (string, required)
+            + current_declaration_count: 1 (number)
+            + system_declaration_limit: 200 (number)
+            + `person_id`: `4d0d790c-cbf1-44f5-ab21-ba8db67da161` (optional, required) - Person ID
+            + `employee_id`: `1a8b10ea-ba09-40f2-8f9e-55608e9208c6` (string, required) - Employee ID with `type=DOCTOR` selected from available Employees as a third contract party.
+            + `division_id`: `d290f1ee-6c54-4b01-90e6-d701748f0851` (string, required)
+            + `legal_entity_id`: `d290f1ee-6c54-4b01-90e6-d701748f0851` (string, required) - MSP ID.
+            + declaration_number: `0000-12H4-245D` (string, required) - unique number of declaration.
+            + declaration_id: `8311ab82-e341-4da0-8a95-235ec9885e23` (string, required) - presetted id for future declaration
+            + `status_reason`: `manual_employee` (string, optional)
+            + content (`content`, required) 
+            + channel: `PIS` (enum, required) - channel that invoke declaration create service
+            + urgent (object, required)
+                + `authentication_method_current` (object, required)
+                    + type: `NA` (enum, required)
+                        - OTP
+                        - OFFLINE
+                        - NA
+                    + number: `+38093*****85` (string, required)
+ 
 
 
 # Data Structures
@@ -1070,20 +1115,20 @@ This WS allows to see patient's declaration requests and filter them.
 + `process_disclosure_data_consent`: true (boolean, required)
 + `verification`(`Person_Verification_Details`, required)
 
-### `Declaration_Details_Cabinet`
+### `Declaration_Details_PIS`
 + id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required)
 + declaration_number: `0000-12H4-245D` (string, required) - unique number of declaration.
 + start_date: `2017-03-02` (string, required)
 + end_date: `2017-03-02` (string, required)
 + signed_at: `2017-03-02T00:00:00.000Z` (string, required)
-+ person (`Person`)
++ person (`Person`, required)
     + id: `b075f148-7f93-4fc2-b2ec-3d81b19a9b7b` (string, required)
     + unzr: `19910819-00011` (string, optional) - the record number in the demographic register
     + `emergency_contact` (`Emergency_Contact`, required)
     + `confidant_person` (array[`Confidant_Person`], optional) - Should be set if this Person is disabled, underage, etc.
-+ employee (`Employee_Declaration_Short`)
-+ division (`Division_Declaration`)
-+ `legal_entity` (MSP_Details)
++ employee (`Employee_Declaration_Short`, required)
++ division (`Division_Declaration`, required)
++ `legal_entity` (MSP_Details, required)
 + status (enum, required)
     - active
     - pending_verification
@@ -1092,7 +1137,7 @@ This WS allows to see patient's declaration requests and filter them.
     - family_doctor
 + `declaration_request_id`: `74a6fae6-4207-4e03-a136-f2e70c6b0c02` (string, required)
 + content: `Declaration content` (string, required) - HTML document that MUST be shown to a end-user and signed by hes key. - Should be defined on the client side.
-+ inserted_at: `2017-03-02T10:45:16.000Z` (string, optional)
++ inserted_at: `2017-03-02T10:45:16.000Z` (string, required)
 + updated_at: `2017-03-02T10:45:16.000Z` (string, optional)
 + reason: `manual_employee` (string, optional)
 + reason_description: `Згідно постанови 1 від 10.01.2017` (string, optional)
@@ -1345,7 +1390,7 @@ This WS allows to see patient's declaration requests and filter them.
 + `legal_form`: 140 (string, required) - `Dictionary LEGAL_FORM`
 + edrpou: 5432345432 (string, required)
 
-### `Employee_Minimal_cabinet`
+### `Employee_Minimal_pis`
 + id: `d290f1ee-6c54-4b01-90e6-d701748f0851` (string, required)
 + position: P6 (string, required) - `Dictionary POSITION`
 + party (object)
@@ -1359,22 +1404,22 @@ This WS allows to see patient's declaration requests and filter them.
 + last_name: Іванов (string, required)
 + second_name: Миколайович (string, optional)
 
-### `Declaration_requests_list_cabinet`
+### `Declaration_requests_list`
 + id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required) - unique id of declaration request
 + declaration_number: `0000-12H4-245D` (string, required) - unique number of declaration.
 + start_date: `2017-03-02` (string, required)
 + end_date: `2017-02-28` (string, required)
-+ channel: `PIS`
++ channel: `PIS` (string, required)
 + `status_reason`: `manual_employee` (string, optional)
 + status (enum, required)
     - new
     - approved
     - signed
     - expired
-+ person (Person_Minimal)
-+ employee (`Employee_Minimal_cabinet`)
-+ `legal_entity` (`MSP_Short`)
-+ division (`Division_Short_List`)
++ person (Person_Minimal, required)
++ employee (`Employee_Minimal_pis`, required)
++ `legal_entity` (`MSP_Short`, required)
++ division (`Division_Short_List`, required)
 
 ### `Response_Collection_V2`
 + meta (Response__Meta, fixed-type)
@@ -1387,23 +1432,23 @@ This WS allows to see patient's declaration requests and filter them.
 + total_entries: 1000 (number) - Total number of objects in collection.
 + total_pages: 23 (number) - Total number of pages.
 
-### `Declaration_list_cabinet`
+### `Declaration_list`
 + id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required) - unique id of declaration
 + declaration_number: `0000-12H4-245D` (string, required) - unique number of declaration.
 + start_date: `2017-03-02` (string, required)
-+ end_date: `2017-02-28` (string, optional)
++ end_date: `2017-02-28` (string, required)
 + status (enum, required)
     - active
     - pending_verification
     - terminated
 + reason: `manual_employee` (string, optional)
 + reason_description: `Згідно постанови 1 від 10.01.2017` (string, optional)
-+ person (Person_Minimal)
-+ employee (`Employee_Minimal_cabinet`)
-+ `legal_entity` (`MSP_Short`)
-+ division (`Division_Short_List`)
++ person (Person_Minimal, required)
++ employee (`Employee_Minimal_pis`, required)
++ `legal_entity` (`MSP_Short`, required)
++ division (`Division_Short_List`, required)
 + inserted_at: `1991-08-19T00:00:00.000Z` (string, required)
-+ updated_at: `1991-08-19T00:00:00.000Z` (string, required)
++ updated_at: `1991-08-19T00:00:00.000Z` (string, optional)
 
 ### `Person_pis`
 + first_name: Петро (string, required)
@@ -1423,3 +1468,9 @@ This WS allows to see patient's declaration requests and filter them.
 + preferred_way_communication: email (enum, optional) - the way how a patient wants to be reached
     - email
     - phone
+    
+### `crud_Declaration_patch`
++ status (enum, optional)
+    - NEW
+    - APPROVED
+    - REJECTED

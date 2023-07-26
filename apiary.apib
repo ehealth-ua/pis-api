@@ -439,9 +439,9 @@ Approvals are filtered by user from Authorization token.
     + Attributes (`Response_Collection`)
         + data (array[`Approval_Response`])
 
-### Get Approval by ID [GET /api/pis/apps/{id}]
+### Get Approval details [GET /api/pis/apps/{id}]
 
-This endpoint is used to show active approval by ID made by the user to client.
+This endpoint is used to show active approval details made by the user to client.
 
 Approval is filtered by user from Authorization token. 
 
@@ -532,7 +532,7 @@ This WS designed to get information of person by token.
         + data (`pis_person_response`)
        
 
-### Get Person Authentication methods [GET /api/pis/persons/{id}/authentication_methods]
+### Get Person authentication methods [GET /api/pis/persons/{id}/authentication_methods]
 
 This method allows to find the active person's authentication methods.
 
@@ -558,7 +558,7 @@ This method allows to find the active person's authentication methods.
 
 ## Declarations [/api/declarations]
 
-### Get declaration details [GET /api/pis/declarations/{id}]
+### Get Declaration details [GET /api/pis/declarations/{id}]
 
 Current WS allows to see details of declaration knowing its' id.
 
@@ -575,7 +575,7 @@ Current WS allows to see details of declaration knowing its' id.
         + data (`Declaration_Details_PIS`)
         
 
-### Get declaration list [GET /api/pis/declarations{?status,start_date_from,start_date_to,end_date_from,end_date_to,page,page_size}]
+### Get Declarations [GET /api/pis/declarations{?status,start_date_from,start_date_to,end_date_from,end_date_to,page,page_size}]
 
 This WS allows to see history of all patient's declarations and filter them.
 
@@ -596,7 +596,7 @@ This WS allows to see history of all patient's declarations and filter them.
 
 ## Declaration requests [/api/declaration_requests]
 
-### Get declaration Request details [GET /api/pis/declaration_requests/{id}]
+### Get Declaration request details [GET /api/pis/declaration_requests/{id}]
 
 Current WS allows to see details of declaration request knowing its' id.
 
@@ -633,7 +633,7 @@ Current WS allows to see details of declaration request knowing its' id.
  
  
 
-### Get declaration request list [GET /api/pis/declaration_requests{?status,start_date_from,start_date_to,end_date_from,end_date_to,page,page_size,channel}]
+### Get Declaration request [GET /api/pis/declaration_requests{?status,start_date_from,start_date_to,end_date_from,end_date_to,page,page_size,channel}]
 
 This WS allows to see patient's declaration requests and filter them.
 
@@ -651,7 +651,7 @@ This WS allows to see patient's declaration requests and filter them.
     + Attributes (`Response_Collection_V2`)
         + data (array[`Declaration_requests_list`])
 
-### Create declaration request [POST /api/pis/declaration_requests]
+### Create Declaration request [POST /api/pis/declaration_requests]
 
 This WS allows patient to register new declaration request
 
@@ -668,7 +668,7 @@ This WS allows patient to register new declaration request
     + Attributes (`Response_OK`)
         + data (`Create_Declaration_Request_Response_PIS`)
 
-### Reject declaration request  [PATCH /api/pis/declaration_request/{id}/actions/reject]
+### Reject Declaration request  [PATCH /api/pis/declaration_request/{id}/actions/reject]
  
 This WS is designed to reject previously created Declaration Request by patient
 

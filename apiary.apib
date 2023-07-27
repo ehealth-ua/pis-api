@@ -555,6 +555,23 @@ This method allows to find the active person's authentication methods.
         + error (Response__Error, fixed-type)
             + type: `forbidden`
             + message: `Such person not found` (string)
+            
+
+### Get Person verification details [GET /api/pis/persons/verification]
+This WS designed to get current user's person verification status & data and relationship verification status.
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer c2778f3064753ea70de870a53795f5c9
+            api-key: uXhEczJ56adsfh3Ri9SUkc4en
+    
+    
++ Response 200 (application/json)
+    + Attributes (`Response_OK`)
+         + data (array [`Person_Verification_Details`, `Persons_relationship_verification_statuses`])
+            
 
 ## Declarations [/api/declarations]
 
@@ -1597,3 +1614,10 @@ status: `NEW` (string, required)
 + documents_relationship (array[`RelationshipDocument`], required)
 + phones (array[`Phone`], optional)
 + email: emaill@example.com (string, optional)
+
+### `Persons_relationship_verification_statuses`
++ confidant_person_relationship_id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required)
++ relationship_verification_details (object, required)
+    + `verification_status`: `VERIFICATION_NEEDED` (string, required) - status of relationship verification according to `PERSONS_RELATIONSHIP_VERIFICATION_STATUSES` dictionary
+    + `verification_reason`: `Встановлено вручну у процесі реєстрації Пацієнта Лікарем` (string, required) - how current relationship verification status has been set according to `PERSONS_RELATIONSHIP_VERIFICATION_STATUSES` dictionary
+    + `verification_comment`: `Підтверджено на підставі свідоцтва про народження` (string, optional) - Relationship verification status description set by NHS or Doctor

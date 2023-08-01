@@ -685,6 +685,24 @@ This WS allows patient to register new declaration request
     + Attributes (`Response_OK`)
         + data (`Create_Declaration_Request_Response_PIS`)
 
+### Sign Declaration request [PATCH /api/pis/declaration_requests/{id}/actions/sign]
+
+This WS allows patient to sign previously created declaration request
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer c2778f3064753ea70de870a53795f5c9
+
+    + Attributes (object)
+        + `signed_content`: `eyJhbGciOiJIUzUxMiIARUUWYNyfkA` (string, required) - signed declaration request
+        + `signed_content_encoding`: `base64` (string, required) - signed content encoding type.
+
++ Response 201 (application/json)
+    + Attributes (`Response_OK`)
+        + data (`Sign_Declaration_Request_Response_PIS`)
+
 ### Reject Declaration request  [PATCH /api/pis/declaration_requests/{id}/actions/reject]
  
 This WS is designed to reject previously created Declaration Request by patient
@@ -1517,6 +1535,20 @@ This WS is designed to reject previously created Declaration Request by patient
 + seed: hash (string, required)
 + include `Declaration_Request_Public_Response`
 + status: `NEW` (string, required)
++ employee (`Employee_Minimal`, required)
+    + speciality: `FAMILY_DOCTOR` (string, required) - інформація про спеціальність лікаря
++ `legal_entity` (`Medical_Service_Provider`, required)
+    + id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required)
++ division (`Division_Declaration`, required)
++ content: `Declaration content` (string, required) - HTML document
++ `data_to_be_signed` (`Declaration_request_data_to_be_signed`, required)
++ channel: `CABINET` (enum, required) - channel that invoke declaration create service
+
+### `Sign_Declaration_Request_Response_PIS`
++ id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required)
++ seed: hash (string, required)
++ include `Declaration_Request_Public_Response`
++ status: `SIGNED` (string, required)
 + employee (`Employee_Minimal`, required)
     + speciality: `FAMILY_DOCTOR` (string, required) - інформація про спеціальність лікаря
 + `legal_entity` (`Medical_Service_Provider`, required)

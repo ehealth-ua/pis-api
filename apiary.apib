@@ -361,14 +361,33 @@ DEV     | https://pis-auth.dev.edenlab.com.ua
 
 ##Sign-in [/api/sign-in]
 Patient Sign-in process:
-1. Client BE: obtains nonce from [Get nonce](), applies users digital signature;
-2. Client UI: redirects user to Login UI with `client_id`, `redirect_uri`, `scope` and `user_data` that contains base64 encoded signed nonce;
+1. Client BE: obtains nonce from [Get nonce](https://ehealthpisapi.docs.apiary.io/reference/public.-patient-information-system/sign-in/get-nonce), applies users digital signature;
+2. Client UI: redirects user to Login UI (Patient sign-in) with `client_id`, `redirect_uri`, `scope` and `user_data` that contains base64 encoded signed nonce;
 3. Login UI: completes Session auth flow with `app:authorize` scope;
 4. Login UI: renders page with Approval (that lists requested scopes);
 5. User: approves scopes;
 6. Client BE: exchanges `code` from query parameters to an `access_token` by sending `POST /tokens` request with `grant_type=authorization_code`;
 7. Client BE: stores `refresh_token` (in back-end!) and sends `access_token` to Client UI;
 8. Client UI: stores `access_token` (in local storage, cookie, etc.) and makes all future requests with `Auhtorization: Bearer <access_token>` header.
+
+**Sequence Diagram**
+
+![PIS Sign-in Sequence](https://www.websequencediagrams.com/cgi-bin/cdraw?lz=dGl0bGUgUElTIFNpZ24tSW4KIApwYXJ0aWNpcGFudCBVc2VyIGFzIHVzZXIADA1QSVMgRkUgYXMgcGlzX2ZlAAwRQgAUCWIADw5BdXRoIFVJIGFzIGF1dGgAYg1lSGVhbHRoADYHYmUKIAp1c2VyLT4AXwY6IEdvIHRvICJMb2dpbiB0bwApCCIKAIEABi0AJAZiZTogUHJlcGFyZSBkYXRhIHRvIHNpZ24AIQViZS0tPmJlOiBHZXQgbm9uY2UKAA4FADEIPDxSZXNwb25zZT4-ACcKAHkIUmV0dXJuAEgObm90ZSBsZWZ0IG9mAIFrBzogSldUAIENCD51c2VyOiBQcm9tcHQAgQQIIHJlcXVlc3QAgVIPUwAPDACBTAlhdXRoOiBSZWRpcmVjAD4FYXV0aCBzZXJ2aWNlIHdpdGgAgVwFZWQATgkAgRAFcmlnaACBDQlmZTogY2xpZW50X2lkXG5yAEcHX3VyaVxuc2NvcGVcbnVzZXJfZGF0YQphdXRoAIEyCFNob3cgcACBNglhcHByb3ZlIAAvBXMAgxsHAIEdBkEADQ5hdXRoPACCaAdDcmVhdGUvdXBkYXRlAD0HYWxzAIIwDmJlOiBncmFudF9jb2RlAIB_BgCDDwxTdWNjZXNzIHIAgxkKAIJxDQCCIwYANwsAg2UNRXhjaGFuZ2UgQ29kZSBHcmFuAIMKBUEATgZUb2tlAINGBwCCKw1iZTogY29kZV8AgRQFICsgc2VjcmV0AIQmEAA_B3Rva2VuAIEHEGJlOiBhAIE1BV8AGwVcbnJlZnJlc2gACQY&s=modern-blue)
+
+Confidant Patient Sign-in process:
+1. Client BE: obtains `access_token` of confidant patients user;
+2. Client BE: forms patient data, applies users digital signature;
+3. Client UI: redirects user to Login UI (Confidant patient sign-in) with `client_id`, `redirect_uri`, `scope`, `user_data` that contains base64 encoded signed patient data and `token` that contains `access_token` of confidant patients user;
+4. Login UI: completes Session auth flow with `app:authorize` scope;
+5. Login UI: renders page with Approval (that lists requested scopes);
+6. User: approves scopes;
+7. Client BE: exchanges `code` from query parameters to an `access_token` by sending `POST /tokens` request with `grant_type=authorization_code`;
+8. Client BE: stores `refresh_token` (in back-end!) and sends `access_token` to Client UI;
+9. Client UI: stores `access_token` (in local storage, cookie, etc.) and makes all future requests with `Auhtorization: Bearer <access_token>` header.
+
+**Sequence Diagram**
+
+![PIS Confidant Sign-in Sequence](https://www.websequencediagrams.com/cgi-bin/cdraw?lz=dGl0bGUgUElTIENvbmZpZGFudCBTaWduLUluCgpwYXJ0aWNpcGFudCBVc2VyIGFzIHVzZXIADA1QSVMgRkUgYXMgcGlzX2ZlAAwRQgAUCWIADw5BdXRoIFVJIGFzIGF1dGgAYg1lSGVhbHRoADYHYmUKCnVzZXItPgBeBjogR28gdG8gIgCBJgVpbiBhcyBjAIE3CXBlcnNvbiIKbm90ZSBsZWZ0IG9mAIEWBzogUHJlY29uZGl0aW9uOgCBSQUgaGFzIHZhbGlkIGFjY2VzcyB0b2tlbgoAgUkGLT51c2VyOiBTaG93IHJlbGF0ZWQAWwdzIG9yIGFzayB0byBmdWxsZmlsbCB0aGUgZm9ybQBoFmRhdGEgbmVlZGVkIHRvIGlkZW50aWZ5AIEsB1xudG8gYmUgbG9nZ2VkIGluAIFmD0ZpbGwgaW4AXwUAgV8GAEsGdG8gc2luZwCCAwYAgSkPUmVxdWVzdCB0bwCDUwUAgjgPU2lnbiByAB0GAIFpCC0-YXV0aDogUmVkaXJlYwA2BWF1dGggc2VydmljZSB3aXRoIHNpZ25lZAAzCQCCZwVyaWdoAIJgDWNsaWVudF9pZFxucgBHB191cmlcbnNjb3BlXG51c2VyX2RhdGFcbgCCbgZhdXRoPC0tPmJlOiBDaGVjawCDBQ4AEwxWYWxpZGF0ZQCBBQVhdHVyZQA5BQA2B1NlYXJjaCBwYXRpZW50AEsNABQHdXNlclxuAINKCHRvACMJAIE9DgCCBgZ0YXhfaWQAWwYAhAUMcHJvbXAAghwGcHByb3ZlIACBVQVzAIUnBwCCQwZBAA0OAIFXDXJlYXRlL3VwAIFFBQA-BmFscwCFLQ5iZTogZ3JhbnRfY29kAIFdCQCGSwY6IDw8U3UAhTEGcmVzcG9uc2U-PgCFbQ4Ag0kGADcLAIcGBgCCYAdFeGNoYW5nZSBDb2RlIEdyYW4AhCgFQQCGBQZUAIYGBQCDTBJiZTogY29kZV8AgRQFICsgc2VjcmV0CgBSBQCBEQoAPwcAhkwFAIEHEGJlOgCGagdfAIZsBVxucmVmcmVzaAAJBgplbmQ&s=modern-blue)
 
 **Notes:**
 - If User does not exist, but patient exists in `mpi`, User is created before scopes approval step.
@@ -386,9 +405,6 @@ API-key:uXhEczJ56adsfh3Ri9SUkc4en
 ```
 - If PIS don't send api-key in Request HEADER, API return 401 error wih message "API-KEY header required".
 
-**Sequence Diagram**
-
-![PIS Sign-in Sequence](https://www.websequencediagrams.com/cgi-bin/cdraw?lz=dGl0bGUgUElTIFNpZ24tSW4KIApwYXJ0aWNpcGFudCBVc2VyIGFzIHVzZXIADA1QSVMgRkUgYXMgcGlzX2ZlAAwRQgAUCWIADw5BdXRoIFVJIGFzIGF1dGgAYg1lSGVhbHRoADYHYmUKIAp1c2VyLT4AXwY6IEdvIHRvICJMb2dpbiB0bwApCCIKAIEABi0AJAZiZTogUHJlcGFyZSBkYXRhIHRvIHNpZ24AIQViZS0tPmJlOiBHZXQgbm9uY2UKAA4FADEIPDxSZXNwb25zZT4-ACcKAHkIUmV0dXJuAEgObm90ZSBsZWZ0IG9mAIFrBzogSldUAIENCD51c2VyOiBQcm9tcHQAgQQIIHJlcXVlc3QAgVIPUwAPDACBTAlhdXRoOiBSZWRpcmVjAD4FYXV0aCBzZXJ2aWNlIHdpdGgAgVwFZWQATgkAgRAFcmlnaACBDQlmZTogY2xpZW50X2lkXG5yAEcHX3VyaVxuc2NvcGVcbnVzZXJfZGF0YQphdXRoAIEyCFNob3cgcACBNglhcHByb3ZlIAAvBXMAgxsHAIEdBkEADQ5hdXRoPACCaAdDcmVhdGUvdXBkYXRlAD0HYWxzAIIwDmJlOiBncmFudF9jb2RlAIB_BgCDDwxTdWNjZXNzIHIAgxkKAIJxDQCCIwYANwsAg2UNRXhjaGFuZ2UgQ29kZSBHcmFuAIMKBUEATgZUb2tlAINGBwCCKw1iZTogY29kZV8AgRQFICsgc2VjcmV0AIQmEAA_B3Rva2VuAIEHEGJlOiBhAIE1BV8AGwVcbnJlZnJlc2gACQY&s=modern-blue)
 
 ### Get nonce [POST /oauth/nonce]
 

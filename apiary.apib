@@ -1,11 +1,34 @@
 FORMAT: 1A
-HOST: https://pis-api.ehealth.com.ua/
+HOST: https://ehealth.edenlabllc.com/
 
 # eHealth PIS API
 
-Polls is a simple API allowing consumers to view polls and vote in them.
+Environment: **DEVELOPMENT**
+
+This is a **PIS-related consumers part** of API documentation for Ukrainian Health Services government institution back-end, that should provide:
+
+* Patient sign-in with oAuth flow
+* Patient sign-in by confidant person with oAuth flow
+* Patient sign-up with oAuth flow
+* Patient sign-up by confidant person with oAuth flow
+* Patient data management (person details, person authentication methods, declarations, etc)
+
+This API design in based on [Nebo #15 API Design Manifest](http://docs.apimanifest.apiary.io/).
+
+## Docs Structure
+
+This document contains both private and public (usually `/api/..`) API specifications. If you plan to use it as outside API consumer - please refer only to sections that marked as `Public`.
+
+The table below lists the actual API endpoints for all eHealth environments:
+Env     | Host
+--------|-----
+DEV     | https://pis.dev.edenlab.com.ua
 
 # Group Private. Patient Information System
+
+This set of endpoints are private and used only by eHealth Auth service. 
+
+This endpoints shouldn't be obtained by outside API consumers.
 
 ##Sign-in [/api/sign-in]
 
@@ -329,7 +352,58 @@ Look at [**Dummy confidant patient sign-up registration**](https://ehealthpisapi
 
 # Group Public. Patient Information System
 
+**Attention!**
+Use following HOSTs for oAuth 2.0 Authentication
+
+Env     | Host
+--------|-----
+DEV     | https://pis-auth.dev.edenlab.com.ua
+
 ##Sign-in [/api/sign-in]
+Patient Sign-in process:
+1. Client BE: obtains nonce from [Get nonce](), applies users digital signature;
+2. Client UI: redirects user to Login UI with `client_id`, `redirect_uri`, `scope` and `user_data` that contains base64 encoded signed nonce;
+3. Login UI: completes Session auth flow with `app:authorize` scope;
+4. Login UI: renders page with Approval (that lists requested scopes);
+5. User: approves scopes;
+6. Client BE: exchanges `code` from query parameters to an `access_token` by sending `POST /tokens` request with `grant_type=authorization_code`;
+7. Client BE: stores `refresh_token` (in back-end!) and sends `access_token` to Client UI;
+8. Client UI: stores `access_token` (in local storage, cookie, etc.) and makes all future requests with `Auhtorization: Bearer <access_token>` header.
+
+**Notes:**
+- If User does not exist, but patient exists in `mpi`, User is created before scopes approval step.
+- When `access_token` expires, Client repeats steps 6-8 but via `grant_type=refresh_token`.
+
+**API-key:**
+- For identifiers of PIS clients (as a broker) we use term api-key. PIS must **mandatory** send api-key when called any eHealth API.
+- api-key is a `pis_client_secret` - Patient Information System secret key issued upon integration request.
+- api-key is dispatched in Request HEADER as a `API-key` attribute. Example:
+```
+HEADERS
+Content-Type:application/json
+Authorization:Bearer c2778f3064753ea70de870a53795f5c9
+API-key:uXhEczJ56adsfh3Ri9SUkc4en
+```
+- If PIS don't send api-key in Request HEADER, API return 401 error wih message "API-KEY header required".
+
+**Sequence Diagram**
+
+![PIS Sign-in Sequence](https://www.websequencediagrams.com/cgi-bin/cdraw?lz=dGl0bGUgUElTIFNpZ24tSW4KIApwYXJ0aWNpcGFudCBVc2VyIGFzIHVzZXIADA1QSVMgRkUgYXMgcGlzX2ZlAAwRQgAUCWIADw5BdXRoIFVJIGFzIGF1dGgAYg1lSGVhbHRoADYHYmUKIAp1c2VyLT4AXwY6IEdvIHRvICJMb2dpbiB0bwApCCIKAIEABi0AJAZiZTogUHJlcGFyZSBkYXRhIHRvIHNpZ24AIQViZS0tPmJlOiBHZXQgbm9uY2UKAA4FADEIPDxSZXNwb25zZT4-ACcKAHkIUmV0dXJuAEgObm90ZSBsZWZ0IG9mAIFrBzogSldUAIENCD51c2VyOiBQcm9tcHQAgQQIIHJlcXVlc3QAgVIPUwAPDACBTAlhdXRoOiBSZWRpcmVjAD4FYXV0aCBzZXJ2aWNlIHdpdGgAgVwFZWQATgkAgRAFcmlnaACBDQlmZTogc2NvcGVzXG5yAEQHX3VyaVxuACwPYXV0aDwAgh4HVmFsaWRhdGUAgjsFYXR1cmUKb3B0IEludmFsaWQACwsgICAAg0sFAII9DEVycm9yIHIAgkUKZW5kAFENU2VhcmNoAIRYBgCBIw4AgWwGdGF4X2lkAG0FAIUFBW5vdCBmb3VuZABkCwA9C3BhdGllbnQAgQcFADUaICsgbmFtAIEsBmJlAIJVCACDag0gICAgb3B0IFAASwYAaQ8AVgkAg2wIAIMZBgCBFAkgb3IAAgdtb3JlIHRoYW4gb24Agh0GAIIeCQCCCx0gICAgZQCBWwsAgwYIQ3JlYXRlAIcIBgCCRAgAhFcIU2hvdyBwAIRbCWFwcHJvdmUAg2sHCmFsdCBSZWplY3QACgggICAAh1IFAIRUCgAOEACBFxEAOgcAgRoPAIYTEQCBBQVlcnJvcgplbHNlIEEAfQ4AaRAADBMAgWISL3VwAIUCBQCBUQZhbACBOgYAhm0NYmU6IGdyYW50X2NvZACFBgsAh08MU3VjY2VzcwCCXBAAgzsTADsPAIgtDUV4Y2hhbmdlIENvZGUgR3JhbgCHUgVBAFYGVG9rZW4AhHETAIkSCGNvZGVfAIEkBSArIHNlY3JlAIUsBgCIdw8ARwd0b2tlbgCBExRiZTogYQCBSQVfAB8FXG5yZWZyZXNoAAkGCmVuZA&s=qsd)
+
+### Get nonce [POST /oauth/nonce]
+
+This endpoint allows to get nonce (one time JWT) for active client of the system.
+
++ Request (application/json)
+
+    + Attributes (object)
+        + `client_id`: `30074b6e-fbab-4dc1-9d37-88c21dab1847` (string, required) - Client identifier in the system.
+        + `client_secret`: `c2778f3064753ea70de870a53795f5c9` (string, optional) - Required only for clients with `TRUSTED_PIS` client type.
+
++ Response 200 (application/json)
+    + Attributes (`Response_OK`)
+        + data (object)
+           + token: 'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJtaXRocmlsLWxvZ2luIiwiZXhwIjoxNTIzNDM5MjAxLCJpYXQiOjE1MjM0MzgzMDEsImlzcyI6IkVIZWFsdGgiLCJqdGkiOiJlZmUxZjA4ZS1kNGI0LTRjZWYtYTAyYy03OGVhNGExZGRhMjUiLCJuYmYiOjE1MjM0MzgzMDAsIm5vbmNlIjoxMjMsInN1YiI6MTIzLCJ0eXAiOiJhY2Nlc3MifQ.UZ6S92h3nAG-GKY_XUE1Rc6uR_BuqR8ufUJfMhhKtNmt7DkkQlU49qPXjL0LFddVz1E2DXi2a-BQ0FG-DHsTHA' (string, required)
 
 ### Patient sign-in [GET /sign-in{?client_id,redirect_uri,scope,user_data}]
 

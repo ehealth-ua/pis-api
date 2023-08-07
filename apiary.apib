@@ -702,6 +702,23 @@ This WS allows to see history of all patient's declarations and filter them.
         + data (array[`Declaration_list`])
         
 
+### Terminate declaration [PATCH /api/cabinet/declarations/{id}/actions/terminate]
+Patient can terminate active declaration using this method.
+
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer c2778f3064753ea70de870a53795f5c9
+
+    + Attributes (object)
+        + reason_description: `Неякісне обслуговування` (string, optional)
+
++ Response 200 (application/json)
+    + Attributes (`Response_Collection_V2`)
+        + data (`Declaration_Details_PIS`)
+        
 
 ## Declaration requests [/api/declaration_requests]
 

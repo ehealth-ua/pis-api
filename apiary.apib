@@ -534,6 +534,36 @@ Refresh token from authenticated session will also be expired.
 
 ##Sign-up [/api/sign-up]
 
+PIS Sign-up process:
+1. Client BE: obtains nonce from [Get nonce](https://ehealthpisapi.docs.apiary.io/reference/public.-patient-information-system/sign-in/get-nonce), adds it to patient registration form;
+2. User: fills in data to registration form, applies users digital signature;
+3. Client UI: redirects user to Sign-up UI (Patient sign-up) with `client_id`, `redirect_uri`, `scope` and `user_data` that contains base64 encoded signed patient registration request;
+4. Sign-up UI: shows patient registration form with patient data to confirm;
+5. Sign-up UI: completes patient registration with `app:authorize` scope;
+6. Login UI: renders page with Approval (that lists requested scopes);
+7. User: approves scopes;
+8. Client BE: exchanges `code` from query parameters to an `access_token` by sending `POST /tokens` request with `grant_type=authorization_code`;
+9. Client BE: stores `refresh_token` (in back-end!) and sends `access_token` to Client UI;
+10. Client UI: stores `access_token` (in local storage, cookie, etc.) and makes all future requests with `Auhtorization: Bearer <access_token>` header.
+
+**Sequence Diagram**
+
+![PIS Sign-up Sequence](https://www.websequencediagrams.com/cgi-bin/cdraw?lz=dGl0bGUgUElTIFNpZ24tVXAKIApwYXJ0aWNpcGFudCBVc2VyIGFzIHVzZXIADA1QSVMgRkUgYXMgcGlzX2ZlAAwRQgAUCWIADw5BdXRoIFVJIGFzIGF1dGgAYg1lSGVhbHRoADYHYmUKIAp1c2VyLT4AXwY6IEdvIHRvICJSZWdpc3RlciBwYXRpZW50IGluADQIIgpvcHQgUHJlZmlsbCBzb21lIGRhdGEKICAgAIEkBzwtAEoGYmU6IEdldAA8CCdzABkQAG0KAEcIZm9ybQplbmQKABoHAD8KUHJlcGFyAGYGIHRvIHNpZ24AIQViZS0tPmF1dGgAZwZub25jZQphdXRoAHsLPDxSZXNwb25zZT4-ACsKAIFsCFJldHVybgBMDm5vdGUgbGVmdCBvZgCCXgc6IEpXVACBEQg-dXNlcjogU2hvdyByAIIoBXJhdGlvbgCBPAYAgkYORmlsbCBpbiBhbmRcbnNpZ24AJA5yZXF1ZXN0AIFpCgCBRwZSZWRpcmVjdCB0bwCDQwUgc2VydmljZSB3aXRoAIF6BWVkADMJAIEqBXJpZ2gAgScJZmU6IGNsaWVudF9pZFxucgBHB191cmlcbnNjb3BlXG51c2VyXwCDOAUAgisFAIFIDGZvcm0AZAYAg3oIAIJxCGNvbmZpAIFcCACCcghDAA8GAIM6BmF1dGg8LS0-YmU6IENyZWF0ZQCEPwhcbihpZiBuZWVkZWQpABQUdXNlcgATEgCCYQ1wcm9tcACCEAZwcHJvdmUgAIFJBXMAhUIHAIQEBkEADQ4AgQASL3VwZGF0ZQA9B2FscwCDZA5iZTogZ3JhbnRfY29kAIQ8E1N1Y2Nlc3MgcgCETQoAhCUNAIUKBgA3CwCFIQliZTogRXhjaGFuZ2UgQ29kZSBHcmFuAINhBUEATgZUb2tlAIR6BwCDRQ1iZTogY29kZV8AgRQFICsgc2VjcmV0CgCFQwkAhWQGAD8HdG9rZW4AgQcQYmU6IGEAgTUFXwAbBVxucmVmcmVzaAAJBgplbmQ&s=modern-blue)
+
+PIS Confidant Patient Sign-up process:
+1. Client BE: obtains `access_token` of confidant patients user;
+2. User: fills in data to registration form, applies users digital signature;
+3. Client UI: redirects user to Sign-up UI (Confidant patient sign-up) with `client_id`, `redirect_uri`, `scope` and `user_data` that contains base64 encoded signed patient registration request and `token` that contains `access_token`` of confidant patients user;
+4. Sign-up UI: shows patient registration form with patient data to confirm;
+5. Sign-up UI: completes patient registration with `app:authorize` scope;
+6. Login UI: renders page with Approval (that lists requested scopes);
+7. User: approves scopes;
+8. Client BE: exchanges `code` from query parameters to an `access_token` by sending `POST /tokens` request with `grant_type=authorization_code`;
+9. Client BE: stores `refresh_token` (in back-end!) and sends `access_token` to Client UI;
+10. Client UI: stores `access_token` (in local storage, cookie, etc.) and makes all future requests with `Auhtorization: Bearer <access_token>` header.
+
+![PIS Confidant Patient Sign-up Sequence](https://www.websequencediagrams.com/cgi-bin/cdraw?lz=dGl0bGUgUElTIENvbmZpZGFudCBTaWduLVVwCgpwYXJ0aWNpcGFudCBVc2VyIGFzIHVzZXIADA1QSVMgRkUgYXMgcGlzX2ZlAAwRQgAUCWIADw5BdXRoIFVJIGFzIGF1dGgAYg1lSGVhbHRoADYHYmUKCnVzZXItPgBeBjogR28gdG8gIlJlZ2lzdGVyIHBhdGllbnQgaW4AMwhcbmJ5IGMAgU0IIgpub3RlIGxlZnQgb2YAgSQHOiBQcmVjb2RpdGlvbjoAgVYFIGhhcyBhIHZhbGlkIGFjY2VzcyB0b2tlbgpvcHQgUHJlZmlsbCBzb21lIGRhdGEKICAgAIFxBzwtAIEYBmJlOiBHZXQAgQoIJ3MAGRAAgTsKAEcIZm9ybQplbmQKABkIdXNlcjogU2hvdyByAIFdBXJhdGlvbgAjBgCBew5GaWxsIGluIGFuZFxuc2lnbgAkDnJlcXVlc3QAUggtPmF1dGg6IFJlZGlyZWN0IHRvAIJ3BSBzZXJ2aWNlIHdpdGggc2lnbmVkADMJAII1BXJpZ2gAgi4NY2xpZW50X2lkXG5yAEcHX3VyaVxuc2NvcGVcbnVzZXJfZGF0YVxuAII7BmF1dGgAgU4NZm9ybQBrBgCDNghkYXRhIHRvAIMxBgCBYwgAgSwIAIUcBXJtAIIoBmF1dGg8LS0-YmU6IENyZWF0ZQCDewhcbihpZiBuZWVkZWQpABQUAIQLCVxucGVycwCCIAVsAIJbBXNoaXAAHiF1c2VyAFISAIMnDXByb21wAIJWBnBwcm92ZSAAgg8FcwCFPQcAgn0GQQANDgCBPxIvdXBkYXRlAD0HYWxzAIU1DmJlOiBncmFudF9jb2RlAIJYBgCEeAo8PFN1AIU4BnJlc3BvbnNlPj4AhXUOAIQDBgA3CwCHHAYAgk0HRXhjaGFuZ2UgQ29kZSBHcmFuAIQnBUEAhgwGVACGDQUAhAYSYmU6IGNvZGVfAIEUBSArIHNlY3JldAoAUgUAgREKAD8HAIZTBQCBBxBiZToAhnEHXwCGcwVcbnJlZnJlc2gACQY&s=modern-blue)
+
 ### Patient sign-up [GET /sign-up{?client_id,redirect_uri,scope,user_data}]
 
 You MUST redirect your users to this URL to register in the system

@@ -391,7 +391,7 @@ Confidant Patient Sign-in process:
 
 **Notes:**
 - If User does not exist, but patient exists in `mpi`, User is created before scopes approval step.
-- When `access_token` expires, Client generates new via `grant_type=refresh_token`.
+- When `access_token` expires, Client must renew it using `refresh_token` with `POST /oauth/tokens` method but via `grant_type=refresh_token`.
 
 **API-key:**
 - For identifiers of PIS clients (as a broker) we use term api-key. PIS must **mandatory** send api-key when called any eHealth API.

@@ -1365,12 +1365,15 @@ This WS is designed to reject previously created Declaration Request by patient
     - terminated
 + scope (enum, required)
     - family_doctor
-+ `declaration_request_id`: `74a6fae6-4207-4e03-a136-f2e70c6b0c02` (string, required)
++ `declaration_request_id`: `74a6fae6-4207-4e03-a136-f2e70c6b0c02` c
 + content: `Declaration content` (string, required) - HTML document that MUST be shown to a end-user and signed by hes key. - Should be defined on the client side.
 + inserted_at: `2017-03-02T10:45:16.000Z` (string, required)
 + updated_at: `2017-03-02T10:45:16.000Z` (string, optional)
 + reason: `manual_employee` (string, optional)
 + reason_description: `Згідно постанови 1 від 10.01.2017` (string, optional)
++ urgent (object, required)
+    + links (array[`signed_content`], optional)
+       
 
 ### `MSP_Details`
 + id: d290f1ee-6c54-4b01-90e6-d701748f0851
@@ -1831,3 +1834,7 @@ status: `NEW` (string, required)
 + `verification_status`: `VERIFICATION_NEEDED` (string, required) - status of relationship verification according to `PERSONS_RELATIONSHIP_VERIFICATION_STATUSES` dictionary
 + `verification_reason`: `Встановлено вручну у процесі реєстрації Пацієнта Лікарем` (string, required) - how current relationship verification status has been set according to `PERSONS_RELATIONSHIP_VERIFICATION_STATUSES` dictionary
 + `verification_comment`: `Підтверджено на підставі свідоцтва про народження` (string, optional) - Relationship verification status description set by NHS or Doctor
+
+### `signed_content`
++ type: `SIGNED_CONTENT` (string, required)
++ url: `https://storage.ehealth.world` (string, required)

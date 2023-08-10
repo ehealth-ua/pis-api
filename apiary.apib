@@ -13,8 +13,6 @@ This is a **PIS-related consumers part** of API documentation for Ukrainian Heal
 * Patient sign-up by confidant person with oAuth flow
 * Patient data management (person details, person authentication methods, declarations, etc)
 
-This API design in based on [Nebo #15 API Design Manifest](http://docs.apimanifest.apiary.io/).
-
 ## Docs Structure
 
 This document contains both private and public (usually `/api/..`) API specifications. If you plan to use it as outside API consumer - please refer only to sections that marked as `Public`.
@@ -65,6 +63,8 @@ This endpoint is used to create authorization token for confidant person to appr
 
 This endpoint must be used only by Auth UI client.
 
+Look at [**Dummy confidant patient login**](#reference/private.-dummy-methods/dummy-sign-in/dummy-confidant-patient-login) for more details.
+
 + Request (application/json)
 
     + Headers
@@ -100,7 +100,7 @@ This endpoint must be used only by Auth UI client.
 
 Signed content must contain patient data and nonce that was generated for PIS.
 
-Look at [**Dummy patient sign-up validation**](https://ehealthpisapi.docs.apiary.io/#reference/private.-dummy-methods/dummy-patient-sign-up-validation/dummy-patient-sign-up-validation) for more details.
+Look at [**Dummy patient sign-up validation**](#reference/private.-dummy-methods/dummy-sign-up/dummy-patient-sign-up-validation) for more details.
 
 + Request (application/json)
 
@@ -133,9 +133,9 @@ This endpoint is used to register patient in the system based on data received f
 
 This endpoint must be used only by Auth UI client.
 
-Signed content must contain patient data. Request authorization header must contain JWT that was generated as a result of [Sign-up validation](https://ehealthpisapi.docs.apiary.io/#reference/private.-dummy-methods/dummy-patient-sign-up-validation/dummy-patient-sign-up-validation) endpoint.
+Signed content must contain patient data. Request authorization header must contain JWT that was generated as a result of [Sign-up validation](#reference/private.-patient-information-system/sign-up/patient-sign-up-validation) endpoint.
 
-Look at [**Dummy patient sign-up registration**](https://ehealthpisapi.docs.apiary.io/#reference/private.-dummy-methods/dummy-patient-sign-up-registration/dummy-patient-sign-up-registration) for more details.
+Look at [**Dummy patient sign-up registration**](#reference/private.-dummy-methods/dummy-sign-up/dummy-patient-sign-up-registration) for more details.
 
 + Request (application/json)
 
@@ -175,7 +175,7 @@ Signed content must contain patient data and nonce that was generated for PIS.
 
 Confidant person's access token must be provided as well
 
-Look at [**Dummy confidant patient sign-up validation**](https://ehealthpisapi.docs.apiary.io/#reference/private.-dummy-methods/dummy-confidant-patient-sign-up-validation/dummy-confidant-patient-sign-up-validation) for more details.
+Look at [**Dummy confidant patient sign-up validation**](#reference/private.-dummy-methods/dummy-sign-up/dummy-confidant-patient-sign-up-validation) for more details.
 
 + Request (application/json)
 
@@ -212,7 +212,7 @@ This endpoint must be used only by Auth UI client.
 
 Signed content must contain patient data as well as authenticated patient details. Request authorization header must contain confidant patient's token
 
-Look at [**Dummy confidant patient sign-up registration**](https://ehealthpisapi.docs.apiary.io/#reference/private.-dummy-methods/dummy-patient-sign-up-validation/dummy-confidant-patient-sign-up-registration) for more details.
+Look at [**Dummy confidant patient sign-up registration**](#reference/private.-dummy-methods/dummy-sign-up/dummy-confidant-patient-sign-up-registration) for more details.
 
 + Request (application/json)
 
@@ -242,7 +242,7 @@ Look at [**Dummy confidant patient sign-up registration**](https://ehealthpisapi
 
 ##Dummy sign-in [/sign-in]
 
-### Dummy confidant patient sign-in [POST /dummy/pis/confidant/login]
+### Dummy confidant patient login [POST /dummy/pis/confidant/login]
 
 + Request (application/json)
     + Attributes (object)
@@ -361,12 +361,12 @@ DEV     | https://pis-auth.dev.edenlab.com.ua
 
 ##Sign-in [/api/sign-in]
 Patient Sign-in process:
-1. Client BE: obtains nonce from [Get nonce](https://ehealthpisapi.docs.apiary.io/reference/public.-patient-information-system/sign-in/get-nonce), applies users digital signature;
-2. Client UI: redirects user to Login UI (Patient sign-in) with `client_id`, `redirect_uri`, `scope` and `user_data` that contains base64 encoded signed nonce;
+1. Client BE: obtains nonce from [Get nonce](#reference/public.-patient-information-system/sign-in/get-nonce), applies users digital signature;
+2. Client UI: redirects user to [Patient login UI](#reference/public.-patient-information-system/sign-in/patient-sign-in) with `client_id`, `redirect_uri`, `scope` and `user_data` that contains base64 encoded signed nonce;
 3. Login UI: completes Session auth flow with `app:authorize` scope;
 4. Login UI: renders page with Approval (that lists requested scopes);
 5. User: approves scopes;
-6. Client BE: exchanges `code` from query parameters to an `access_token` by sending `POST /tokens` request with `grant_type=authorization_code`;
+6. Client BE: exchanges `code` from query parameters to an `access_token` by sending [Exchange oAuth Code Grant to Access Token](#reference/public.-patient-information-system/sign-in/exchange-oauth-code-grant-to-access-token) request with `grant_type=authorization_code`;
 7. Client BE: stores `refresh_token` (in back-end!) and sends `access_token` to Client UI;
 8. Client UI: stores `access_token` (in local storage, cookie, etc.) and makes all future requests with `Auhtorization: Bearer <access_token>` header.
 
@@ -377,11 +377,11 @@ Patient Sign-in process:
 Confidant Patient Sign-in process:
 1. Client BE: obtains `access_token` of confidant patients user;
 2. Client BE: forms patient data, applies users digital signature;
-3. Client UI: redirects user to Login UI (Confidant patient sign-in) with `client_id`, `redirect_uri`, `scope`, `user_data` that contains base64 encoded signed patient data and `token` that contains `access_token` of confidant patients user;
+3. Client UI: redirects user to [Confidant patient login UI](#reference/public.-patient-information-system/sign-in/confidant-patient-sign-in) with `client_id`, `redirect_uri`, `scope`, `user_data` that contains base64 encoded signed patient data and `token` that contains `access_token` of confidant patients user;
 4. Login UI: completes Session auth flow with `app:authorize` scope;
 5. Login UI: renders page with Approval (that lists requested scopes);
 6. User: approves scopes;
-7. Client BE: exchanges `code` from query parameters to an `access_token` by sending `POST /tokens` request with `grant_type=authorization_code`;
+7. Client BE: exchanges `code` from query parameters to an `access_token` by sending [Exchange oAuth Code Grant to Access Token](#reference/public.-patient-information-system/sign-in/exchange-oauth-code-grant-to-access-token) request with `grant_type=authorization_code`;
 8. Client BE: stores `refresh_token` (in back-end!) and sends `access_token` to Client UI;
 9. Client UI: stores `access_token` (in local storage, cookie, etc.) and makes all future requests with `Auhtorization: Bearer <access_token>` header.
 
@@ -391,19 +391,21 @@ Confidant Patient Sign-in process:
 
 **Notes:**
 - If User does not exist, but patient exists in `mpi`, User is created before scopes approval step.
-- When `access_token` expires, Client must renew it using `refresh_token` with `POST /oauth/tokens` method but via `grant_type=refresh_token`.
+- When `access_token` expires, Client must renew it using `refresh_token` with [Use Refresh Token for Access Token extension](#reference/public.-patient-information-system/sign-in/use-refresh-token-for-access-token-extension) method.
 
 **API-key:**
 - For identifiers of PIS clients (as a broker) we use term api-key. PIS must **mandatory** send api-key when called any eHealth API.
 - api-key is a `pis_client_secret` - Patient Information System secret key issued upon integration request.
-- api-key is dispatched in Request HEADER as a `API-key` attribute. Example:
+- api-key is dispatched in Request HEADER as a `API-key` attribute. 
+- If PIS don't send api-key in Request HEADER, API return 401 error wih message "API-KEY header required".
+
+Example:
 ```
 HEADERS
 Content-Type:application/json
 Authorization:Bearer c2778f3064753ea70de870a53795f5c9
 API-key:uXhEczJ56adsfh3Ri9SUkc4en
 ```
-- If PIS don't send api-key in Request HEADER, API return 401 error wih message "API-KEY header required".
 
 ### Get nonce [POST /oauth/nonce]
 
@@ -535,14 +537,14 @@ Refresh token from authenticated session will also be expired.
 ##Sign-up [/api/sign-up]
 
 PIS Sign-up process:
-1. Client BE: obtains nonce from [Get nonce](https://ehealthpisapi.docs.apiary.io/reference/public.-patient-information-system/sign-in/get-nonce), adds it to patient registration form;
+1. Client BE: obtains nonce from [Get nonce](#reference/public.-patient-information-system/sign-in/get-nonce), adds it to patient registration form;
 2. User: fills in data to registration form, applies users digital signature;
-3. Client UI: redirects user to Sign-up UI (Patient sign-up) with `client_id`, `redirect_uri`, `scope` and `user_data` that contains base64 encoded signed patient registration request;
+3. Client UI: redirects user to [Patient sign-up UI](#reference/public.-patient-information-system/sign-up/patient-sign-up) with `client_id`, `redirect_uri`, `scope` and `user_data` that contains base64 encoded signed patient registration request;
 4. Sign-up UI: shows patient registration form with patient data to confirm;
 5. Sign-up UI: completes patient registration with `app:authorize` scope;
 6. Login UI: renders page with Approval (that lists requested scopes);
 7. User: approves scopes;
-8. Client BE: exchanges `code` from query parameters to an `access_token` by sending `POST /tokens` request with `grant_type=authorization_code`;
+8. Client BE: exchanges `code` from query parameters to an `access_token` by sending [Exchange oAuth Code Grant to Access Token](#reference/public.-patient-information-system/sign-in/exchange-oauth-code-grant-to-access-token) request with `grant_type=authorization_code`;
 9. Client BE: stores `refresh_token` (in back-end!) and sends `access_token` to Client UI;
 10. Client UI: stores `access_token` (in local storage, cookie, etc.) and makes all future requests with `Auhtorization: Bearer <access_token>` header.
 
@@ -553,12 +555,12 @@ PIS Sign-up process:
 PIS Confidant Patient Sign-up process:
 1. Client BE: obtains `access_token` of confidant patients user;
 2. User: fills in data to registration form, applies users digital signature;
-3. Client UI: redirects user to Sign-up UI (Confidant patient sign-up) with `client_id`, `redirect_uri`, `scope` and `user_data` that contains base64 encoded signed patient registration request and `token` that contains `access_token`` of confidant patients user;
+3. Client UI: redirects user to [Confidant patient sign-up UI](#reference/public.-patient-information-system/sign-up/confidant-patient-sign-up) with `client_id`, `redirect_uri`, `scope` and `user_data` that contains base64 encoded signed patient registration request and `token` that contains `access_token`` of confidant patients user;
 4. Sign-up UI: shows patient registration form with patient data to confirm;
 5. Sign-up UI: completes patient registration with `app:authorize` scope;
 6. Login UI: renders page with Approval (that lists requested scopes);
 7. User: approves scopes;
-8. Client BE: exchanges `code` from query parameters to an `access_token` by sending `POST /tokens` request with `grant_type=authorization_code`;
+8. Client BE: exchanges `code` from query parameters to an `access_token` by sending [Exchange oAuth Code Grant to Access Token](#reference/public.-patient-information-system/sign-in/exchange-oauth-code-grant-to-access-token) request with `grant_type=authorization_code`;
 9. Client BE: stores `refresh_token` (in back-end!) and sends `access_token` to Client UI;
 10. Client UI: stores `access_token` (in local storage, cookie, etc.) and makes all future requests with `Auhtorization: Bearer <access_token>` header.
 
@@ -672,7 +674,7 @@ This endpoint is used to initialize person documents uploading proccess. Person 
 
 Endpoint returns list of documents that need to be uploaded for person and urls. In case no documents must be uploaded - empty list is returned.
 
-After documents upload to urls, [Complete Person documents upload](https://ehealthpisapi.docs.apiary.io/#reference/public.-patient-information-system/documents/complete-person-documents-upload) method must be called.
+After documents upload to urls, [Complete Person documents upload](#reference/public.-patient-information-system/documents/complete-person-documents-upload) method must be called.
 
 + Request (application/json)
     + Headers

@@ -848,7 +848,7 @@ Patient can terminate active declaration using this method.
 
 + Response 200 (application/json)
     + Attributes (`Response_Collection_V2`)
-        + data (`Declaration_Details_PIS`)
+        + data (`Declaration_Details_terminated`)
         
 
 ## Declaration requests [/api/declaration_requests]
@@ -1423,9 +1423,9 @@ This WS is designed to reject previously created Declaration Request by patient
 + division (`Division_Declaration`, required)
 + `legal_entity` (MSP_Details, required)
 + status (enum, required)
-    - active
-    - pending_verification
     - terminated
+    - pending_verification
+    - active
 + scope (enum, required)
     - family_doctor
 + `declaration_request_id`: `74a6fae6-4207-4e03-a136-f2e70c6b0c02` c
@@ -1922,3 +1922,30 @@ status: `NEW` (string, required)
     - phone
 + unzr: `19900101-00099` (string, optional)
 + `emergency_contact`(`Emergency_Contact`, required)
+
+### `Declaration_Details_terminated`
++ id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required)
++ declaration_number: `0000-12H4-245D` (string, required) - unique number of declaration.
++ start_date: `2017-03-02` (string, required)
++ end_date: `2017-03-02` (string, required)
++ signed_at: `2017-03-02T00:00:00.000Z` (string, required)
++ person (`Person`, required)
+    + id: `b075f148-7f93-4fc2-b2ec-3d81b19a9b7b` (string, required)
+    + unzr: `19910819-00011` (string, optional) - the record number in the demographic register
+    + `emergency_contact` (`Emergency_Contact`, required)
+    + `confidant_person` (array[`Confidant_Person`], optional) - Should be set if this Person is disabled, underage, etc.
++ employee (`Employee_Declaration_Short`, required)
++ division (`Division_Declaration`, required)
++ `legal_entity` (MSP_Details, required)
++ status (enum, required)
+    - terminated
+    - pending_verification
+    - active
++ scope (enum, required)
+    - family_doctor
++ `declaration_request_id`: `74a6fae6-4207-4e03-a136-f2e70c6b0c02` c
++ content: `Declaration content` (string, required) - HTML document that MUST be shown to a end-user and signed by hes key. - Should be defined on the client side.
++ inserted_at: `2017-03-02T10:45:16.000Z` (string, required)
++ updated_at: `2017-03-02T10:45:16.000Z` (string, optional)
++ reason: `manual_employee` (string, optional)
++ reason_description: `Згідно постанови 1 від 10.01.2017` (string, optional)

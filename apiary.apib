@@ -1652,7 +1652,7 @@ This WS is designed to reject previously created Declaration Request by patient
 
 ### `Declaration_Request_Public_ResponseV2`
 
-+ person(`Person_info_Public`, required) - Object that described a Patient. Confidant person should be set for disabled persons, underage persons, etc.
++ person(`Person_info_Public`) - Object that described a Patient. Confidant person should be set for disabled persons, underage persons, etc.
     + id: `5fb57a5d-1457-430e-9678-c81cec72779f` (string,required )
     + patient_signed: false (boolean, required) - Факт подписания заявки на декларацию.
     + `process_disclosure_data_consent`: true (boolean, required) - Согласие на раскрытие персональных данных
@@ -1728,7 +1728,7 @@ This WS is designed to reject previously created Declaration Request by patient
     - approved
     - signed
     - expired
-+ person (Person_Minimal, required)
++ person (Person_Minimal)
 + employee (`Employee_Minimal_pis`, required)
 + `legal_entity` (`MSP_Short`, required)
 + division (`Division_Short_List`, required)

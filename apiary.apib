@@ -761,6 +761,7 @@ This WS designed to get current user's person verification status & data and rel
 ### Get Person Requests List [GET /api/pis/person_requests{?status,channel,page,page_size}]
 
 Use this method to obtain list of Person Requests. 
+If the request has been cleared of personal patient data due to security requirements, such data will not be returned
 
 + Parameters
     + status: APPROVED (enum, optional)
@@ -783,18 +784,24 @@ Use this method to obtain list of Person Requests.
 
 + Response 200 (application/json)
     + Attributes (`Response_Collection_V2`)
-        + data (object)
-            + id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required)
-            + status: APPROVED (enum, required)
-                - NEW
-                - APPROVED
-                - SIGNED
-                - REJECTED
-                - CANCELLED
-            + channel: `PIS` (string, optional)
-            + patient_signed: false (boolean, required) - ознака підписання пацієнтом
-            + `process_disclosure_data_consent`: true (boolean, required) - ознака погодження на використання персональних даних
-            + person: (array [`pis_person`])
+        + data (array [`Person_request_list`])
+
+### Get Person Request Details [GET /api/pis/person_requests/{id}]   
+
+Current WS allows to see details of person request knowing its' id.
+If the request has been cleared of personal patient data due to security requirements, such data will not be returned
+
++ Request (application/json)
+    + Headers
+            Authorization: Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9
+            api-key: uXhEczJ56adsfh3Ri9SUkc4en
+
++ Parameters
+    + id: 7e9cffd9-c75f-45fb-badf-6e8d20b6a8a8 (uuid)
+    
++ Response 200 (application/json)
+    + Attributes (`Response_Collection_V2`)
+        + data (array [`Person_request_details`])
 
 ## Declarations [/api/declarations]
 
@@ -817,7 +824,7 @@ Current WS allows to see details of declaration knowing its' id.
 
 ### Get Declarations [GET /api/pis/declarations{?status,start_date_from,start_date_to,end_date_from,end_date_to,page,page_size}]
 
-This WS allows to see history of all patient's declarations and filter them.
+This WS allows to see all patient's declarations and filter them.
 
 + Parameters
     + status: active (string, optional)
@@ -856,6 +863,8 @@ Patient can terminate active declaration using this method.
 ### Get Declaration request details [GET /api/pis/declaration_requests/{id}]
 
 Current WS allows to see details of declaration request knowing its' id.
+If the request has been cleared of personal patient data due to security requirements, such data will not be returned
+
 
 + Parameters
     + id: 7e9cffd9-c75f-45fb-badf-6e8d20b6a8a8 (uuid)
@@ -890,9 +899,11 @@ Current WS allows to see details of declaration request knowing its' id.
  
  
 
-### Get Declaration request [GET /api/pis/declaration_requests{?status,start_date_from,start_date_to,end_date_from,end_date_to,page,page_size,channel}]
+### Get Declaration requests [GET /api/pis/declaration_requests{?status,start_date_from,start_date_to,end_date_from,end_date_to,page,page_size,channel}]
 
 This WS allows to see patient's declaration requests and filter them.
+If the request has been cleared of personal patient data due to security requirements, such data will not be returned
+
 
 + Parameters
     + status: active (string, optional)
@@ -1580,6 +1591,11 @@ This WS is designed to reject previously created Declaration Request by patient
 + birth_settlement: Вінниця (string, required)
 + birth_country: Україна (string, required) - країна народження
 
+### `Person_Short_person request`
++ first_name: Петро (string, required)
++ last_name: Іванов (string, required)
++ second_name: Миколайович (string, optional)
+
 ### `MSP_Accreditation`
 + category: SECOND (string, required) - `Dictionary ACCREDITATION_CATEGORY` category of accreditation legal entity. At least one of type must be present. Each type can be represented only once.
 + issued_date: `2017-02-28` (string, optional) - дата видачі
@@ -1949,3 +1965,33 @@ status: `NEW` (string, required)
 + updated_at: `2017-03-02T10:45:16.000Z` (string, optional)
 + reason: `manual_employee` (string, optional)
 + reason_description: `Згідно постанови 1 від 10.01.2017` (string, optional)
+
+### `Person_request_list`
++ id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required)
++ status: APPROVED (enum, required)
+    - NEW
+    - APPROVED
+    - SIGNED
+    - REJECTED
+    - EXPIRED
+    - CANCELED
++ channel: `PIS` (string, optional)
++ inserted_at: `2021-11-09T00:00:00.000Z` (string, required) - ISO Datetime
++ updated_at: `2021-11-09T00:00:00.000Z` (string, optional) - ISO Datetime
++ person: (`Person_Short_person request`)
+
+### `Person_request_details`
++ id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required)
++ status: APPROVED (enum, required)
+    - NEW
+    - APPROVED
+    - SIGNED
+    - REJECTED
+    - EXPIRED
+    - CANCELED
++ channel: `PIS` (string, optional)
++ inserted_at: `2021-11-09T00:00:00.000Z` (string, required) - ISO Datetime
++ updated_at: `2021-11-09T00:00:00.000Z` (string, optional) - ISO Datetime
++ `patient_signed`: true (boolean, required)
++ `process_disclosure_data_consent`: true (boolean, required) - ознакf погодження на використання персональних даних
++ person: (array [`pis_person`])

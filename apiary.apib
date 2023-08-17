@@ -802,6 +802,24 @@ If the request has been cleared of personal patient data due to security require
 + Response 200 (application/json)
     + Attributes (`Response_Collection_V2`)
         + data (array [`Person_request_details`])
+        
+
+### Reject Person Request [PATCH /api/pis/person_requests/{id}/actions/reject]
+
+This WS designed to reject person requests previously created by patient.
+
++ Parameters
+    + id: `d290f1ee-6c54-4b01-90e6-d701748f0851` (string, required)
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer c2778f3064753ea70de870a53795f5c9
+
++ Response 201 (application/json)
+    + Attributes (`Response_OK`)
+        + data (array [`Person_request_details`])
 
 ## Declarations [/api/declarations]
 
@@ -887,7 +905,7 @@ If the request has been cleared of personal patient data due to security require
             + declaration_number: `0000-12H4-245D` (string, required) - unique number of declaration.
             + declaration_id: `8311ab82-e341-4da0-8a95-235ec9885e23` (string, required) - presetted id for future declaration
             + `status_reason`: `manual_employee` (string, optional)
-            + content (`content`, required) 
+            + data_to_be_signed (`content`, required) 
             + channel: `PIS` (enum, required) - channel that invoke declaration create service
             + urgent (object, required)
                 + `authentication_method_current` (object, required)

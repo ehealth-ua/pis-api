@@ -838,8 +838,6 @@ Current WS allows to see details of declaration knowing its' id.
 + Response 200 (application/json)
     + Attributes (`Response_OK`)
         + data (`Declaration_Details_PIS`)
-        + urgent (object, required)
-            + links (array[`signed_content`], optional)
         
 
 ### Get Declarations [GET /api/pis/declarations{?status,start_date_from,start_date_to,end_date_from,end_date_to,page,page_size}]
@@ -909,13 +907,13 @@ If the request has been cleared of personal patient data due to security require
             + `status_reason`: `manual_employee` (string, optional)
             + data_to_be_signed (`content`, required) 
             + channel: `PIS` (enum, required) - channel that invoke declaration create service
-        + urgent (object, required)
-            + `authentication_method_current` (object, required)
-                + type: `NA` (enum, required)
-                    - OTP
-                    - OFFLINE
-                    - NA
-                + number: `+38093*****85` (string, optional)
+            + urgent (object, required)
+                + `authentication_method_current` (object, required)
+                    + type: `NA` (enum, required)
+                        - OTP
+                        - OFFLINE
+                        - NA
+                    + number: `+38093*****85` (string, optional)
  
  
 
@@ -1007,13 +1005,13 @@ This WS is designed to reject previously created Declaration Request by patient
             + `status_reason`: `manual_employee` (string, optional)
             + content (`content`, required) 
             + channel: `PIS` (enum, required) - channel that invoke declaration create service
-        + urgent (object, required)
-            + `authentication_method_current` (object, required)
-                + type: `NA` (enum, required)
-                    - OTP
-                    - OFFLINE
-                    - NA
-                + number: `+38093*****85` (string, required)
+            + urgent (object, required)
+                + `authentication_method_current` (object, required)
+                    + type: `NA` (enum, required)
+                        - OTP
+                        - OFFLINE
+                        - NA
+                    + number: `+38093*****85` (string, required)
 
 ##Search [/api/search]
 
@@ -1033,6 +1031,34 @@ Service to search legal entities
 + Response 200 (application/json)
     + Attributes (`Response_Collection_V2`)
         + data (array[`Search_Legal_Entity_Response`])
+
+### Search divisions [GET /api/pis/divisions{?type,name,area,region,settlement_id,settlement,location_north,location_east,location_south,location_west,healthcare_service_speciality_type,healthcare_service_providing_condition,legal_entity_id,legal_entity_name,legal_entity_type,page,page_size}]
+Service to search divisions
+
++ Parameters
+    + type: CLINIC (enum, optional) - `Dictionary DIVISION_TYPE`
+    + name: Відділення1 (string, optional) - the name of division
+    + area:`Волинська` (string, optional) - the name of region where division is located
+    + region: `Луцький` (string, optional) - the name of district where division is located
+    + settlement_id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, optional) - name of settlement where division is located
+    + settlement: `Луцьк` (string, optional) - the name of settlement where division is located
+    + location_north: 30.1233 (number, optional)
+    + location_east: 50.32423 (number, optional)
+    + location_south: 50.32423 (number, optional)
+    + location_west: 50.32423 (number, optional)
+    + `healthcare_service_speciality_type`: `FAMILY_DOCTOR` (string, optional) - specialization of healthcare services provided in this division
+    + `healthcare_service_providing_condition`: OUTPATIENT (string, optional) - conditions of healthcare service provided in this division
+    + `legal_entity_id`: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, optional) - legal entity ID
+    + `legal_entity_name`: `Аптека 199` (string, optional) - legal_entity name
+    + `legal_entity_type`: MSP (string, optional) - legal entity type
+    + page: 2 (number, optional) - page number
+    + page_size: 50 (number, optional) - A limit on the number of objects to be returned, between 1 and 300. Default: 50
+
++ Request (application/json)
+
++ Response 200 (application/json)
+    + Attributes (`Response_Collection_V2`)
+        + data (array[`Search_Divisions_Response`])
 
 ### Search practitioners [GET /api/pis/practitioners{?full_name,overlimit,speciality,employee_type,providing_condition,division_id,division_name,area,region,settlement_id,settlement,location_north,location_east,location_south,location_west,legal_entity_id,legal_entity_name,page,page_size}]
 Service to search practitioners
@@ -1514,7 +1540,8 @@ Service to search practitioners
 + updated_at: `2017-03-02T10:45:16.000Z` (string, optional)
 + reason: `manual_employee` (string, optional)
 + reason_description: `Згідно постанови 1 від 10.01.2017` (string, optional)
-
++ urgent (object, required)
+    + links (array[`signed_content`], optional)
        
 
 ### `MSP_Details`
@@ -2062,7 +2089,7 @@ status: `NEW` (string, required)
 + updated_at: `2021-11-09T00:00:00.000Z` (string, optional) - ISO Datetime
 + `patient_signed`: true (boolean, required)
 + `process_disclosure_data_consent`: true (boolean, required) - ознакf погодження на використання персональних даних
-+ person: (array [`pis_person`])
++ person (array [`pis_person`])
 
 ### `Practitioner_map`
 + `id`: `7d23bebb-1cf3-4221-bf21-18aada444756` (string, required)
@@ -2188,3 +2215,20 @@ status: `NEW` (string, required)
 ### `Archive`
 + date: `2017-02-28` (string, required) - the date when paper documents were transferred to archive
 + place: `вул. Грушевського 15` (string, required) - the address of building where paper documents are
+
+### `Search_Divisions_Response`
++ id: `asSbcy12sYs8c` (string, required)
++ type: CLINIC, AMBULANT_CLINIC, FAP (enum, required)
++ name: `Aдоніс` (string, required)
++ status: ACTIVE (string, optional)
++ addresses (array[`Address`], required)
++ phones (array[`Phone`], required)
++ email: email@example.com (string, required) - division's email
++ working_hours (`workinghours`) - optional field, business hours by each day weekly, doesn't make any influence on business process and will be shown on portal and map.
++ location (Location, optional) - optional field. geographical location, if it's empty, division won't be shown on a map.
++ `legal_entity` (`Legal_entity_map`, required)
++ `healthcare_services` (array[`Healthcare_service_map`], required, fixed-type)
+
+### `Healthcare_service_map`
++ `speciality_type`: `FAMILY_DOCTOR` (string, required) - `Dictionary SPECIALITY_TYPE`
++ `providing_condition`: OUTPATIENT (string, required) - `Dictionary PROVIDING_CONDITION`

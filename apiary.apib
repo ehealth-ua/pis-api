@@ -838,6 +838,8 @@ Current WS allows to see details of declaration knowing its' id.
 + Response 200 (application/json)
     + Attributes (`Response_OK`)
         + data (`Declaration_Details_PIS`)
+        + urgent (object, required)
+            + links (array[`signed_content`], optional)
         
 
 ### Get Declarations [GET /api/pis/declarations{?status,start_date_from,start_date_to,end_date_from,end_date_to,page,page_size}]
@@ -907,13 +909,13 @@ If the request has been cleared of personal patient data due to security require
             + `status_reason`: `manual_employee` (string, optional)
             + data_to_be_signed (`content`, required) 
             + channel: `PIS` (enum, required) - channel that invoke declaration create service
-            + urgent (object, required)
-                + `authentication_method_current` (object, required)
-                    + type: `NA` (enum, required)
-                        - OTP
-                        - OFFLINE
-                        - NA
-                    + number: `+38093*****85` (string, optional)
+        + urgent (object, required)
+            + `authentication_method_current` (object, required)
+                + type: `NA` (enum, required)
+                    - OTP
+                    - OFFLINE
+                    - NA
+                + number: `+38093*****85` (string, optional)
  
  
 
@@ -1005,13 +1007,13 @@ This WS is designed to reject previously created Declaration Request by patient
             + `status_reason`: `manual_employee` (string, optional)
             + content (`content`, required) 
             + channel: `PIS` (enum, required) - channel that invoke declaration create service
-            + urgent (object, required)
-                + `authentication_method_current` (object, required)
-                    + type: `NA` (enum, required)
-                        - OTP
-                        - OFFLINE
-                        - NA
-                    + number: `+38093*****85` (string, required)
+        + urgent (object, required)
+            + `authentication_method_current` (object, required)
+                + type: `NA` (enum, required)
+                    - OTP
+                    - OFFLINE
+                    - NA
+                + number: `+38093*****85` (string, required)
 
 ##Search [/api/search]
 
@@ -1512,8 +1514,7 @@ Service to search practitioners
 + updated_at: `2017-03-02T10:45:16.000Z` (string, optional)
 + reason: `manual_employee` (string, optional)
 + reason_description: `Згідно постанови 1 від 10.01.2017` (string, optional)
-+ urgent (object, required)
-    + links (array[`signed_content`], optional)
+
        
 
 ### `MSP_Details`

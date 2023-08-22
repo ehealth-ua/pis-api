@@ -1015,6 +1015,23 @@ This WS is designed to reject previously created Declaration Request by patient
 
 ##Search [/api/search]
 
+### Search legal entities [GET /api/pis/legal_entities{?type,settlement_id,settlement,name,page,page_size}]
+Service to search legal entities
+
++ Parameters
+    + type: MSP (string, optional) - legal entity type
+    + settlement_id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, optional) - name of settlement where legal entity is located
+    + settlement: `Луцьк` (string, optional) - name of settlement where division is located
+    + name: `Клініка1` (string, optional) - legal entity name
+    + page: 2 (number, optional) - page number
+    + page_size: 50 (number, optional) - A limit on the number of objects to be returned, between 1 and 300. Default: 50
+
++ Request (application/json)
+
++ Response 200 (application/json)
+    + Attributes (`Response_Collection_V2`)
+        + data (array[`Search_Legal_Entity_Response`])
+
 ### Search practitioners [GET /api/pis/practitioners{?full_name,overlimit,speciality,employee_type,providing_condition,division_id,division_name,area,region,settlement_id,settlement,location_north,location_east,location_south,location_west,legal_entity_id,legal_entity_name,page,page_size}]
 Service to search practitioners
 
@@ -1028,14 +1045,14 @@ Service to search practitioners
     + division_name: `Відділення1` (string, optional) - division name
     + area: `Волинська` (string, optional) - name of region where division is located
     + region: `Луцький` (string, optional) - name of district where division is located
-    + settlement_id: `Луцьк` (string, optional) - name of settlement where division is located
+    + settlement_id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, optional) - name of settlement where division is located
     + settlement: `Луцьк` (string, optional) - name of settlement where division is located
     + location_north: 30.1233 (number, optional)
     + location_east: 50.32423 (number, optional)
     + location_south: 50.32423 (number, optional)
     + location_west: 50.32423 (number, optional)
     + legal_entity_id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, optional) - legal entity identifier
-    + legal_entity_name: `Клініка1` - legal entity name
+    + `legal_entity_name`: `Клініка1` (string, optional) - legal entity name
     + page: 2 (number, optional) - page number
     + page_size: 50 (number, optional) - A limit on the number of objects to be returned, between 1 and 300. Default: 50
 
@@ -2120,3 +2137,53 @@ status: `NEW` (string, required)
     - 08.00,12.00 (array[string])
 + sat (array, optional)
 + sun (array, optional)
+
+### `Search_Legal_Entity_Response`
++ id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required)
++ type: PRIMARY_CARE (string, required) - type of legal entity [PRIMARY_CARE/OUTPATIENT/PHARMACY]. MIS can't be created using this WS.
++ status: ACTIVE (string, required)
++ `edr` (EDR_data, required)
++ edrpou: 54323454 (string, required) -  Unified Register of Businesses and Organizations
++ residence_address (Address, required) - address where the legal entity is physically located
++ phones (array[`Phone`], required)
++ email: email@example.com (string, required) - email to contact person in charge from legal entity
++ website: `www.msp.com.ua` (string, optional) - legal entity website
++ accreditation (MSP_Accreditation, optional)
++ license (object)
+    + id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string)
+    + type: MSP (string, optional) - License type `Dictionary LICENSE_TYPE`
+    + license_number: fd123443 (string, optional)
+    + issued_by: Кваліфікацйна комісія (string)
+    + issued_date: `2017-02-28` (string)
+    + expiry_date: `2017-02-28` (string)
+    + `active_from_date`: `2017-02-28` (string)
+    + what_licensed: реалізація наркотичних засобів (string, optional)
+    + order_no: ВА43234 (string) - номер наказу
++ `archive`(array[`Archive`], optional)
+
+### `EDR_data`
++ id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required)
++ name: Клініка Ноунейм (string, required) - full official name of legal entity also the name to show on public sources [as map, portal etc]
++ short_name: Ноунейм (string, optional) - short name of legal entity
++ public_name: Ноунейм (string, optional)
++ `legal_form`: 140 (string, optional) - `Business form of legal entity received from edr - Use dictionary LEGAL_FORM to show the name`
++ `registration_address` (`EDR_registration_address`, required)
+
+### `EDR_registration_address`
++ zip: `02090`
++ country: `УКРАЇНА`
++ address: `Волинська обл., місто Луцьк ВУЛИЦЯ КОНЯКІНА буд. 14 кв. 144`
++ parts (object)
+    + atu: `Волинська обл., місто Луцьк`
+    + atu_code: `0710100000`
+    + street: `ВУЛИЦЯ КОНЯКІНА`
+    + house_type: `буд.`
+    + house: `14`
+    + building_type: null
+    + building: ``
+    + num_type: `кв.`
+    + num: `144`
+
+### `Archive`
++ date: `2017-02-28` (string, required) - the date when paper documents were transferred to archive
++ place: `вул. Грушевського 15` (string, required) - the address of building where paper documents are

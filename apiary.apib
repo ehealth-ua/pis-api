@@ -1743,6 +1743,26 @@ Service to search practitioners
 + dls_id: `2872985` (string, optional)
 + dls_verified: true (boolean, optional)  
 
+### `Division_Short_List_declaration_request`
++ id: `d290f1ee-6c54-4b01-90e6-d701748f0851` (string, required)
++ name: Бориспільське відділення Клініки Ноунейм (string, optional)
++ type: clinic (enum, optional)
+    - CLINIC
+    - AMBULANT_CLINIC
+    - FAP
++ status: ACTIVE (enum, optional)
+    - ACTIVE
+    - INACTIVE
++ dls_id: `2872985` (string, optional)
++ dls_verified: true (boolean, optional)
+
+### `MSP_Short_declaration_request`
++ id: `d290f1ee-6c54-4b01-90e6-d701748f0851` (string, required)
++ name: Клініка Ноунейм (string, optional)
++ short_name: Ноунейм (string, optional)
++ `legal_form`: 140 (string, optional) - `Dictionary LEGAL_FORM`
++ edrpou: 5432345432 (string, optional)
+
 ### `MSP_Short`
 + id: d290f1ee-6c54-4b01-90e6-d701748f0851
 + name: Клініка Ноунейм (string, required)
@@ -1756,7 +1776,14 @@ Service to search practitioners
 + party (object)
     + id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required)
     + include `Party_Short`
-    
+ 
+
+### `Employee_Minimal_declaration_request`
++ id: `d290f1ee-6c54-4b01-90e6-d701748f0851` (string, required)
++ position: P6 (string, optional) - `Dictionary POSITION`
++ party (object)
+    + id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, optional)
+    + include `Party_Short`    
 
 ### `Person_Minimal`
 + id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required)
@@ -1777,9 +1804,9 @@ Service to search practitioners
     - signed
     - expired
 + person (Person_Minimal)
-+ employee (`Employee_Minimal_pis`, required)
-+ `legal_entity` (`MSP_Short`, required)
-+ division (`Division_Short_List`, required)
++ employee (`Employee_Minimal_declaration_request`, optional)
++ `legal_entity` (`MSP_Short_declaration_request`, optional)
++ division (`Division_Short_List_declaration_request`, optional)
 
 ### `Response_Collection_V2`
 + meta (Response__Meta, fixed-type)
@@ -2197,7 +2224,7 @@ Service to search practitioners
 + status: `NEW` (string, required)
 + current_declaration_count: 1 (number)
 + system_declaration_limit: 200 (number)
-+ patient_id: `5fb57a5d-1457-430e-9678-c81cec72779f` (string,required )
++ patient_id: `5fb57a5d-1457-430e-9678-c81cec72779f` (string,optional )
 + employee_id: `5fb57a5d-1457-430e-9678-c81cec72779f` (string,required )
 + legal_entity_id: `5fb57a5d-1457-430e-9678-c81cec72779f` (string,required )
 + division_id: `5fb57a5d-1457-430e-9678-c81cec72779f` (string,required )

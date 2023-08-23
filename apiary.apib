@@ -889,31 +889,8 @@ If the request has been cleared of personal patient data due to security require
 
 + Response 200 (application/json)
     + Attributes (`Response_OK`)
-        + data (object)
-            + id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required)
-            + start_date: `2017-03-02` (string, required) - Should be defined on the client side.
-            + end_date: `2017-03-02` (string, required) - Will be defined on eHealth side if it's not set.
-            + scope (enum, required)
-              - family doctor
-            + status: `NEW` (string, required)
-            + current_declaration_count: 1 (number)
-            + system_declaration_limit: 200 (number)
-            + `person_id`: `4d0d790c-cbf1-44f5-ab21-ba8db67da161` (optional, required) - Person ID
-            + `employee_id`: `1a8b10ea-ba09-40f2-8f9e-55608e9208c6` (string, required) - Employee ID with `type=DOCTOR` selected from available Employees as a third contract party.
-            + `division_id`: `d290f1ee-6c54-4b01-90e6-d701748f0851` (string, required)
-            + `legal_entity_id`: `d290f1ee-6c54-4b01-90e6-d701748f0851` (string, required) - MSP ID.
-            + declaration_number: `0000-12H4-245D` (string, required) - unique number of declaration.
-            + declaration_id: `8311ab82-e341-4da0-8a95-235ec9885e23` (string, required) - presetted id for future declaration
-            + `status_reason`: `manual_employee` (string, optional)
-            + data_to_be_signed (`content`, required) 
-            + channel: `PIS` (enum, required) - channel that invoke declaration create service
-            + urgent (object, required)
-                + `authentication_method_current` (object, required)
-                    + type: `NA` (enum, required)
-                        - OTP
-                        - OFFLINE
-                        - NA
-                    + number: `+38093*****85` (string, optional)
+        + data (`Declaration_request_details`, required)
+
  
  
 
@@ -987,31 +964,7 @@ This WS is designed to reject previously created Declaration Request by patient
 
 + Response 201 (application/json)
     + Attributes (`Response_OK`)
-        + data (object)
-            + id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required)
-            + start_date: `2017-03-02` (string, required) - Should be defined on the client side.
-            + end_date: `2017-03-02` (string, required) - Will be defined on eHealth side if it's not set.
-            + scope (enum, required)
-              - family doctor
-            + status: `NEW` (string, required)
-            + current_declaration_count: 1 (number)
-            + system_declaration_limit: 200 (number)
-            + `person_id`: `4d0d790c-cbf1-44f5-ab21-ba8db67da161` (optional, required) - Person ID
-            + `employee_id`: `1a8b10ea-ba09-40f2-8f9e-55608e9208c6` (string, required) - Employee ID with `type=DOCTOR` selected from available Employees as a third contract party.
-            + `division_id`: `d290f1ee-6c54-4b01-90e6-d701748f0851` (string, required)
-            + `legal_entity_id`: `d290f1ee-6c54-4b01-90e6-d701748f0851` (string, required) - MSP ID.
-            + declaration_number: `0000-12H4-245D` (string, required) - unique number of declaration.
-            + declaration_id: `8311ab82-e341-4da0-8a95-235ec9885e23` (string, required) - presetted id for future declaration
-            + `status_reason`: `manual_employee` (string, optional)
-            + content (`content`, required) 
-            + channel: `PIS` (enum, required) - channel that invoke declaration create service
-            + urgent (object, required)
-                + `authentication_method_current` (object, required)
-                    + type: `NA` (enum, required)
-                        - OTP
-                        - OFFLINE
-                        - NA
-                    + number: `+38093*****85` (string, required)
+        + data (`Declaration_request_details`, required)
 
 ##Search [/api/search]
 
@@ -1927,7 +1880,7 @@ Service to search practitioners
 
 ### `Declaration_request_data_to_be_signed`
 + id: `b099f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required)
-status: `NEW` (string, required)
++ status: `NEW` (string, required)
 + declaration_number: `0000-12H4-245D` (string, required) - unique number of declaration.
 + declaration_id: `8311ab82-e341-4da0-8a95-235ec9885e23` (string, required) - presetted id for future declaration
 + start_date: `2017-03-02` (string, required) - Should be defined on the client side.
@@ -2232,3 +2185,34 @@ status: `NEW` (string, required)
 ### `Healthcare_service_map`
 + `speciality_type`: `FAMILY_DOCTOR` (string, required) - `Dictionary SPECIALITY_TYPE`
 + `providing_condition`: OUTPATIENT (string, required) - `Dictionary PROVIDING_CONDITION`
+
+### Declaration_request_details
++ id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required)
++ declaration_number: `0000-12H4-245D` (string, required) - unique number of declaration.
++ declaration_id: `8311ab82-e341-4da0-8a95-235ec9885e23` (string, required) - presetted id for future declaration
++ start_date: `2017-03-02` (string, required) - Should be defined on the client side.
++ end_date: `2017-03-02` (string, required) - Will be defined on eHealth side if it's not set.
++ scope (enum, required)
+  - family doctor
++ status: `NEW` (string, required)
++ current_declaration_count: 1 (number)
++ system_declaration_limit: 200 (number)
++ patient (object, optional) - Object that described a Patient. Confidant person should be set for disabled persons, underage persons, etc.
+    + id: `5fb57a5d-1457-430e-9678-c81cec72779f` (string,required )
+    + include `Data_to_be_signed_PersonDetails`
+    + patient_signed: false (boolean, required) - Факт подписания заявки на декларацию.
+    + `process_disclosure_data_consent`: true (boolean, required) - Согласие на раскрытие персональных данных
++ employee (`Employee_Minimal`, required)
++ `legal_entity` (`Medical_Service_Provider`, required)
+    + id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required)
++ division (`Division_Declaration`, required)- MSP ID.
++ `status_reason`: `manual_employee` (string, optional)
++ `data_to_be_signed` (`Declaration_request_data_to_be_signed`, optional)
++ channel: `PIS` (enum, required) - channel that invoke declaration create service
++ urgent (object, required)
+    + `authentication_method_current` (object, required)
+        + type: `NA` (enum, required)
+            - OTP
+            - OFFLINE
+            - NA
+                    + number: `+38093*****85` (string, optional)

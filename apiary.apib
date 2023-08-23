@@ -697,9 +697,9 @@ Endpoint checks list of documents that needs to be uploaded for person. In case 
         + data (array[`media_content`])
 
 
-## Person information [/api/persons]
+## Person information [/api/person]
 
-### Get Person details [GET /api/pis/persons/details]
+### Get Person details [GET /api/pis/person/details]
 
 This WS designed to get information of person by token.
 
@@ -713,7 +713,7 @@ This WS designed to get information of person by token.
         + data (`pis_person_response`)
        
 
-### Get Person authentication methods [GET /api/pis/persons/authentication_methods]
+### Get Person authentication methods [GET /api/pis/person/authentication_methods]
 
 This method allows to find the active person's authentication methods.
 
@@ -735,7 +735,7 @@ This method allows to find the active person's authentication methods.
             + message: `Such person not found` (string)
             
 
-### Get Person verification details [GET /api/pis/persons/verification]
+### Get Person verification details [GET /api/pis/person/verification]
 This WS designed to get current user's person verification status & data and relationship verification status.
 
 + Request (application/json)

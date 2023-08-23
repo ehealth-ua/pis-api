@@ -2197,15 +2197,10 @@ Service to search practitioners
 + status: `NEW` (string, required)
 + current_declaration_count: 1 (number)
 + system_declaration_limit: 200 (number)
-+ patient (object, optional) - Object that described a Patient. Confidant person should be set for disabled persons, underage persons, etc.
-    + id: `5fb57a5d-1457-430e-9678-c81cec72779f` (string,required )
-    + include `Data_to_be_signed_PersonDetails`
-    + patient_signed: false (boolean, required) - Факт подписания заявки на декларацию.
-    + `process_disclosure_data_consent`: true (boolean, required) - Согласие на раскрытие персональных данных
-+ employee (`Employee_Minimal`, required)
-+ `legal_entity` (`Medical_Service_Provider`, required)
-    + id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required)
-+ division (`Division_Declaration`, required)- MSP ID.
++ patient_id: `5fb57a5d-1457-430e-9678-c81cec72779f` (string,required )
++ employee_id: `5fb57a5d-1457-430e-9678-c81cec72779f` (string,required )
++ legal_entity_id: `5fb57a5d-1457-430e-9678-c81cec72779f` (string,required )
++ division_id: `5fb57a5d-1457-430e-9678-c81cec72779f` (string,required )
 + `status_reason`: `manual_employee` (string, optional)
 + `data_to_be_signed` (`Declaration_request_data_to_be_signed`, optional)
 + channel: `PIS` (enum, required) - channel that invoke declaration create service
@@ -2215,4 +2210,4 @@ Service to search practitioners
             - OTP
             - OFFLINE
             - NA
-                    + number: `+38093*****85` (string, optional)
+              + number: `+38093*****85` (string, optional)

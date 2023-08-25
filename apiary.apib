@@ -1783,7 +1783,7 @@ Service to search practitioners
 + position: P6 (string, optional) - `Dictionary POSITION`
 + party (object)
     + id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, optional)
-    + include `Party_Short`    
+    + include `Party_Short_declaration_requst`    
 
 ### `Person_Minimal`
 + id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required)
@@ -1794,16 +1794,16 @@ Service to search practitioners
 ### `Declaration_requests_list`
 + id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required) - unique id of declaration request
 + declaration_number: `0000-12H4-245D` (string, required) - unique number of declaration.
-+ start_date: `2017-03-02` (string, required)
-+ end_date: `2017-02-28` (string, required)
-+ channel: `PIS` (string, required)
++ start_date: `2017-03-02` (string, optional)
++ end_date: `2017-02-28` (string, optional)
++ channel: `PIS` (string, optional)
 + `status_reason`: `manual_employee` (string, optional)
-+ status (enum, required)
++ status (enum, optional)
     - new
     - approved
     - signed
     - expired
-+ person (Person_Minimal)
++ person (Person_Minimal_declaration_requst)
 + employee (`Employee_Minimal_declaration_request`, optional)
 + `legal_entity` (`MSP_Short_declaration_request`, optional)
 + division (`Division_Short_List_declaration_request`, optional)
@@ -2238,3 +2238,15 @@ Service to search practitioners
             - OFFLINE
             - NA
               + number: `+38093*****85` (string, optional)
+              
+
+### `Person_Minimal_declaration_requst`
++ id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, optional)
++ first_name: Петро (string, optional)
++ last_name: Іванов (string, optional)
++ second_name: Миколайович (string, optional)
+
+### `Party_Short_declaration_requst`
++ first_name: Петро (string, optional)
++ last_name: Іванов (string, optional)
++ second_name: Миколайович (string, optional)

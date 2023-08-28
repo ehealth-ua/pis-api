@@ -1452,6 +1452,12 @@ Service to search practitioners
 + inserted_by: `A65C8369-CE3A-44D6-839B-8856E3DC4CA3` (string, required)
 + updated_by: `A65C8369-CE3A-44D6-839B-8856E3DC4CA3` (string, optional)
 + person_id: `50320ee5-2bca-472c-a1a0-28e2e003ec2a` (string, required)
++ confidant_person (object, optional)
+    + name: Петров А.А. (string, required) - confidant person name, masked
+    + phones (array)
+        + (object)
+            + type: MOBILE (string, required) - `Dictionary PHONE_TYPE` type of phone Land Line or Mobile. At least one of type must be present. Each type can be represented only once.
+            + number: +38093*****85 (string, required) - confidant person phone number, masked
 + inserted_at: `2021-11-09T00:00:00.000Z` (string, required) - ISO Datetime
 + updated_at: `2021-11-09T00:00:00.000Z` (string, optional) - ISO Datetime
 

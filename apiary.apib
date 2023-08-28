@@ -1073,6 +1073,80 @@ Service to search practitioners
     + Attributes (`Response_Collection_V2`)
         + data (array[`Practitioner_map`])
 
+##Bulk data export [/api/pis/bulk]
+
+### Get parties [GET /api/pis/bulk/parties{?depth}]
+Get parties
+
++ Parameters
+    + depth: 5 (number, optional) - Number of days to get changes
+
++ Request (application/json)
+
++ Response 200 (application/json)
+    + Attributes (`Response_Collection_wo_Paging`)
+        + data (array[`Party_bulk`])
+
+### Get employees [GET /api/pis/bulk/employees{?depth}]
+Get employees
+
++ Parameters
+    + depth: 5 (number, optional) - Number of days to get changes
+
++ Request (application/json)
+
++ Response 200 (application/json)
+    + Attributes (`Response_Collection_wo_Paging`)
+        + data (array[`Employee_bulk`])
+
+### Get divisions [GET /api/pis/bulk/divisions{?depth}]
+Get divisions
+
++ Parameters
+    + depth: 5 (number, optional) - Number of days to get changes
+
++ Request (application/json)
+
++ Response 200 (application/json)
+    + Attributes (`Response_Collection_wo_Paging`)
+        + data (array[`Division_bulk`])
+
+### Get legal entities [GET /api/pis/bulk/legal_entities{?depth}]
+Get legal_entities
+
++ Parameters
+    + depth: 5 (number, optional) - Number of days to get changes
+
++ Request (application/json)
+
++ Response 200 (application/json)
+    + Attributes (`Response_Collection_wo_Paging`)
+        + data (array[`Legal_entity_bulk`])
+
+### Get employee roles [GET /api/pis/bulk/employee_roles{?depth}]
+Get employee roles
+
++ Parameters
+    + depth: 5 (number, optional) - Number of days to get changes
+
++ Request (application/json)
+
++ Response 200 (application/json)
+    + Attributes (`Response_Collection_wo_Paging`)
+        + data (array[`Employee_role_bulk`])
+
+### Get healthcare services [GET /api/pis/bulk/healthcare_services{?depth}]
+Get healthcare services
+
++ Parameters
+    + depth: 5 (number, optional) - Number of days to get changes
+
++ Request (application/json)
+
++ Response 200 (application/json)
+    + Attributes (`Response_Collection_wo_Paging`)
+        + data (array[`Healthcare_service_bulk`])
+
 # Data Structures
 
 ### `Response_OK`
@@ -2299,3 +2373,152 @@ Service to search practitioners
 
 ### `Response__Process_OK`
 + meta (Response__Meta, fixed-type)
+
+### `Response_Collection_wo_Paging`
++ meta (Response__Meta, fixed-type)
++ data (array[], fixed-type)
+
+### `Party_bulk`
++ id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required)
++ first_name: Петро (string, required)
++ last_name: Іванов (string, required)
++ second_name: Миколайович (string, optional)
++ year_of_birth: 1975 (string, required)
++ gender: MALE (string, required) - `Dictionary: GENDER`
++ tax_id: 1234567890 (string, optional)
++ email: email@example.com (string, optional)
++ phones (array[`Phone`], optional)
++ inserted_at: `2021-11-09T00:00:00.000Z` (string, required) - ISO Datetime
++ updated_at: `2021-11-09T00:00:00.000Z` (string, optional) - ISO Datetime
++ educations (array[`Education`], required)
++ qualifications (array[`Qualification`], optional)
++ specialities (array[`Speciality`], required)
++ science_degree (ScienceDegree, optional)
++ about_myself: `Закінчив всі можливі курси` (string, optional)
++ working_experience: 10 (number, optional)
++ verification_status: `VERIFICATION_NEEDED` (string, required)
+
+### `Employee_bulk`
++ id: `d290f1ee-6c54-4b01-90e6-d701748f0851` (string, required)
++ position: P1 (string, required) - `Dictionary: POSITION`
++ status: APPROVED (string, required) - Employee status
++ `employee_type`: DOCTOR (string) - `Dictionary: EMPLOYEE_TYPE`
++ is_active: true (boolean, required)
++ start_date: `2017-03-02T10:45:16.000Z` (string, required)
++ end_date: `2018-03-02T10:45:16.000Z` (string, optional)
++ legal_entity_id: `09106b70-18b0-4726-b0ed-6bda1369fd52` (string, required)
++ division_id: `09106b70-18b0-4726-b0ed-6bda1369fd52` (string, optional)
++ party_id: `09106b70-18b0-4726-b0ed-6bda1369fd52` (string, required)
++ inserted_at: `2021-11-09T00:00:00.000Z` (string, required) - ISO Datetime
++ updated_at: `2021-11-09T00:00:00.000Z` (string, optional) - ISO Datetime
++ `status_reason`: `manual_employee` (string, optional)
++ additional_info (object, optional)
+    + educations (array[`Education`], required)
+    + qualifications (array[`Qualification`], optional)
+    + specialities (array[`Speciality`], required)
+    + science_degree (ScienceDegree, optional)
++ specialities (`Speciality`, required)
+
+### `Division_bulk`
++ id: `d290f1ee-6c54-4b01-90e6-d701748f0851` (string, required)
++ external_id: `3213213` (string, optional)
++ name: Бориспільське відділення Клініки Ноунейм (string, required) - the full name of division
++ type: clinic (string, required) - `Dictionary: DIVISION_TYPE`
++ `mountain_group`: false (boolean, required)
++ phones (array[`Phone`], required)
++ email: email@example.com (string, required)
++ inserted_at: `2021-11-09T00:00:00.000Z` (string, required) - ISO Datetime
++ updated_at: `2021-11-09T00:00:00.000Z` (string, optional) - ISO Datetime
++ `legal_entity_id`: `c8aadb87-ecb9-41ca-9ad4-ffdfe1dd89c9` (string, required)
++ location (Location, optional)
++ status: ACTIVE (string, required) - Division status
++ is_active: true (boolean, required)
++ working_hours (`workinghours`)
++ dls_id: `2872985` (string, optional)
++ dls_verified: true (boolean, optional)
++ addresses (array[`Address`], required)
+
+### `Legal_entity_bulk`
++ id: `d290f1ee-6c54-4b01-90e6-d701748f0851` (string, required)
++ name: Клініка Ноунейм (string, required)
++ short_name: Ноунейм (string, required)
++ public_name: Ноунейм (string, required)
++ status: ACTIVE (string, required) - Division status
++ type: OUTPATIENT (string, required) - `Dictionary: LEGAL_ENTITY_TYPE`
++ owner_property_type: STATE (string, required) - `Dictionary: OWNER_PROPERTY_TYPE`
++ `legal_form`: 140 (string, required) - `Dictionary LEGAL_FORM`
++ public_name: ЦПМСД №1 (string, optional)
++ edrpou: 5432345432 (string, required)
++ kveds: 86.10 (array, required)
++ addresses (array[`Address`], required)
++ phones (array[`Phone`], required)
++ email: email@example.com (string, required)
++ is_active: true (boolean, required)
++ inserted_at: `2021-11-09T00:00:00.000Z` (string, required) - ISO Datetime
++ updated_at: `2021-11-09T00:00:00.000Z` (string, optional) - ISO Datetime
++ website: `www.msp.com.ua` (string, optional)
++ status_reason: AUTO_SUSPEND (string, required) - Division status
++ residence_address (`Address`, required)
++ accreditation (MSP_Accreditation, optional)
+
+### `Employee_role_bulk`
++ id: `d290f1ee-6c54-4b01-90e6-d701748f0851` (string, required)
++ `healthcare_service_id`: `d290f1ee-6c54-4b01-90e6-d701748f0851` (string, required)
++ `employee_id`: `d290f1ee-6c54-4b01-90e6-d701748f0851` (string, required)
++ start_date: `2019-04-20T19:14:13Z` (string, required)
++ end_date: `2017-12-20T19:14:13Z` (string, optional)
++ status: ACTIVE (string, required)
++ inserted_at: `2021-11-09T00:00:00.000Z` (string, required) - ISO Datetime
++ updated_at: `2021-11-09T00:00:00.000Z` (string, optional) - ISO Datetime
+
+### `Healthcare_service_bulk`
++ id: `d290f1ee-6c54-4b01-90e6-d701748f0851` (string, required)
++ `legal_entity_id`: `c8aadb87-ecb9-41ca-9ad4-ffdfe1dd89c9` (string, required)
++ `division_id`: `c8aadb87-ecb9-41ca-9ad4-ffdfe1dd89c9` (string, required)
++ `speciality_type`: `FAMILY_DOCTOR` (string, required) - `Dictionary SPECIALITY_TYPE`
++ `providing_condition`: OUTPATIENT (string, required) - `Dictionary PROVIDING_CONDITION`
++ category (Codeable_Concept, required)
+    + coding (array, fixed-type)
+        + (Coding)
+            + system: `HEALTHCARE_SERVICE_CATEGORIES` (string)
+            + code: `MSP` (string)
++ type (Codeable_Concept, optional)
+    + coding (array, fixed-type)
+        + (Coding)
+            + system: `HEALTHCARE_SERVICE_PHARMACY_DRUGS_TYPES` (string)
+            + code: `SALE` (string)
++ status: ACTIVE (string, required)
++ comment: `Заведено помилково` (string, optional)
++ coverage_area (array, optional)
+    - `2c0110a9-0bea-4b16-af8e-6e2e149a5bfc` (string)
++ is_active: true (boolean, required)
++ `available_time` (array[`Available_time`], optional)
++ `not_available` (array[`Restricted_period`], optional)
++ inserted_at: `2021-11-09T00:00:00.000Z` (string, required) - ISO Datetime
++ updated_at: `2021-11-09T00:00:00.000Z` (string, optional) - ISO Datetime
++ license_id: `cdcf456b-e235-4850-9f00-27cc3453d346` (string, optional)
+
+### `Restricted_period`
++ description: `Санітарний день` (string, required) - Reason presented to the user explaining why time not available
++ during (Period, required) - Service not available from this date
+
+### `Available_time`
++ `days_of_week` (array, required) - Days of week
+    - mon (string)
++ all_day: true (boolean, optional)
++ `available_start_time`: `08:30:00` (string, optional)
++ `available_end_time`: `19:00:00` (string, optional)
+
+### `Period`
++ start : `2018-08-02T10:45:16.000Z`(string, required) - C? Starting time with inclusive boundary
++ end : `2018-08-02T11:00:00.000Z`(string, required) - C? End time with inclusive boundary, if not ongoing
+
+### `Codeable_Concept`
++ `coding` (array, required, fixed-type)
+    + (object)
+        + include `Coding`
++ text (string, optional)
+
+### `Coding`
++ system : `eHealth/resources` (string, required)
++ code : `patient` (string, required) - Symbol in syntax defined by the system

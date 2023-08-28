@@ -756,6 +756,35 @@ This WS designed to get current user's person verification status & data and rel
                 + `verification_reason`: `Встановлено вручну у процесі реєстрації Пацієнта Лікарем` (string, required) - how current relationship verification status has been set according to `PERSONS_RELATIONSHIP_VERIFICATION_STATUSES` dictionary
                 + `verification_comment`: `Підтверджено на підставі свідоцтва про народження` (string, optional) - Relationship verification status description set by NHS or Doctor
 
+
+## Person authentication methods [/api/pis/person/authentication_methods]
+
+### Resend authorization OTP for authentication method request [POST /api/pis/person/{id}/authentication_method_requests/{request_id}/actions/resend_otp]
+
+This method is used when you need to re-send SMS to a person or third person
+
+
++ Parameters
+    + id: `eeebb86d-5cba-43c9-885b-6482ecaf826b` (string, required)
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer c2778f3064753ea70de870a53795f5c9
+            api-key: uXhEczJ56adsfh3Ri9SUkc4en
+    
+    <!--+ Attributes (object)
+        + type: `THIRD_PERSON` (enum, optional)
+            - OTP
+            - OFFLINE
+            - THIRD_PERSON
+        + alias: `husband` (string, optional)-->
+
++ Response 200 (application/json)
+    + Attributes (`Response__Process_OK`)
+        + data (`OTP`)
+
 ## Person requests [/api/pis/person_requests]
 
 ### Get Person Requests List [GET /api/pis/person_requests{?status,channel,page,page_size}]
@@ -821,32 +850,6 @@ This WS designed to reject person requests previously created by patient.
     + Attributes (`Response_OK`)
         + data (array [`Person_request_details`])
         
-
-### Resend Authorization OTP on Person Request [POST /api/pis/person_requests/{id}/actions/resend_otp]
-
-This method is used when you need to re-send SMS to a person who approve creating or updating data about himself.
-
-
-+ Parameters
-    + id: `eeebb86d-5cba-43c9-885b-6482ecaf826b` (string, required)
-
-+ Request (application/json)
-
-    + Headers
-
-            Authorization: Bearer c2778f3064753ea70de870a53795f5c9
-            api-key: uXhEczJ56adsfh3Ri9SUkc4en
-    
-    <!--+ Attributes (object)
-        + type: `THIRD_PERSON` (enum, optional)
-            - OTP
-            - OFFLINE
-            - THIRD_PERSON
-        + alias: `husband` (string, optional)-->
-
-+ Response 200 (application/json)
-    + Attributes (`Response__Process_OK`)
-        + data (`OTP`)
 
 ## Declarations [/api/declarations]
 

@@ -820,6 +820,33 @@ This WS designed to reject person requests previously created by patient.
 + Response 201 (application/json)
     + Attributes (`Response_OK`)
         + data (array [`Person_request_details`])
+        
+
+### Resend Authorization OTP on Person Request [POST /api/pis/person_requests/{id}/actions/resend_otp]
+
+This method is used when you need to re-send SMS to a person who approve creating or updating data about himself.
+
+
++ Parameters
+    + id: `eeebb86d-5cba-43c9-885b-6482ecaf826b` (string, required)
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer c2778f3064753ea70de870a53795f5c9
+            api-key: uXhEczJ56adsfh3Ri9SUkc4en
+    
+    <!--+ Attributes (object)
+        + type: `THIRD_PERSON` (enum, optional)
+            - OTP
+            - OFFLINE
+            - THIRD_PERSON
+        + alias: `husband` (string, optional)-->
+
++ Response 200 (application/json)
+    + Attributes (`Response__Process_OK`)
+        + data (`OTP`)
 
 ## Declarations [/api/declarations]
 
@@ -2250,3 +2277,16 @@ Service to search practitioners
 + first_name: Петро (string, optional)
 + last_name: Іванов (string, optional)
 + second_name: Миколайович (string, optional)
+
+### OTP
++ id: `7d23bebb-1cf3-4221-bf21-18aada444756` (string, required)
++ status: `NEW` (enum, required)
+    - NEW
+    - CANCELED
+    - VERIFIED
+    - UNVERIFIED
++ `code_expired_at`: `2017-07-10T12:20:16.300597Z` (string, required)
++ active: true (boolean, required)
+
+### `Response__Process_OK`
++ meta (Response__Meta, fixed-type)

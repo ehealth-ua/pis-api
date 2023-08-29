@@ -920,7 +920,13 @@ If the request has been cleared of personal patient data due to security require
 + Response 200 (application/json)
     + Attributes (`Response_OK`)
         + data (`Declaration_request_details`, required)
-
+        + urgent (object, required)
+            + `authentication_method_current` (object, required)
+                + type: `NA` (enum, required)
+                    - OTP
+                    - OFFLINE
+                    - NA
+                + number: `+38093*****85` (string, optional)
  
  
 
@@ -995,6 +1001,7 @@ This WS is designed to reject previously created Declaration Request by patient
 + Response 201 (application/json)
     + Attributes (`Response_OK`)
         + data (`Declaration_request_details`, required)
+       
 
 ##Search [/api/search]
 
@@ -2341,13 +2348,7 @@ Get healthcare services
 + `status_reason`: `manual_employee` (string, optional)
 + `data_to_be_signed` (`Declaration_request_data_to_be_signed`, optional)
 + channel: `PIS` (enum, required) - channel that invoke declaration create service
-+ urgent (object, required)
-    + `authentication_method_current` (object, required)
-        + type: `NA` (enum, required)
-            - OTP
-            - OFFLINE
-            - NA
-              + number: `+38093*****85` (string, optional)
+
               
 
 ### `Person_Minimal_declaration_requst`

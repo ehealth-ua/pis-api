@@ -856,6 +856,30 @@ This process describes approve an additional authentication method to an existin
             + channel: `PIS` (enum, required) - channel that invoke add auth methods
     
 
+### Deactivate authentication method [PATCH /api/pis/person/{id}/authentication_method_requests/actions/deactivate]
+
+This process describes deactivation an authentication method to an existing person.
+
++ Parameters
+    + id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required) - authentication method identifier
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer c2778f3064753ea70de870a53795f5c9
+            api-key: uXhEczJ56adsfh3Ri9SUkc4en
+
+
++ Response 201 (application/json)
+    + Attributes (`Response__Process_OK`)
+        + meta (Response__Meta)
+            + code: 201 (number)
+        + data (object)
+            + id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required)
+            + status: `COMPLETED` (enum, optional) - current status on auth methods request.
+            + channel: `PIS` (enum, required) - channel that invoke add auth methods
+
 ## Person requests [/api/pis/person_requests]
 
 ### Get Person Requests List [GET /api/pis/person_requests{?status,channel,page,page_size}]

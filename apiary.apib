@@ -765,7 +765,8 @@ This method is used when you need to re-send SMS to a person or third person
 
 
 + Parameters
-    + id: `eeebb86d-5cba-43c9-885b-6482ecaf826b` (string, required)
+    + id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required) - Person identifier
+    + request_id: `1096f147-7f93-3fc6-bddc-9d71b198fb7f` (string, required) - Request identifier
 
 + Request (application/json)
 
@@ -775,10 +776,8 @@ This method is used when you need to re-send SMS to a person or third person
             api-key: uXhEczJ56adsfh3Ri9SUkc4en
     
     <!--+ Attributes (object)
-        + type: `THIRD_PERSON` (enum, optional)
+        + type: `OTP` (enum, optional)
             - OTP
-            - OFFLINE
-            - THIRD_PERSON
         + alias: `husband` (string, optional)-->
 
 + Response 200 (application/json)
@@ -827,6 +826,35 @@ This process describes adding an additional authentication method to an existing
         + error
             + type: unverified (string, required)
             + message: `Unverified phone number` (string, required)
+
+### Approve authentication method request [POST /api/pis/person/{id}/authentication_method_requests/{request_id}/actions/approve]
+
+This process describes approve an additional authentication method to an existing person.
+
++ Parameters
+    + id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required) - Person identifier
+    + request_id: `1096f147-7f93-3fc6-bddc-9d71b198fb7f` (string, required) - Request identifier
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer c2778f3064753ea70de870a53795f5c9
+            api-key: uXhEczJ56adsfh3Ri9SUkc4en
+
+
+    + Attributes (object)
+        + `verification_code`: 7489 (number, optional) - required if authentication_method is OTP
+
++ Response 201 (application/json)
+    + Attributes (`Response__Process_OK`)
+        + meta (Response__Meta)
+            + code: 201 (number)
+        + data (object)
+            + id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required)
+            + status: `COMPLETED` (enum, optional) - current status on auth methods request.
+            + channel: `PIS` (enum, required) - channel that invoke add auth methods
+    
 
 ## Person requests [/api/pis/person_requests]
 

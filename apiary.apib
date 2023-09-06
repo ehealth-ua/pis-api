@@ -875,10 +875,7 @@ This process describes deactivation an authentication method to an existing pers
     + Attributes (`Response__Process_OK`)
         + meta (Response__Meta)
             + code: 201 (number)
-        + data (object)
-            + id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required)
-            + status: `COMPLETED` (enum, optional) - current status on auth methods request.
-            + channel: `PIS` (enum, required) - channel that invoke add auth methods
+        + data (`Person_auth_methods`)
 
 ## Person requests [/api/pis/person_requests]
 

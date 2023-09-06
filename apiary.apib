@@ -876,6 +876,30 @@ This process describes deactivation an authentication method to an existing pers
         + meta (Response__Meta)
             + code: 201 (number)
         + data (`Person_auth_methods`)
+        
+
+### Update authentication method [PATCH /api/pis/authentication_methods/{id}/actions/update]
+
+This process describes update an authentication method to an existing person.
+
++ Parameters
+    + id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required) - authentication method identifier
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer c2778f3064753ea70de870a53795f5c9
+            api-key: uXhEczJ56adsfh3Ri9SUkc4en
+   
+    + Attributes (object) 
+        + `end_date`: `2018-12-31`(string) - new end date
+
++ Response 201 (application/json)
+    + Attributes (`Response__Process_OK`)
+        + meta (Response__Meta)
+            + code: 201 (number)
+        + data (`Person_auth_methods`)
 
 ## Person requests [/api/pis/person_requests]
 

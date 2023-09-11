@@ -1306,6 +1306,17 @@ Get healthcare services
     + Attributes (`Response_Collection_wo_Paging`)
         + data (array[`Healthcare_service_bulk`])
 
+### Get declarations limit and declarations count per practitioner [GET /api/pis/bulk/declarations_limit]
+Get declaration limit and count per practitioner
+
++ Request (application/json)
+
++ Response 200 (application/json)
+    + Attributes (`Response_Collection_wo_Paging`)
+        + data (object)
+            + date: `2023-04-20` (string, required) - The date the limit and declarations count valid for
+            + declarations (array[`Declarations_limit_bulk`], required)
+
 # Data Structures
 
 ### `Response_OK`
@@ -2676,6 +2687,11 @@ Get healthcare services
 + inserted_at: `2021-11-09T00:00:00.000Z` (string, required) - ISO Datetime
 + updated_at: `2021-11-09T00:00:00.000Z` (string, optional) - ISO Datetime
 + license_id: `cdcf456b-e235-4850-9f00-27cc3453d346` (string, optional)
+
+### `Declarations_limit_bulk`
++ party_id: `cdcf456b-e235-4850-9f00-27cc3453d346` (string, required)
++ declarations_limit: 1000 (number, required)
++ declarations_count: 753 (number, required)
 
 ### `Restricted_period`
 + description: `Санітарний день` (string, required) - Reason presented to the user explaining why time not available

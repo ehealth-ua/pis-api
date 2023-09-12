@@ -785,7 +785,7 @@ This method is used when you need to re-send SMS to a person or third person
         + data (`OTP`)
         
 
-### Create authentication method request [POST /api/pis/person/{id}/authentication_method_requests]
+### Create authentication method request [POST /api/pis/authentication_method_requests]
 
 This process describes adding an additional authentication method to an existing person.
 
@@ -827,12 +827,11 @@ This process describes adding an additional authentication method to an existing
             + type: unverified (string, required)
             + message: `Unverified phone number` (string, required)
 
-### Approve authentication method request [PATCH /api/pis/person/{id}/authentication_method_requests/{request_id}/actions/approve]
+### Approve authentication method request [PATCH /api/pis/authentication_method_requests/{request_id}/actions/approve]
 
 This process describes approve an additional authentication method to an existing person.
 
 + Parameters
-    + id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required) - Person identifier
     + request_id: `1096f147-7f93-3fc6-bddc-9d71b198fb7f` (string, required) - Request identifier
 
 + Request (application/json)

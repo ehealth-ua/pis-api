@@ -1010,6 +1010,8 @@ If the request has been cleared of personal patient data due to security require
     + meta (`Response__Meta`)
         + code: 200 (number)
     + data (array [`Person_request_details`])
+    + urgent (object, required)
+        + documents (array[`media_content`], optional)
         
 
 ### Reject Person Request [PATCH /api/pis/person_requests/{id}/actions/reject]
@@ -1028,7 +1030,8 @@ This WS designed to reject person requests previously created by patient.
 + Response 201 (application/json)
     + Attributes (`Response_OK`)
         + data (array [`Person_request_details`])
-        
+        + urgent (object, required)
+             + documents (array[`media_content`], optional)
 
 ## Declarations [/api/declarations]
 
@@ -2405,8 +2408,7 @@ Get declaration limit and count per practitioner
 + `process_disclosure_data_consent`: true (boolean, required) - ознакf погодження на використання персональних даних
 + content: `Person content` (string, optional) - HTML document 
 + person (`pis_person`)
-+ urgent (object, required)
-    + documents (array[`media_content`], optional)
+
 
 ### `Practitioner_map`
 + `id`: `7d23bebb-1cf3-4221-bf21-18aada444756` (string, required)

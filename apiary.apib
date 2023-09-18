@@ -664,7 +664,7 @@ By deleting Approval all further exchanges of refresh token to access token will
 
 This endpoint is used to initialize person documents uploading proccess. Person is obtained from Authorization token.
 
-Endpoint returns list of documents that need to be uploaded for person and urls. In case no documents must be uploaded - empty list is returned.
+Endpoint returns request type, request id and list of documents that need to be uploaded for person and urls. In case no documents must be uploaded - error is returned.
 
 After documents upload to urls, [Complete Person documents upload](#reference/public.-patient-information-system/documents/complete-person-documents-upload) method must be called.
 
@@ -677,7 +677,12 @@ After documents upload to urls, [Complete Person documents upload](#reference/pu
     + Attributes (`Response_OK`)
         + meta (`Response__Meta`)
             + code: 200 (number)
-        + data (array[`media_content`])
+        + data (object, required)
+            + request_type (enum, required)
+                - person_request
+                - confidant_person_relationship_request
+            + id: `457a68ad-9ed9-4d2c-9eaa-b03bba682742` (string, required)
+        + urgent (array[`media_content`], required)
 
 ### Complete Person documents upload [PATCH /api/pis/documents/actions/complete]
 

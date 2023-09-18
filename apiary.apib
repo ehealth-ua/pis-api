@@ -1050,6 +1050,8 @@ Current WS allows to see details of declaration knowing its' id.
 + Response 200 (application/json)
     + Attributes (`Response_OK`)
         + data (`Declaration_Details_PIS`)
+        + urgent (object, required)
+            + links (array[`signed_content`], optional)
         
 
 ### Get Declarations [GET /api/pis/declarations{?status,start_date_from,start_date_to,end_date_from,end_date_to,page,page_size}]
@@ -1830,8 +1832,6 @@ Get declaration limit and count per practitioner
 + updated_at: `2017-03-02T10:45:16.000Z` (string, optional)
 + reason: `manual_employee` (string, optional)
 + reason_description: `Згідно постанови 1 від 10.01.2017` (string, optional)
-+ urgent (object, required)
-    + links (array[`signed_content`], optional)
        
 
 ### `MSP_Details`

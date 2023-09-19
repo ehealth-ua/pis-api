@@ -240,7 +240,7 @@ Look at [**Dummy confidant patient sign-up registration**](#reference/private.-d
 
 # Group Private. Dummy methods
 
-##Dummy sign-in [/sign-in]
+##Dummy sign-in [/dummy/sign-in]
 
 ### Dummy confidant patient login [POST /dummy/pis/confidant/login]
 
@@ -263,7 +263,7 @@ Look at [**Dummy confidant patient sign-up registration**](#reference/private.-d
                 + tax_id: 3000080053 (string, required)
             + access_token: `my-oauth-token` (string, required) - access token
 
-##Dummy sign-up [/sign-up]
+##Dummy sign-up [/dummy/sign-up]
 
 ### Dummy patient sign-up validation [POST /dummy/pis/sign-up_validation]
 
@@ -359,7 +359,7 @@ Env     | Host
 --------|-----
 DEV     | https://pis-auth.dev.edenlab.com.ua
 
-##Sign-in [/api/sign-in]
+##Sign-in [/sign-in]
 Patient Sign-in process:
 1. Client BE: obtains nonce from [Get nonce](#reference/public.-patient-information-system/sign-in/get-nonce), applies users digital signature;
 2. Client UI: redirects user to [Patient login UI](#reference/public.-patient-information-system/sign-in/patient-sign-in) with `client_id`, `redirect_uri`, `scope` and `user_data` that contains base64 encoded signed nonce;
@@ -526,7 +526,7 @@ Refresh token from authenticated session will also be expired.
 + Response 200 (application/json)
     + Attributes (`Response_OK`)
 
-##Sign-up [/api/sign-up]
+##Sign-up [/sign-up]
 
 PIS Sign-up process:
 1. Client BE: obtains nonce from [Get nonce](#reference/public.-patient-information-system/sign-in/get-nonce), adds it to patient registration form;
@@ -670,18 +670,20 @@ After documents upload to urls, [Complete Person documents upload](#reference/pu
 
 + Request (application/json)
     + Headers
+
             Authorization: Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9
             api-key: uXhEczJ56adsfh3Ri9SUkc4en
 
 + Response 201 (application/json)
     + Attributes (`Response_OK`)
         + meta (`Response__Meta`)
-            + code: 200 (number)
+            + code: 201 (number)
         + data (object, required)
             + request_type (enum, required)
                 - person_request
                 - confidant_person_relationship_request
             + id: `457a68ad-9ed9-4d2c-9eaa-b03bba682742` (string, required)
+            + status: `NEW` (string, required)
         + urgent (array[`media_content`], required)
 
 ### Complete Person documents upload [PATCH /api/pis/documents/actions/complete]
@@ -692,15 +694,28 @@ Endpoint checks list of documents that needs to be uploaded for person. In case 
 
 + Request (application/json)
     + Headers
+
             Authorization: Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9
             api-key: uXhEczJ56adsfh3Ri9SUkc4en
+    
+    + Attributes (object)
+        + request_type (enum, required)
+                - person_request
+                - confidant_person_relationship_request
+        + id: `457a68ad-9ed9-4d2c-9eaa-b03bba682742` (string, required)
 
 + Response 200 (application/json)
     + Attributes (`Response_OK`)
         + meta (`Response__Meta`)
             + code: 200 (number)
-        + data (array[`media_content`])
-
+        + data (object, required)
+            + request_type (enum, required)
+                - person_request
+                - confidant_person_relationship_request
+            + id: `457a68ad-9ed9-4d2c-9eaa-b03bba682742` (string, required)
+            + status (enum, required)
+                - `SIGNED`
+                - `COMPLETED`
 
 ## Person information [/api/person]
 
@@ -710,6 +725,7 @@ This WS designed to get information of person by token.
 
 + Request (application/json)
     + Headers
+
             Authorization: Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9
             api-key: uXhEczJ56adsfh3Ri9SUkc4en
 
@@ -724,6 +740,7 @@ This method allows to find the active person's authentication methods.
 
 + Request (application/json)
     + Headers
+
             Authorization: Bearer c2778f3064753ea70de870a53795f5c9
             api-key: uXhEczJ56adsfh3Ri9SUkc4en
 
@@ -779,11 +796,6 @@ This method is used when you need to re-send SMS to a person or third person
 
             Authorization: Bearer c2778f3064753ea70de870a53795f5c9
             api-key: uXhEczJ56adsfh3Ri9SUkc4en
-    
-    <!--+ Attributes (object)
-        + type: `OTP` (enum, optional)
-            - OTP
-        + alias: `husband` (string, optional)-->
 
 + Response 200 (application/json)
     + Attributes (`Response__Process_OK`)
@@ -793,9 +805,6 @@ This method is used when you need to re-send SMS to a person or third person
 ### Create authentication method request [POST /api/pis/authentication_method_requests]
 
 This process describes adding an additional authentication method to an existing person.
-
-+ Parameters
-    + id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required) - Person identifier
 
 + Request (application/json)
 
@@ -1005,18 +1014,20 @@ If the request has been cleared of personal patient data due to security require
 
 + Request (application/json)
     + Headers
+
             Authorization: Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9
             api-key: uXhEczJ56adsfh3Ri9SUkc4en
 
 + Parameters
     + id: 7e9cffd9-c75f-45fb-badf-6e8d20b6a8a8 (uuid)
-    
-+ Attributes (`Response_OK`)
-    + meta (`Response__Meta`)
-        + code: 200 (number)
-    + data (array [`Person_request_details`])
-    + urgent (object, required)
-        + documents (array[`media_content`], optional)
+
++ Response 200 (application/json)
+    + Attributes (`Response_OK`)
+        + meta (`Response__Meta`)
+            + code: 200 (number)
+        + data (array [`Person_request_details`])
+        + urgent (object, required)
+            + documents (array[`media_content`], optional)
         
 
 ### Reject Person Request [PATCH /api/pis/person_requests/{id}/actions/reject]
@@ -1046,6 +1057,7 @@ Current WS allows to see details of declaration knowing its' id.
 
 + Request (application/json)
     + Headers
+
             Authorization: Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9
             api-key: uXhEczJ56adsfh3Ri9SUkc4en
 
@@ -1981,7 +1993,7 @@ Get declaration limit and count per practitioner
 + birth_settlement: Вінниця (string, required)
 + birth_country: Україна (string, required) - країна народження
 
-### `Person_Short_person request`
+### `Person_Short_person_request`
 + first_name: Петро (string, required)
 + last_name: Іванов (string, required)
 + second_name: Миколайович (string, optional)
@@ -2395,7 +2407,7 @@ Get declaration limit and count per practitioner
 + channel: `PIS` (string, optional)
 + inserted_at: `2021-11-09T00:00:00.000Z` (string, required) - ISO Datetime
 + updated_at: `2021-11-09T00:00:00.000Z` (string, optional) - ISO Datetime
-+ person: (`Person_Short_person request`)
++ person (`Person_Short_person_request`)
 
 ### `Person_request_details`
 + id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required)
@@ -2557,7 +2569,7 @@ Get declaration limit and count per practitioner
 + `speciality_type`: `FAMILY_DOCTOR` (string, required) - `Dictionary SPECIALITY_TYPE`
 + `providing_condition`: OUTPATIENT (string, required) - `Dictionary PROVIDING_CONDITION`
 
-### Declaration_request_details
+### `Declaration_request_details`
 + id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required)
 + declaration_number: `0000-12H4-245D` (string, required) - unique number of declaration.
 + declaration_id: `8311ab82-e341-4da0-8a95-235ec9885e23` (string, required) - presetted id for future declaration

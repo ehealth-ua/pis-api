@@ -1292,7 +1292,7 @@ Get parties
 + Request (application/json)
 
 + Response 200 (application/json)
-    + Attributes (`Response_Collection_wo_Paging`)
+    + Attributes (`Response_Collection_wo_Paging_with_Date`)
         + data (array[`Party_bulk`])
 
 ### Get employees [GET /api/pis/bulk/employees{?depth}]
@@ -1304,7 +1304,7 @@ Get employees
 + Request (application/json)
 
 + Response 200 (application/json)
-    + Attributes (`Response_Collection_wo_Paging`)
+    + Attributes (`Response_Collection_wo_Paging_with_Date`)
         + data (array[`Employee_bulk`])
 
 ### Get divisions [GET /api/pis/bulk/divisions{?depth}]
@@ -1316,7 +1316,7 @@ Get divisions
 + Request (application/json)
 
 + Response 200 (application/json)
-    + Attributes (`Response_Collection_wo_Paging`)
+    + Attributes (`Response_Collection_wo_Paging_with_Date`)
         + data (array[`Division_bulk`])
 
 ### Get legal entities [GET /api/pis/bulk/legal_entities{?depth}]
@@ -1328,7 +1328,7 @@ Get legal_entities
 + Request (application/json)
 
 + Response 200 (application/json)
-    + Attributes (`Response_Collection_wo_Paging`)
+    + Attributes (`Response_Collection_wo_Paging_with_Date`)
         + data (array[`Legal_entity_bulk`])
 
 ### Get employee roles [GET /api/pis/bulk/employee_roles{?depth}]
@@ -1340,7 +1340,7 @@ Get employee roles
 + Request (application/json)
 
 + Response 200 (application/json)
-    + Attributes (`Response_Collection_wo_Paging`)
+    + Attributes (`Response_Collection_wo_Paging_with_Date`)
         + data (array[`Employee_role_bulk`])
 
 ### Get healthcare services [GET /api/pis/bulk/healthcare_services{?depth}]
@@ -1352,7 +1352,7 @@ Get healthcare services
 + Request (application/json)
 
 + Response 200 (application/json)
-    + Attributes (`Response_Collection_wo_Paging`)
+    + Attributes (`Response_Collection_wo_Paging_with_Date`)
         + data (array[`Healthcare_service_bulk`])
 
 ### Get declarations limit and declarations count per practitioner [GET /api/pis/bulk/declarations_limit]
@@ -1361,10 +1361,8 @@ Get declaration limit and count per practitioner
 + Request (application/json)
 
 + Response 200 (application/json)
-    + Attributes (`Response_Collection_wo_Paging`)
-        + data (object)
-            + date: `2023-04-20T00:00:00.000Z` (string, required) - The date the limit and declarations count valid for
-            + declarations (array[`Declarations_limit_bulk`], required)
+    + Attributes (`Response_Collection_wo_Paging_with_Date`)
+        + data (array[`Declarations_limit_bulk`])
 
 # Data Structures
 
@@ -1379,6 +1377,15 @@ Get declaration limit and count per practitioner
     - object (string) - `data` attribute is a JSON object.
     - list (string) - `data` attribute is a list.
 + `request_id`: `6617aeec-15e2-4d6f-b9bd-53559c358f97#17810` (string) - [Request ID](https://docs.apimanifest.apiary.io/#introduction/interacting-with-api/request-id). Send it with `X-Request-ID` header.
+
+### `Response__Meta_Date`
++ code: 200 (number) - HTTP response code.
++ url: https://example.com/resource (string) - URL to requested resource.
++ type (enum) - Type of data that is located in `data` attribute.
+    - object (string) - `data` attribute is a JSON object.
+    - list (string) - `data` attribute is a list.
++ `request_id`: `6617aeec-15e2-4d6f-b9bd-53559c358f97#17810` (string) - [Request ID](https://docs.apimanifest.apiary.io/#introduction/interacting-with-api/request-id). Send it with `X-Request-ID` header.
++ date: `2023-04-20T00:00:00.000Z` (string, required) - The date the limit and declarations count valid for
 
 ### `Access_Token_1`
 + value: `SnNRdCtvU0tTOENBV2dLRUZwNmIzZz09` (string, required) - oAuth access token.
@@ -2616,6 +2623,10 @@ Get declaration limit and count per practitioner
 
 ### `Response_Collection_wo_Paging`
 + meta (Response__Meta, fixed-type)
++ data (array[], fixed-type)
+
+### `Response_Collection_wo_Paging_with_Date`
++ meta (Response__Meta_Date, fixed-type)
 + data (array[], fixed-type)
 
 ### `Party_bulk`

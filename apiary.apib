@@ -660,11 +660,11 @@ By deleting Approval all further exchanges of refresh token to access token will
 
 ##Documents [/api/pis/documents]
 
-### Initialize Person documents upload [POST /api/pis/documents]
+### Initialize Person documents upload [POST /api/pis/documents/person_request]
 
 This endpoint is used to initialize person documents uploading proccess. Person is obtained from Authorization token.
 
-Endpoint returns request type, request id and list of documents that need to be uploaded for person and urls. In case no documents must be uploaded - error is returned.
+Endpoint returns person request id and list of documents that need to be uploaded for person and urls. In case no documents must be uploaded - error is returned.
 
 After documents upload to urls, [Complete Person documents upload](#reference/public.-patient-information-system/documents/complete-person-documents-upload) method must be called.
 
@@ -679,43 +679,78 @@ After documents upload to urls, [Complete Person documents upload](#reference/pu
         + meta (`Response__Meta`)
             + code: 201 (number)
         + data (object, required)
-            + request_type (enum, required)
-                - person_request
-                - confidant_person_relationship_request
             + id: `457a68ad-9ed9-4d2c-9eaa-b03bba682742` (string, required)
             + status: `NEW` (string, required)
         + urgent (array[`media_content`], required)
 
-### Complete Person documents upload [PATCH /api/pis/documents/actions/complete]
+### Complete Person documents upload [PATCH /api/pis/documents/person_request/{id}/actions/complete]
 
 This endpoint must be used to complete person documents uploading proccess, after user uploaded documents to generated urls. Person is obtained from Authorization token.
 
-Endpoint checks list of documents that needs to be uploaded for person. In case all person documents were be uploaded - empty list is returned, persons nhs verification status is updated. In case more person documents must be uploaded - list of documents is returned.
+Endpoint checks list of documents that needs to be uploaded for person. In case all person documents were be uploaded - persons nhs verification status is updated. In case more person documents must be uploaded - error is returned.
+
++ Parameters
+    + id: `457a68ad-9ed9-4d2c-9eaa-b03bba682742` (string, required) - Person request identifier
 
 + Request (application/json)
     + Headers
 
             Authorization: Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9
             api-key: uXhEczJ56adsfh3Ri9SUkc4en
-    
-    + Attributes (object)
-        + request_type (enum, required)
-                - person_request
-                - confidant_person_relationship_request
-        + id: `457a68ad-9ed9-4d2c-9eaa-b03bba682742` (string, required)
 
 + Response 200 (application/json)
     + Attributes (`Response_OK`)
         + meta (`Response__Meta`)
             + code: 200 (number)
         + data (object, required)
-            + request_type (enum, required)
-                - person_request
-                - confidant_person_relationship_request
             + id: `457a68ad-9ed9-4d2c-9eaa-b03bba682742` (string, required)
-            + status (enum, required)
-                - `SIGNED`
-                - `COMPLETED`
+            + status: `SIGNED` (string, required)
+
+### Initialize Confidant person relationship documents upload [POST /api/pis/documents/confidant_person_relationship_request]
+
+This endpoint is used to initialize confidant person relationship documents uploading proccess. Person is obtained from Authorization token.
+
+Endpoint returns confidant person relationship request id and list of documents that need to be uploaded for relationship and urls. In case no documents must be uploaded - error is returned.
+
+After documents upload to urls, [Complete Confidant person relationship documents upload](#reference/public.-patient-information-system/documents/complete-confidant-person-relationship-documents-upload) method must be called.
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9
+            api-key: uXhEczJ56adsfh3Ri9SUkc4en
+
++ Response 201 (application/json)
+    + Attributes (`Response_OK`)
+        + meta (`Response__Meta`)
+            + code: 201 (number)
+        + data (object, required)
+            + id: `457a68ad-9ed9-4d2c-9eaa-b03bba682742` (string, required)
+            + status: `NEW` (string, required)
+        + urgent (array[`media_content`], required)
+
+### Complete Confidant person relationship documents upload [PATCH /api/pis/documents/confidant_person_relationship_request/{id}/actions/complete]
+
+This endpoint must be used to complete confidant person relationship documents uploading proccess, after user uploaded documents to generated urls. Person is obtained from Authorization token.
+
+Endpoint checks list of documents that needs to be uploaded for confidant person relationship. In case all confidant person relationship documents were be uploaded - relationship verification status is updated. In case more relationship documents must be uploaded - error is returned.
+
++ Parameters
+    + id: `457a68ad-9ed9-4d2c-9eaa-b03bba682742` (string, required) - Confidant person relationship request identifier
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9
+            api-key: uXhEczJ56adsfh3Ri9SUkc4en
+
++ Response 200 (application/json)
+    + Attributes (`Response_OK`)
+        + meta (`Response__Meta`)
+            + code: 200 (number)
+        + data (object, required)
+            + id: `457a68ad-9ed9-4d2c-9eaa-b03bba682742` (string, required)
+            + status: `COMPLETED` (string, required)
 
 ## Person information [/api/person]
 

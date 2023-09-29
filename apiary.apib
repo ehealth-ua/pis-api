@@ -1062,7 +1062,7 @@ If the request has been cleared of personal patient data due to security require
             + code: 200 (number)
         + data (array [`Person_request_details`])
         + urgent (object, required)
-            + documents (array[`media_content`], optional)
+            + documents (array[`media_content_person_request_details`], optional)
         
 
 ### Reject Person Request [PATCH /api/pis/person_requests/{id}/actions/reject]
@@ -1454,6 +1454,11 @@ Get declaration limit and count per practitioner
 
 ### `media_content`
 + type: `PASSPORT` (string, required)
++ url: `https://storage.ehealth.world` (string, required)
+
+### `media_content_person_request_details`
++ type: `PASSPORT` (string, required)
++ is_uploaded: true (boolean, required)
 + url: `https://storage.ehealth.world` (string, required)
 
 ### `Approval`

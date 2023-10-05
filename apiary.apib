@@ -660,13 +660,51 @@ By deleting Approval all further exchanges of refresh token to access token will
 
 ##Documents [/api/pis/documents]
 
-### Initialize Person documents upload [POST /api/pis/documents/person_request]
+### Initialize Person documents upload [POST /api/pis/documents]
+
+This endpoint is used to initialize person documents uploading proccess. Person is obtained from Authorization token.
+
+Endpoint returns list of documents that need to be uploaded for person and urls. In case no documents must be uploaded - empty list is returned.
+
+After documents upload to urls, [Complete Person documents upload](#reference/public.-patient-information-system/documents/complete-person-documents-upload) method must be called.
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9
+            api-key: uXhEczJ56adsfh3Ri9SUkc4en
+
++ Response 201 (application/json)
+    + Attributes (`Response_OK`)
+        + meta (`Response__Meta`)
+            + code: 201 (number)
+        + data (array[`media_content`])
+
+### Complete Person documents upload [PATCH /api/pis/documents/actions/complete]
+
+This endpoint must be used to complete person documents uploading proccess, after user uploaded documents to generated urls. Person is obtained from Authorization token.
+
+Endpoint checks list of documents that needs to be uploaded for person. In case all person documents were be uploaded - empty list is returned, persons nhs verification status is updated. In case more person documents must be uploaded - list of documents is returned.
+
++ Request (application/json)
+    + Headers
+    
+            Authorization: Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9
+            api-key: uXhEczJ56adsfh3Ri9SUkc4en
+
++ Response 200 (application/json)
+    + Attributes (`Response_OK`)
+        + meta (`Response__Meta`)
+            + code: 200 (number)
+        + data (array[`media_content`])
+
+### Initialize Person request documents upload [POST /api/pis/documents/person_request]
 
 This endpoint is used to initialize person documents uploading proccess. Person is obtained from Authorization token.
 
 Endpoint returns person request id and list of documents that need to be uploaded for person and urls. In case no documents must be uploaded - error is returned.
 
-After documents upload to urls, [Complete Person documents upload](#reference/public.-patient-information-system/documents/complete-person-documents-upload) method must be called.
+After documents upload to urls, [Complete Person request documents upload](#reference/public.-patient-information-system/documents/complete-person-request-documents-upload) method must be called.
 
 + Request (application/json)
     + Headers
@@ -683,7 +721,7 @@ After documents upload to urls, [Complete Person documents upload](#reference/pu
             + status: `NEW` (string, required)
         + urgent (array[`media_content`], required)
 
-### Complete Person documents upload [PATCH /api/pis/documents/person_request/{id}/actions/complete]
+### Complete Person request documents upload [PATCH /api/pis/documents/person_request/{id}/actions/complete]
 
 This endpoint must be used to complete person documents uploading proccess, after user uploaded documents to generated urls. Person is obtained from Authorization token.
 

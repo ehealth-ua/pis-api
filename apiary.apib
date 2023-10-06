@@ -1010,7 +1010,8 @@ Use this method to initialize creation of Person request to update the person de
     + Attributes (`Response_OK`)
         + meta (`Response__Meta`)
             + code: 201 (number)
-        + data (array [`Person_request_details`])
+        + data (object, required)
+            + include `Person_request_details`
         + urgent (object, required)
             + documents (array[`media_content`], optional)
 
@@ -1070,7 +1071,7 @@ If the request has been cleared of personal patient data due to security require
 
 + Response 200 (application/json)
     + Attributes (`Response_Collection_V2`)
-        + data (`Person_request_list`)
+        + data (array[`Person_request_list`])
 
 ### Get Person Request Details [GET /api/pis/person_requests/{id}]   
 
@@ -1090,10 +1091,10 @@ If the request has been cleared of personal patient data due to security require
     + Attributes (`Response_OK`)
         + meta (`Response__Meta`)
             + code: 200 (number)
-        + data (array [`Person_request_details`])
+        + data (object, required)
+            + include `Person_request_details`
         + urgent (object, required)
             + documents (array[`media_content_person_request_details`], optional)
-        
 
 ### Reject Person Request [PATCH /api/pis/person_requests/{id}/actions/reject]
 
@@ -1108,9 +1109,10 @@ This WS designed to reject person requests previously created by patient.
 
             Authorization: Bearer c2778f3064753ea70de870a53795f5c9
 
-+ Response 201 (application/json)
++ Response 200 (application/json)
     + Attributes (`Response_OK`)
-        + data (array [`Person_request_details`])
+        + data (object, required)
+            + include `Person_request_details`
         + urgent (object, required)
              + documents (array[`media_content`], optional)
 
@@ -1156,7 +1158,6 @@ This WS allows to see all patient's declarations and filter them.
 
 ### Terminate declaration [PATCH /api/pis/declarations/{id}/actions/terminate]
 Patient can terminate active declaration using this method.
-
 
 + Request (application/json)
 

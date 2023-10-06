@@ -1453,23 +1453,11 @@ Get declaration limit and count per practitioner
 + `request_id`: `6617aeec-15e2-4d6f-b9bd-53559c358f97#17810` (string) - [Request ID](https://docs.apimanifest.apiary.io/#introduction/interacting-with-api/request-id). Send it with `X-Request-ID` header.
 + date: `2023-04-20T00:00:00.000Z` (string, required) - The date the limit and declarations count valid for
 
-### `Access_Token_1`
-+ value: `SnNRdCtvU0tTOENBV2dLRUZwNmIzZz09` (string, required) - oAuth access token.
-+ user_id: `3ff33ced-69dc-415a-b231-c6446898335a` (string, required) - User identifier
-+ name: `change_password_token` (string, required) - oAuth token name
-+ id: `3ff33ced-69dc-415a-b231-c6446898335a` - oAuth token identifier
-+ expires_at: 1498749591 (number, required) - expiration date-time timestamp
-+ details (object)
-    + app_id: `d290f1ee-6c54-4b01-90e6-d701748f0851` - Identifier of approval between user, applicant user and client that was used to issue access token
-    + applicant_user_id: `d290f1ee-6c54-4b01-90e6-d701748f0851` - Identifier of user that initiated access token generation
-    + applicant_person_id: `d290f1ee-6c54-4b01-90e6-d701748f0851` - Identifier of person that is accosiated with user who initiated access token generation
-    + scope: `capitation_contracts:view capitation_contracts:create patients:view patients:create` (string, required) - List of scopes that is required in application business logic, separated by space
-    + `grant_type`: `refresh_token`
-    + client_id: `d290f1ee-6c54-4b01-90e6-d701748f0851` (string, required) - Client ID of authorized user.
-
 ### `Access_Token`
 + value: `SnNRdCtvU0tTOENBV2dLRUZwNmIzZz09` (string, required) - oAuth access token.
 + user_id: `3ff33ced-69dc-415a-b231-c6446898335a` (string, required) - User identifier
++ user (object, required) - Additional user params
+    + person_id: `2b5e9656-8750-49b3-8c5c-b9c344f8fe52` (string, optional) - Person identifier that is linked to user
 + name: `access_token` (string, required) - oAuth token name
 + id: `3ff33ced-69dc-415a-b231-c6446898335a` - oAuth token identifier
 + expires_at: 1498749591 (number, required) - expiration date-time timestamp
@@ -1481,6 +1469,22 @@ Get declaration limit and count per practitioner
     + refresh_token: `my-oauth-refresh-token` (string, required) - oAuth refresh token
     + redirect_uri: `https://example.com/` (string, required) - Redirect URI
     + `grant_type`: `authorization_code`
+    + client_id: `d290f1ee-6c54-4b01-90e6-d701748f0851` (string, required) - Client ID of authorized user.
+
+### `Access_Token_1`
++ value: `SnNRdCtvU0tTOENBV2dLRUZwNmIzZz09` (string, required) - oAuth access token.
++ user_id: `3ff33ced-69dc-415a-b231-c6446898335a` (string, required) - User identifier
++ user (object, required) - Additional user params
+    + person_id: `2b5e9656-8750-49b3-8c5c-b9c344f8fe52` (string, optional) - Person identifier that is linked to user
++ name: `change_password_token` (string, required) - oAuth token name
++ id: `3ff33ced-69dc-415a-b231-c6446898335a` - oAuth token identifier
++ expires_at: 1498749591 (number, required) - expiration date-time timestamp
++ details (object)
+    + app_id: `d290f1ee-6c54-4b01-90e6-d701748f0851` - Identifier of approval between user, applicant user and client that was used to issue access token
+    + applicant_user_id: `d290f1ee-6c54-4b01-90e6-d701748f0851` - Identifier of user that initiated access token generation
+    + applicant_person_id: `d290f1ee-6c54-4b01-90e6-d701748f0851` - Identifier of person that is accosiated with user who initiated access token generation
+    + scope: `capitation_contracts:view capitation_contracts:create patients:view patients:create` (string, required) - List of scopes that is required in application business logic, separated by space
+    + `grant_type`: `refresh_token`
     + client_id: `d290f1ee-6c54-4b01-90e6-d701748f0851` (string, required) - Client ID of authorized user.
 
 ### `media_content`

@@ -1010,16 +1010,7 @@ Use this method to initialize creation of Person request to update the person de
     + Attributes (`Response_OK`)
         + meta (`Response__Meta`)
             + code: 201 (number)
-        + data (object, required)
-            + `channel`: `PIS` (string, required)
-            + `content`: `Person request content` (string, required) - HTML document
-            + `id`: `387c210c-dc64-484d-befb-16bebe9439ac` (string, required)
-            + `status`: `NEW` (string, required)
-            + `person` (object, required)
-                + id: `1380df72-275a-11e7-93ae-92361f002671` (string, required)
-                + include `Update_Person_Request_PIS`
-            + `patient_signed`: false (boolean, required)
-            + `process_disclosure_data_consent`: true (boolean, required)
+        + data (array [`Person_request_details`])
         + urgent (object, required)
             + documents (array[`media_content`], optional)
 

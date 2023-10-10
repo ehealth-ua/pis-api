@@ -2714,9 +2714,9 @@ Get declaration limit and count per practitioner
 + phones (array[`Phone`], optional)
 + inserted_at: `2021-11-09T00:00:00.000Z` (string, required) - ISO Datetime
 + updated_at: `2021-11-09T00:00:00.000Z` (string, optional) - ISO Datetime
-+ educations (array[`Education`], required)
++ educations (array[`Education`], optional)
 + qualifications (array[`Qualification`], optional)
-+ specialities (array[`Speciality`], required)
++ specialities (array[`Speciality`], optional)
 + science_degree (ScienceDegree, optional)
 + about_myself: `Закінчив всі можливі курси` (string, optional)
 + working_experience: 10 (number, optional)
@@ -2741,7 +2741,7 @@ Get declaration limit and count per practitioner
     + qualifications (array[`Qualification`], optional)
     + specialities (array[`Speciality`], required)
     + science_degree (ScienceDegree, optional)
-+ speciality (`Speciality`, required)
++ speciality (`Speciality`, optional)
 
 ### `Division_bulk`
 + id: `d290f1ee-6c54-4b01-90e6-d701748f0851` (string, required)
@@ -2765,15 +2765,15 @@ Get declaration limit and count per practitioner
 ### `Legal_entity_bulk`
 + id: `d290f1ee-6c54-4b01-90e6-d701748f0851` (string, required)
 + name: Клініка Ноунейм (string, required)
-+ short_name: Ноунейм (string, required)
++ short_name: Ноунейм (string, optional)
 + public_name: Ноунейм (string, required)
 + status: ACTIVE (string, required) - Division status
 + type: OUTPATIENT (string, required) - `Dictionary: LEGAL_ENTITY_TYPE`
-+ owner_property_type: STATE (string, required) - `Dictionary: OWNER_PROPERTY_TYPE`
-+ `legal_form`: 140 (string, required) - `Dictionary LEGAL_FORM`
++ owner_property_type: STATE (string, optional) - `Dictionary: OWNER_PROPERTY_TYPE`
++ `legal_form`: 140 (string, optional) - `Dictionary LEGAL_FORM`
 + public_name: ЦПМСД №1 (string, optional)
 + edrpou: 5432345432 (string, required)
-+ kveds: 86.10 (array, required)
++ kveds: 86.10 (array, optional)
 + addresses (array[`Address`], required)
 + phones (array[`Phone`], required)
 + email: email@example.com (string, required)
@@ -2781,7 +2781,7 @@ Get declaration limit and count per practitioner
 + inserted_at: `2021-11-09T00:00:00.000Z` (string, required) - ISO Datetime
 + updated_at: `2021-11-09T00:00:00.000Z` (string, optional) - ISO Datetime
 + website: `www.msp.com.ua` (string, optional)
-+ status_reason: AUTO_SUSPEND (string, required) - Division status
++ status_reason: AUTO_SUSPEND (string, optional) - Division status
 + residence_address (`Address`, required)
 + accreditation (MSP_Accreditation, optional)
 
@@ -2799,8 +2799,8 @@ Get declaration limit and count per practitioner
 + id: `d290f1ee-6c54-4b01-90e6-d701748f0851` (string, required)
 + `legal_entity_id`: `c8aadb87-ecb9-41ca-9ad4-ffdfe1dd89c9` (string, required)
 + `division_id`: `c8aadb87-ecb9-41ca-9ad4-ffdfe1dd89c9` (string, required)
-+ `speciality_type`: `FAMILY_DOCTOR` (string, required) - `Dictionary SPECIALITY_TYPE`
-+ `providing_condition`: OUTPATIENT (string, required) - `Dictionary PROVIDING_CONDITION`
++ `speciality_type`: `FAMILY_DOCTOR` (string, optional) - `Dictionary SPECIALITY_TYPE`
++ `providing_condition`: OUTPATIENT (string, optional) - `Dictionary PROVIDING_CONDITION`
 + category (Codeable_Concept, required)
     + coding (array, fixed-type)
         + (Coding)

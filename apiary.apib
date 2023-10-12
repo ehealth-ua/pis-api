@@ -1015,7 +1015,6 @@ Use this method to initialize creation of Person request to update the person de
         + urgent (object, required)
             + documents (array[`media_content`], optional)
 
-
 ### Complete Update Person details [PATCH /api/pis/person_requests/{id}/actions/complete]
 
 Use this method to compete Person request to update the person details according to his id, which was previously found using person_id from access token.
@@ -1061,7 +1060,6 @@ If the request has been cleared of personal patient data due to security require
     + page: 2 (number, optional) - Page number.
     + page_size: 50 (number, optional) - A limit on the number of objects to be returned, between 1 and 300. Default: 50
 
-
 + Request (application/json)
 
     + Headers
@@ -1085,7 +1083,7 @@ If the request has been cleared of personal patient data due to security require
             api-key: uXhEczJ56adsfh3Ri9SUkc4en
 
 + Parameters
-    + id: 7e9cffd9-c75f-45fb-badf-6e8d20b6a8a8 (uuid)
+    + id: `7e9cffd9-c75f-45fb-badf-6e8d20b6a8a8` (string, required)
 
 + Response 200 (application/json)
     + Attributes (`Response_OK`)
@@ -1095,6 +1093,7 @@ If the request has been cleared of personal patient data due to security require
             + include `Person_request_details`
         + urgent (object, required)
             + documents (array[`media_content_person_request_details`], optional)
+            + links (array[`signed_content`], optional)
 
 ### Reject Person Request [PATCH /api/pis/person_requests/{id}/actions/reject]
 
@@ -1113,8 +1112,6 @@ This WS designed to reject person requests previously created by patient.
     + Attributes (`Response_OK`)
         + data (object, required)
             + include `Person_request_details`
-        + urgent (object, required)
-             + documents (array[`media_content`], optional)
 
 ## Declarations [/api/declarations]
 

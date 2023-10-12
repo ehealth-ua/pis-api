@@ -1091,7 +1091,7 @@ If the request has been cleared of personal patient data due to security require
             + code: 200 (number)
         + data (object, required)
             + include `Person_request_details`
-        + urgent (object, required)
+        + urgent (object)
             + documents (array[`media_content_person_request_details`], optional)
             + links (array[`signed_content`], optional)
 
@@ -2651,8 +2651,8 @@ Get declaration limit and count per practitioner
 + id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required)
 + declaration_number: `0000-12H4-245D` (string, required) - unique number of declaration.
 + declaration_id: `8311ab82-e341-4da0-8a95-235ec9885e23` (string, required) - presetted id for future declaration
-+ start_date: `2017-03-02` (string, required) - Should be defined on the client side.
-+ end_date: `2017-03-02` (string, required) - Will be defined on eHealth side if it's not set.
++ start_date: `2017-03-02` (string) - Should be defined on the client side.
++ end_date: `2017-03-02` (string) - Will be defined on eHealth side if it's not set.
 + scope (enum, required)
   - family doctor
 + status: `NEW` (string, required)

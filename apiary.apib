@@ -1591,6 +1591,25 @@ Get declaration limit and count per practitioner
 + preferred_way_communication: email (enum, optional) - the way how a patient wants to be reached
     - email
     - phone
+    
+### `Person_declaration`
++ first_name: Петро (string, required)
++ last_name: Іванов (string, required)
++ second_name: Миколайович (string, optional)
++ birth_date: `1991-08-19` (string, required)
++ birth_country: `Україна` (string, required)
++ birth_settlement: `Вінниця` (string, required)
++ gender: MALE, FEMALE (enum[string], required)
++ email: email@example.com (string, optional)
++ tax_id: 3126509816 (string, optional)
++ no_tax_id: true (boolean, required)
++ secret: secret (string, required)
++ documents (array[`Document`], required)
++ addresses (array[`Address`], required)
++ phones (array[`Phone`], optional)
++ preferred_way_communication: email (enum, optional) - the way how a patient wants to be reached
+    - email
+    - phone    
 
 ### `Authentication_Method`
 + type (enum, required)
@@ -1932,7 +1951,7 @@ Get declaration limit and count per practitioner
 + start_date: `2017-03-02` (string, required)
 + end_date: `2017-03-02` (string, required)
 + signed_at: `2017-03-02T00:00:00.000Z` (string, required)
-+ person (`Person`, required)
++ person (`Person_declaration`, required)
     + id: `b075f148-7f93-4fc2-b2ec-3d81b19a9b7b` (string, required)
     + unzr: `19910819-00011` (string, optional) - the record number in the demographic register
     + `emergency_contact` (`Emergency_Contact`, required)
@@ -2476,7 +2495,7 @@ Get declaration limit and count per practitioner
 + start_date: `2017-03-02` (string, required)
 + end_date: `2017-03-02` (string, required)
 + signed_at: `2017-03-02T00:00:00.000Z` (string, required)
-+ person (`Person`, required)
++ person (`Person_declaration`, required)
     + id: `b075f148-7f93-4fc2-b2ec-3d81b19a9b7b` (string, required)
     + unzr: `19910819-00011` (string, optional) - the record number in the demographic register
     + `emergency_contact` (`Emergency_Contact`, required)

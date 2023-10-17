@@ -90,6 +90,30 @@ Look at [**Dummy confidant patient login**](#reference/private.-dummy-methods/du
             + token (object, required)
                 + include `Access_Token`
 
+### Calculate available user approvals [POST /oauth/user/apps]
+
+This endpoint is used to calculate approvals that are available to authorize for user in client. 
+
+Available approvals list is calculated based on persons legal capacity and confidant person relationship status.
+
+This endpoint must be used only by Auth UI client.
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+
+    + Attributes (object)
+        + `client_id`: `7673eb5a-0cae-4fa8-9f81-e6da46aa2941` (string, required)
+        + `scope`: `app:read_pis app:delete_pis confidant_person:login confidant_person:sign_up person_documents:write_pis person_verification:details_pis person:details_pis authentication_method:read_pis declaration_request:read_pis declaration_request:details_pis declaration_request:details_pis declaration_request:write_pis declaration_request:sign_pis declaration_request:reject_pis declaration:read_pis declaration:details_pis declaration:terminate_pis authentication_method_request:write_pis employee:read_pis legal_entity:read_pis division:read_pis party:read_pis employee_role:read_pis healthcare_service:read_pis person_request:reject_pis person_request:write_pis person_request:read_pis person_request:details_pis` (string, required) - list of scopes to be authorized by user
+
++ Response 200 (application/json)
+    + Attributes (`Response_OK`)
+        + meta (`Response__Meta`)
+            + code: 200 (number)
+        + data (object, required)
+            + `scope`: `app:read_pis person_verification:details_pis person:details_pis authentication_method:read_pis declaration_request:read_pis declaration_request:details_pis declaration:read_pis declaration:details_pis employee:read_pis legal_entity:read_pis division:read_pis party:read_pis employee_role:read_pis healthcare_service:read_pis person_request:read_pis person_request:details_pis` (string, required) - list of scopes that are available to authorize by user
+
 ##Sign-up [/api/sign-up]
 
 ### Patient sign-up validation [POST /api/pis/sign-up_validation]

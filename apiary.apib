@@ -59,7 +59,7 @@ This endpoint should be reachable only by the eHealth authorization front-end ap
 
 This endpoint is used to create authorization token for confidant person to approve or reject scopes request for related person
 
-> **Note:** It could be done ONLY by already authenticated person AND there is a registered relation between actor (authenticated person) and related person
+> **Note:** It could be done ONLY if there is a registered relation between actor (authenticated person) and related person
 
 This endpoint must be used only by Auth UI client.
 
@@ -69,7 +69,7 @@ Look at [**Dummy confidant patient login**](#reference/private.-dummy-methods/du
 
     + Headers
 
-            Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+            api-key: uXhEczJ56adsfh3Ri9SUkc4en
 
     + Attributes (object)
         + `signed_content`: `ewogICAgImZpcnN0X25hbWUiOiAi0J/QtdGC0YDQviIsCiAgICAibGFzdF9uYW1lIjogItCG0LLQsNC90L7QsiIsCiAgICAic2Vjb25kX25hbWUiOiAi0JzQuNC60L7Qu9Cw0LnQvtCy0LjRhyIsCiAgICAiYmlydGhfZGF0ZSI6ICIxOTkxLTA4LTE5IiwKICAgICJiaXJ0aF9jb3VudHJ5IjogItCj0LrRgNCw0ZfQvdCwIiwKICAgICJiaXJ0aF9zZXR0bGVtZW50IjogItCS0ZbQvdC90LjRhtGPIiwKICAgICJnZW5kZXIiOiAiTUFMRSIsCiAgICAiZW1haWwiOiAiZW1haWxAZXhhbXBsZS5jb20iLAogICAgInRheF9pZCI6ICIzMTI2NTA5ODE2IiwKICAgICJzZWNyZXQiOiAic2VjcmV0IiwKICAgICJkb2N1bWVudHMiOiBbCiAgICAgIHsKICAgICAgICAidHlwZSI6ICJQQVNTUE9SVCIsCiAgICAgICAgIm51bWJlciI6ICIxMjA1MTgiLAogICAgICAgICJpc3N1ZWRfYnkiOiAi0KDQvtC60LjRgtC90Y/QvdGB0YzQutC40Lwg0KDQkiDQk9CjINCc0JLQoSDQmtC40ZfQstGB0YzQutC+0Zcg0L7QsdC70LDRgdGC0ZYiLAogICAgICAgICJpc3N1ZWRfYXQiOiAiMjAxNy0wMi0yOCIKICAgICAgfQogICAgXSwKICAgICJhZGRyZXNzZXMiOiBbCiAgICAgIHsKICAgICAgICAidHlwZSI6ICJSRVNJREVOQ0UiLAogICAgICAgICJjb3VudHJ5IjogIlVBIiwKICAgICAgICAiYXJlYSI6ICLQltC40YLQvtC80LjRgNGB0YzQutCwIiwKICAgICAgICAicmVnaW9uIjogItCR0LXRgNC00LjRh9GW0LLRgdGM0LrQuNC5IiwKICAgICAgICAic2V0dGxlbWVudCI6ICLQmtC40ZfQsiIsCiAgICAgICAgInNldHRsZW1lbnRfdHlwZSI6ICJDSVRZIiwKICAgICAgICAic2V0dGxlbWVudF9pZCI6ICI0MzQzMjQzMiIsCiAgICAgICAgInN0cmVldF90eXBlIjogIlNUUkVFVCIsCiAgICAgICAgInN0cmVldCI6ICLQstGD0LsuINCd0ZbQttC40L3RgdGM0LrQsCIsCiAgICAgICAgImJ1aWxkaW5nIjogIjE1IiwKICAgICAgICAiYXBhcnRtZW50IjogIjIzIiwKICAgICAgICAiemlwIjogIjAyMDkwIgogICAgICB9CiAgICBdLAogICAgInBob25lcyI6IFsKICAgICAgewogICAgICAgICJ0eXBlIjogIk1PQklMRSIsCiAgICAgICAgIm51bWJlciI6ICIrMzgwNTAzNDEwODcwIgogICAgICB9CiAgICBdLAogICAgImF1dGhlbnRpY2F0aW9uX21ldGhvZHMiOiBbCiAgICAgIHsKICAgICAgICAidHlwZSI6ICJPVFAiLAogICAgICAgICJwaG9uZV9udW1iZXIiOiAiKzM4MDUwODg4NzcwMCIKICAgICAgfQogICAgXSwKICAgICJwcmVmZXJyZWRfd2F5X2NvbW11bmljYXRpb24iOiAiZW1haWwiLAogICAgImVtZXJnZW5jeV9jb250YWN0IjogewogICAgICAiZmlyc3RfbmFtZSI6ICLQn9C10YLRgNC+IiwKICAgICAgImxhc3RfbmFtZSI6ICLQhtCy0LDQvdC+0LIiLAogICAgICAic2Vjb25kX25hbWUiOiAi0JzQuNC60L7Qu9Cw0LnQvtCy0LjRhyIsCiAgICAgICJwaG9uZXMiOiBbCiAgICAgICAgewogICAgICAgICAgInR5cGUiOiAiTU9CSUxFIiwKICAgICAgICAgICJudW1iZXIiOiAiKzM4MDUwMzQxMDg3MCIKICAgICAgICB9CiAgICAgIF0KICAgIH0sCiAgICAicHJvY2Vzc19kaXNjbG9zdXJlX2RhdGFfY29uc2VudCI6IHRydWUKICB9Cn0=` (string, required)
@@ -458,10 +458,7 @@ For security purposes, we will set `X-Frame-Options: deny` header that will disa
 
             X-CSRF-Token: my-csrf-token
 
-### Confidant patient sign-in [GET /confidant/sign-in{?client_id,redirect_uri,scope,user_data,token}]
-
-**Note!**
-Only to login as confidant patient in a context of related patient as this page requires valid access token of confidant person itself
+### Confidant patient sign-in [GET /confidant/sign-in{?client_id,redirect_uri,scope,user_data}]
 
 You MUST redirect your users to this URL to obtain oAuth Code Grant (which is later exchanged to Access Token).
 
@@ -474,7 +471,6 @@ For security purposes, we will set `X-Frame-Options: deny` header that will disa
     + `redirect_uri`: https://example.com/ (string, required) - URL where user will be redirected after authentification. This url will receive `code` and `state` parameters in query string.
     + scope: `capitation_contracts:view capitation_contracts:create patients:view patients:create` (string, required) - List of scopes that is required in application business logic, separated by space. Different login forms will be shown based on scopes that you requested.
     + `user_data`: `base64_string` - Auth request signed on client side
-    + `token`: `eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9`
 
 + Response 200 (text/html; charset=UTF-8)
 
@@ -600,7 +596,7 @@ User will see rendered registration page signed on PIS side and provided via que
 
             X-CSRF-Token: my-csrf-token
 
-### Confidant patient sign-up [GET /confidant/sign-up{?client_id,redirect_uri,scope,user_data,token}]
+### Confidant patient sign-up [GET /confidant/sign-up{?client_id,redirect_uri,scope,user_data}]
 
 You MUST redirect your authenticated users to this URL to register patient in the system via confidant patient
 
@@ -611,7 +607,6 @@ User will see rendered registration page signed on PIS side and provided via que
     + `redirect_uri`: https://example.com/ (string, required) - URL where user will be redirected after authentification. This url will receive `code` and `state` parameters in query string.
     + scope: `capitation_contracts:view capitation_contracts:create patients:view patients:create` (string, required) - List of scopes that is required in application business logic, separated by space. Different login forms will be shown based on scopes that you requested.
     + `user_data`: `base64_string` - Auth request signed on client side
-    + `token`: `eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9`
 
 + Response 200 (text/html; charset=UTF-8)
 
@@ -884,7 +879,6 @@ This method is used when you need to re-send SMS to a person or third person
 
 
 + Parameters
-    + id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required) - Person identifier
     + request_id: `1096f147-7f93-3fc6-bddc-9d71b198fb7f` (string, required) - Request identifier
 
 + Request (application/json)

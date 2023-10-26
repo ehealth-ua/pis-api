@@ -67,10 +67,6 @@ Look at [**Dummy confidant patient login**](#reference/private.-dummy-methods/du
 
 + Request (application/json)
 
-    + Headers
-
-            api-key: uXhEczJ56adsfh3Ri9SUkc4en
-
     + Attributes (object)
         + `signed_content`: `ewogICAgImZpcnN0X25hbWUiOiAi0J/QtdGC0YDQviIsCiAgICAibGFzdF9uYW1lIjogItCG0LLQsNC90L7QsiIsCiAgICAic2Vjb25kX25hbWUiOiAi0JzQuNC60L7Qu9Cw0LnQvtCy0LjRhyIsCiAgICAiYmlydGhfZGF0ZSI6ICIxOTkxLTA4LTE5IiwKICAgICJiaXJ0aF9jb3VudHJ5IjogItCj0LrRgNCw0ZfQvdCwIiwKICAgICJiaXJ0aF9zZXR0bGVtZW50IjogItCS0ZbQvdC90LjRhtGPIiwKICAgICJnZW5kZXIiOiAiTUFMRSIsCiAgICAiZW1haWwiOiAiZW1haWxAZXhhbXBsZS5jb20iLAogICAgInRheF9pZCI6ICIzMTI2NTA5ODE2IiwKICAgICJzZWNyZXQiOiAic2VjcmV0IiwKICAgICJkb2N1bWVudHMiOiBbCiAgICAgIHsKICAgICAgICAidHlwZSI6ICJQQVNTUE9SVCIsCiAgICAgICAgIm51bWJlciI6ICIxMjA1MTgiLAogICAgICAgICJpc3N1ZWRfYnkiOiAi0KDQvtC60LjRgtC90Y/QvdGB0YzQutC40Lwg0KDQkiDQk9CjINCc0JLQoSDQmtC40ZfQstGB0YzQutC+0Zcg0L7QsdC70LDRgdGC0ZYiLAogICAgICAgICJpc3N1ZWRfYXQiOiAiMjAxNy0wMi0yOCIKICAgICAgfQogICAgXSwKICAgICJhZGRyZXNzZXMiOiBbCiAgICAgIHsKICAgICAgICAidHlwZSI6ICJSRVNJREVOQ0UiLAogICAgICAgICJjb3VudHJ5IjogIlVBIiwKICAgICAgICAiYXJlYSI6ICLQltC40YLQvtC80LjRgNGB0YzQutCwIiwKICAgICAgICAicmVnaW9uIjogItCR0LXRgNC00LjRh9GW0LLRgdGM0LrQuNC5IiwKICAgICAgICAic2V0dGxlbWVudCI6ICLQmtC40ZfQsiIsCiAgICAgICAgInNldHRsZW1lbnRfdHlwZSI6ICJDSVRZIiwKICAgICAgICAic2V0dGxlbWVudF9pZCI6ICI0MzQzMjQzMiIsCiAgICAgICAgInN0cmVldF90eXBlIjogIlNUUkVFVCIsCiAgICAgICAgInN0cmVldCI6ICLQstGD0LsuINCd0ZbQttC40L3RgdGM0LrQsCIsCiAgICAgICAgImJ1aWxkaW5nIjogIjE1IiwKICAgICAgICAiYXBhcnRtZW50IjogIjIzIiwKICAgICAgICAiemlwIjogIjAyMDkwIgogICAgICB9CiAgICBdLAogICAgInBob25lcyI6IFsKICAgICAgewogICAgICAgICJ0eXBlIjogIk1PQklMRSIsCiAgICAgICAgIm51bWJlciI6ICIrMzgwNTAzNDEwODcwIgogICAgICB9CiAgICBdLAogICAgImF1dGhlbnRpY2F0aW9uX21ldGhvZHMiOiBbCiAgICAgIHsKICAgICAgICAidHlwZSI6ICJPVFAiLAogICAgICAgICJwaG9uZV9udW1iZXIiOiAiKzM4MDUwODg4NzcwMCIKICAgICAgfQogICAgXSwKICAgICJwcmVmZXJyZWRfd2F5X2NvbW11bmljYXRpb24iOiAiZW1haWwiLAogICAgImVtZXJnZW5jeV9jb250YWN0IjogewogICAgICAiZmlyc3RfbmFtZSI6ICLQn9C10YLRgNC+IiwKICAgICAgImxhc3RfbmFtZSI6ICLQhtCy0LDQvdC+0LIiLAogICAgICAic2Vjb25kX25hbWUiOiAi0JzQuNC60L7Qu9Cw0LnQvtCy0LjRhyIsCiAgICAgICJwaG9uZXMiOiBbCiAgICAgICAgewogICAgICAgICAgInR5cGUiOiAiTU9CSUxFIiwKICAgICAgICAgICJudW1iZXIiOiAiKzM4MDUwMzQxMDg3MCIKICAgICAgICB9CiAgICAgIF0KICAgIH0sCiAgICAicHJvY2Vzc19kaXNjbG9zdXJlX2RhdGFfY29uc2VudCI6IHRydWUKICB9Cn0=` (string, required)
         + `signed_content_encoding`: base64 (string, required)
@@ -195,17 +191,9 @@ This endpoint is used to validate signed content as a part of patient registrati
 
 This endpoint must be used only by Auth UI client.
 
-Signed content must contain patient data and nonce that was generated for PIS.
-
-Confidant person's access token must be provided as well
-
 Look at [**Dummy confidant patient sign-up validation**](#reference/private.-dummy-methods/dummy-sign-up/dummy-confidant-patient-sign-up-validation) for more details.
 
 + Request (application/json)
-
-    + Headers
-
-            Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
 
     + Attributes (object)
         + `signed_content`: `ewogICAgImZpcnN0X25hbWUiOiAi0J/QtdGC0YDQviIsCiAgICAibGFzdF9uYW1lIjogItCG0LLQsNC90L7QsiIsCiAgICAic2Vjb25kX25hbWUiOiAi0JzQuNC60L7Qu9Cw0LnQvtCy0LjRhyIsCiAgICAiYmlydGhfZGF0ZSI6ICIxOTkxLTA4LTE5IiwKICAgICJiaXJ0aF9jb3VudHJ5IjogItCj0LrRgNCw0ZfQvdCwIiwKICAgICJiaXJ0aF9zZXR0bGVtZW50IjogItCS0ZbQvdC90LjRhtGPIiwKICAgICJnZW5kZXIiOiAiTUFMRSIsCiAgICAiZW1haWwiOiAiZW1haWxAZXhhbXBsZS5jb20iLAogICAgInRheF9pZCI6ICIzMTI2NTA5ODE2IiwKICAgICJzZWNyZXQiOiAic2VjcmV0IiwKICAgICJkb2N1bWVudHMiOiBbCiAgICAgIHsKICAgICAgICAidHlwZSI6ICJQQVNTUE9SVCIsCiAgICAgICAgIm51bWJlciI6ICIxMjA1MTgiLAogICAgICAgICJpc3N1ZWRfYnkiOiAi0KDQvtC60LjRgtC90Y/QvdGB0YzQutC40Lwg0KDQkiDQk9CjINCc0JLQoSDQmtC40ZfQstGB0YzQutC+0Zcg0L7QsdC70LDRgdGC0ZYiLAogICAgICAgICJpc3N1ZWRfYXQiOiAiMjAxNy0wMi0yOCIKICAgICAgfQogICAgXSwKICAgICJhZGRyZXNzZXMiOiBbCiAgICAgIHsKICAgICAgICAidHlwZSI6ICJSRVNJREVOQ0UiLAogICAgICAgICJjb3VudHJ5IjogIlVBIiwKICAgICAgICAiYXJlYSI6ICLQltC40YLQvtC80LjRgNGB0YzQutCwIiwKICAgICAgICAicmVnaW9uIjogItCR0LXRgNC00LjRh9GW0LLRgdGM0LrQuNC5IiwKICAgICAgICAic2V0dGxlbWVudCI6ICLQmtC40ZfQsiIsCiAgICAgICAgInNldHRsZW1lbnRfdHlwZSI6ICJDSVRZIiwKICAgICAgICAic2V0dGxlbWVudF9pZCI6ICI0MzQzMjQzMiIsCiAgICAgICAgInN0cmVldF90eXBlIjogIlNUUkVFVCIsCiAgICAgICAgInN0cmVldCI6ICLQstGD0LsuINCd0ZbQttC40L3RgdGM0LrQsCIsCiAgICAgICAgImJ1aWxkaW5nIjogIjE1IiwKICAgICAgICAiYXBhcnRtZW50IjogIjIzIiwKICAgICAgICAiemlwIjogIjAyMDkwIgogICAgICB9CiAgICBdLAogICAgInBob25lcyI6IFsKICAgICAgewogICAgICAgICJ0eXBlIjogIk1PQklMRSIsCiAgICAgICAgIm51bWJlciI6ICIrMzgwNTAzNDEwODcwIgogICAgICB9CiAgICBdLAogICAgImF1dGhlbnRpY2F0aW9uX21ldGhvZHMiOiBbCiAgICAgIHsKICAgICAgICAidHlwZSI6ICJPVFAiLAogICAgICAgICJwaG9uZV9udW1iZXIiOiAiKzM4MDUwODg4NzcwMCIKICAgICAgfQogICAgXSwKICAgICJwcmVmZXJyZWRfd2F5X2NvbW11bmljYXRpb24iOiAiZW1haWwiLAogICAgImVtZXJnZW5jeV9jb250YWN0IjogewogICAgICAiZmlyc3RfbmFtZSI6ICLQn9C10YLRgNC+IiwKICAgICAgImxhc3RfbmFtZSI6ICLQhtCy0LDQvdC+0LIiLAogICAgICAic2Vjb25kX25hbWUiOiAi0JzQuNC60L7Qu9Cw0LnQvtCy0LjRhyIsCiAgICAgICJwaG9uZXMiOiBbCiAgICAgICAgewogICAgICAgICAgInR5cGUiOiAiTU9CSUxFIiwKICAgICAgICAgICJudW1iZXIiOiAiKzM4MDUwMzQxMDg3MCIKICAgICAgICB9CiAgICAgIF0KICAgIH0sCiAgICAicHJvY2Vzc19kaXNjbG9zdXJlX2RhdGFfY29uc2VudCI6IHRydWUKICB9Cn0=` (string, required)
@@ -234,15 +222,11 @@ This endpoint is used to register patient in the system via confidant person bas
 
 This endpoint must be used only by Auth UI client.
 
-Signed content must contain patient data as well as authenticated patient details. Request authorization header must contain confidant patient's token
+Signed content must contain patient data as well as authenticated patient details.
 
 Look at [**Dummy confidant patient sign-up registration**](#reference/private.-dummy-methods/dummy-sign-up/dummy-confidant-patient-sign-up-registration) for more details.
 
 + Request (application/json)
-
-    + Headers
-
-            Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
 
     + Attributes (object)
         + `signed_content`: `ewogICAgImZpcnN0X25hbWUiOiAi0J/QtdGC0YDQviIsCiAgICAibGFzdF9uYW1lIjogItCG0LLQsNC90L7QsiIsCiAgICAic2Vjb25kX25hbWUiOiAi0JzQuNC60L7Qu9Cw0LnQvtCy0LjRhyIsCiAgICAiYmlydGhfZGF0ZSI6ICIxOTkxLTA4LTE5IiwKICAgICJiaXJ0aF9jb3VudHJ5IjogItCj0LrRgNCw0ZfQvdCwIiwKICAgICJiaXJ0aF9zZXR0bGVtZW50IjogItCS0ZbQvdC90LjRhtGPIiwKICAgICJnZW5kZXIiOiAiTUFMRSIsCiAgICAiZW1haWwiOiAiZW1haWxAZXhhbXBsZS5jb20iLAogICAgInRheF9pZCI6ICIzMTI2NTA5ODE2IiwKICAgICJzZWNyZXQiOiAic2VjcmV0IiwKICAgICJkb2N1bWVudHMiOiBbCiAgICAgIHsKICAgICAgICAidHlwZSI6ICJQQVNTUE9SVCIsCiAgICAgICAgIm51bWJlciI6ICIxMjA1MTgiLAogICAgICAgICJpc3N1ZWRfYnkiOiAi0KDQvtC60LjRgtC90Y/QvdGB0YzQutC40Lwg0KDQkiDQk9CjINCc0JLQoSDQmtC40ZfQstGB0YzQutC+0Zcg0L7QsdC70LDRgdGC0ZYiLAogICAgICAgICJpc3N1ZWRfYXQiOiAiMjAxNy0wMi0yOCIKICAgICAgfQogICAgXSwKICAgICJhZGRyZXNzZXMiOiBbCiAgICAgIHsKICAgICAgICAidHlwZSI6ICJSRVNJREVOQ0UiLAogICAgICAgICJjb3VudHJ5IjogIlVBIiwKICAgICAgICAiYXJlYSI6ICLQltC40YLQvtC80LjRgNGB0YzQutCwIiwKICAgICAgICAicmVnaW9uIjogItCR0LXRgNC00LjRh9GW0LLRgdGM0LrQuNC5IiwKICAgICAgICAic2V0dGxlbWVudCI6ICLQmtC40ZfQsiIsCiAgICAgICAgInNldHRsZW1lbnRfdHlwZSI6ICJDSVRZIiwKICAgICAgICAic2V0dGxlbWVudF9pZCI6ICI0MzQzMjQzMiIsCiAgICAgICAgInN0cmVldF90eXBlIjogIlNUUkVFVCIsCiAgICAgICAgInN0cmVldCI6ICLQstGD0LsuINCd0ZbQttC40L3RgdGM0LrQsCIsCiAgICAgICAgImJ1aWxkaW5nIjogIjE1IiwKICAgICAgICAiYXBhcnRtZW50IjogIjIzIiwKICAgICAgICAiemlwIjogIjAyMDkwIgogICAgICB9CiAgICBdLAogICAgInBob25lcyI6IFsKICAgICAgewogICAgICAgICJ0eXBlIjogIk1PQklMRSIsCiAgICAgICAgIm51bWJlciI6ICIrMzgwNTAzNDEwODcwIgogICAgICB9CiAgICBdLAogICAgImF1dGhlbnRpY2F0aW9uX21ldGhvZHMiOiBbCiAgICAgIHsKICAgICAgICAidHlwZSI6ICJPVFAiLAogICAgICAgICJwaG9uZV9udW1iZXIiOiAiKzM4MDUwODg4NzcwMCIKICAgICAgfQogICAgXSwKICAgICJwcmVmZXJyZWRfd2F5X2NvbW11bmljYXRpb24iOiAiZW1haWwiLAogICAgImVtZXJnZW5jeV9jb250YWN0IjogewogICAgICAiZmlyc3RfbmFtZSI6ICLQn9C10YLRgNC+IiwKICAgICAgImxhc3RfbmFtZSI6ICLQhtCy0LDQvdC+0LIiLAogICAgICAic2Vjb25kX25hbWUiOiAi0JzQuNC60L7Qu9Cw0LnQvtCy0LjRhyIsCiAgICAgICJwaG9uZXMiOiBbCiAgICAgICAgewogICAgICAgICAgInR5cGUiOiAiTU9CSUxFIiwKICAgICAgICAgICJudW1iZXIiOiAiKzM4MDUwMzQxMDg3MCIKICAgICAgICB9CiAgICAgIF0KICAgIH0sCiAgICAicHJvY2Vzc19kaXNjbG9zdXJlX2RhdGFfY29uc2VudCI6IHRydWUKICB9Cn0=` (string, required)
@@ -399,15 +383,14 @@ Patient Sign-in process:
 ![PIS Sign-in Sequence](https://www.websequencediagrams.com/cgi-bin/cdraw?lz=dGl0bGUgUElTIFNpZ24tSW4KIApwYXJ0aWNpcGFudCBVc2VyIGFzIHVzZXIADA1QSVMgRkUgYXMgcGlzX2ZlAAwRQgAUCWIADw5BdXRoIFVJIGFzIGF1dGgAYg1lSGVhbHRoADYHYmUKIAp1c2VyLT4AXwY6IEdvIHRvICJMb2dpbiB0bwApCCIKAIEABi0AJAZiZTogUHJlcGFyZSBkYXRhIHRvIHNpZ24AIQViZS0tPmJlOiBHZXQgbm9uY2UKAA4FADEIPDxSZXNwb25zZT4-ACcKAHkIUmV0dXJuAEgObm90ZSBsZWZ0IG9mAIFrBzogSldUAIENCD51c2VyOiBQcm9tcHQAgQQIIHJlcXVlc3QAgVIPUwAPDACBTAlhdXRoOiBSZWRpcmVjAD4FYXV0aCBzZXJ2aWNlIHdpdGgAgVwFZWQATgkAgRAFcmlnaACBDQlmZTogY2xpZW50X2lkXG5yAEcHX3VyaVxuc2NvcGVcbnVzZXJfZGF0YQphdXRoAIEyCFNob3cgcACBNglhcHByb3ZlIAAvBXMAgxsHAIEdBkEADQ5hdXRoPACCaAdDcmVhdGUvdXBkYXRlAD0HYWxzAIIwDmJlOiBncmFudF9jb2RlAIB_BgCDDwxTdWNjZXNzIHIAgxkKAIJxDQCCIwYANwsAg2UNRXhjaGFuZ2UgQ29kZSBHcmFuAIMKBUEATgZUb2tlAINGBwCCKw1iZTogY29kZV8AgRQFICsgc2VjcmV0AIQmEAA_B3Rva2VuAIEHEGJlOiBhAIE1BV8AGwVcbnJlZnJlc2gACQY&s=modern-blue)
 
 Confidant Patient Sign-in process:
-1. Client BE: obtains `access_token` of confidant patients user;
-2. Client BE: forms patient data, applies users digital signature;
-3. Client UI: redirects user to [Confidant patient login UI](#reference/public.-patient-information-system/sign-in/confidant-patient-sign-in) with `client_id`, `redirect_uri`, `scope`, `user_data` that contains base64 encoded signed patient data and `token` that contains `access_token` of confidant patients user;
-4. Login UI: completes Session auth flow with `app:authorize` scope;
-5. Login UI: renders page with Approval (that lists requested scopes);
-6. User: approves scopes;
-7. Client BE: exchanges `code` from query parameters to an `access_token` by sending [Exchange oAuth Code Grant to Access Token](#reference/public.-patient-information-system/sign-in/exchange-oauth-code-grant-to-access-token) request with `grant_type=authorization_code`;
-8. Client BE: stores `refresh_token` (in back-end!) and sends `access_token` to Client UI;
-9. Client UI: stores `access_token` (in local storage, cookie, etc.) and makes all future requests with `Auhtorization: Bearer <access_token>` header.
+1. Client BE: forms patient data, applies users digital signature;
+2. Client UI: redirects user to [Confidant patient login UI](#reference/public.-patient-information-system/sign-in/confidant-patient-sign-in) with `client_id`, `redirect_uri`, `scope`, `user_data` that contains base64 encoded signed patient data;
+3. Login UI: completes Session auth flow with `app:authorize` scope;
+4. Login UI: renders page with Approval (that lists requested scopes);
+5. User: approves scopes;
+6. Client BE: exchanges `code` from query parameters to an `access_token` by sending [Exchange oAuth Code Grant to Access Token](#reference/public.-patient-information-system/sign-in/exchange-oauth-code-grant-to-access-token) request with `grant_type=authorization_code`;
+7. Client BE: stores `refresh_token` (in back-end!) and sends `access_token` to Client UI;
+8. Client UI: stores `access_token` (in local storage, cookie, etc.) and makes all future requests with `Auhtorization: Bearer <access_token>` header.
 
 **Sequence Diagram**
 
@@ -565,16 +548,15 @@ PIS Sign-up process:
 ![PIS Sign-up Sequence](https://www.websequencediagrams.com/cgi-bin/cdraw?lz=dGl0bGUgUElTIFNpZ24tVXAKIApwYXJ0aWNpcGFudCBVc2VyIGFzIHVzZXIADA1QSVMgRkUgYXMgcGlzX2ZlAAwRQgAUCWIADw5BdXRoIFVJIGFzIGF1dGgAYg1lSGVhbHRoADYHYmUKIAp1c2VyLT4AXwY6IEdvIHRvICJSZWdpc3RlciBwYXRpZW50IGluADQIIgpvcHQgUHJlZmlsbCBzb21lIGRhdGEKICAgAIEkBzwtAEoGYmU6IEdldAA8CCdzABkQAG0KAEcIZm9ybQplbmQKABoHAD8KUHJlcGFyAGYGIHRvIHNpZ24AIQViZS0tPmF1dGgAZwZub25jZQphdXRoAHsLPDxSZXNwb25zZT4-ACsKAIFsCFJldHVybgBMDm5vdGUgbGVmdCBvZgCCXgc6IEpXVACBEQg-dXNlcjogU2hvdyByAIIoBXJhdGlvbgCBPAYAgkYORmlsbCBpbiBhbmRcbnNpZ24AJA5yZXF1ZXN0AIFpCgCBRwZSZWRpcmVjdCB0bwCDQwUgc2VydmljZSB3aXRoAIF6BWVkADMJAIEqBXJpZ2gAgScJZmU6IGNsaWVudF9pZFxucgBHB191cmlcbnNjb3BlXG51c2VyXwCDOAUAgisFAIFIDGZvcm0AZAYAg3oIAIJxCGNvbmZpAIFcCACCcghDAA8GAIM6BmF1dGg8LS0-YmU6IENyZWF0ZQCEPwhcbihpZiBuZWVkZWQpABQUdXNlcgATEgCCYQ1wcm9tcACCEAZwcHJvdmUgAIFJBXMAhUIHAIQEBkEADQ4AgQASL3VwZGF0ZQA9B2FscwCDZA5iZTogZ3JhbnRfY29kAIQ8E1N1Y2Nlc3MgcgCETQoAhCUNAIUKBgA3CwCFIQliZTogRXhjaGFuZ2UgQ29kZSBHcmFuAINhBUEATgZUb2tlAIR6BwCDRQ1iZTogY29kZV8AgRQFICsgc2VjcmV0CgCFQwkAhWQGAD8HdG9rZW4AgQcQYmU6IGEAgTUFXwAbBVxucmVmcmVzaAAJBgplbmQ&s=modern-blue)
 
 PIS Confidant Patient Sign-up process:
-1. Client BE: obtains `access_token` of confidant patients user;
-2. User: fills in data to registration form, applies users digital signature;
-3. Client UI: redirects user to [Confidant patient sign-up UI](#reference/public.-patient-information-system/sign-up/confidant-patient-sign-up) with `client_id`, `redirect_uri`, `scope` and `user_data` that contains base64 encoded signed patient registration request and `token` that contains `access_token`` of confidant patients user;
-4. Sign-up UI: shows patient registration form with patient data to confirm;
-5. Sign-up UI: completes patient registration with `app:authorize` scope;
-6. Login UI: renders page with Approval (that lists requested scopes);
-7. User: approves scopes;
-8. Client BE: exchanges `code` from query parameters to an `access_token` by sending [Exchange oAuth Code Grant to Access Token](#reference/public.-patient-information-system/sign-in/exchange-oauth-code-grant-to-access-token) request with `grant_type=authorization_code`;
-9. Client BE: stores `refresh_token` (in back-end!) and sends `access_token` to Client UI;
-10. Client UI: stores `access_token` (in local storage, cookie, etc.) and makes all future requests with `Auhtorization: Bearer <access_token>` header.
+1. User: fills in data to registration form, applies users digital signature;
+2. Client UI: redirects user to [Confidant patient sign-up UI](#reference/public.-patient-information-system/sign-up/confidant-patient-sign-up) with `client_id`, `redirect_uri`, `scope` and `user_data` that contains base64 encoded signed patient registration request;
+3. Sign-up UI: shows patient registration form with patient data to confirm;
+4. Sign-up UI: completes patient registration with `app:authorize` scope;
+5. Login UI: renders page with Approval (that lists requested scopes);
+6. User: approves scopes;
+7. Client BE: exchanges `code` from query parameters to an `access_token` by sending [Exchange oAuth Code Grant to Access Token](#reference/public.-patient-information-system/sign-in/exchange-oauth-code-grant-to-access-token) request with `grant_type=authorization_code`;
+8. Client BE: stores `refresh_token` (in back-end!) and sends `access_token` to Client UI;
+9. Client UI: stores `access_token` (in local storage, cookie, etc.) and makes all future requests with `Auhtorization: Bearer <access_token>` header.
 
 ![PIS Confidant Patient Sign-up Sequence](https://www.websequencediagrams.com/cgi-bin/cdraw?lz=dGl0bGUgUElTIENvbmZpZGFudCBTaWduLVVwCgpwYXJ0aWNpcGFudCBVc2VyIGFzIHVzZXIADA1QSVMgRkUgYXMgcGlzX2ZlAAwRQgAUCWIADw5BdXRoIFVJIGFzIGF1dGgAYg1lSGVhbHRoADYHYmUKCnVzZXItPgBeBjogR28gdG8gIlJlZ2lzdGVyIHBhdGllbnQgaW4AMwhcbmJ5IGMAgU0IIgpub3RlIGxlZnQgb2YAgSQHOiBQcmVjb2RpdGlvbjoAgVYFIGhhcyBhIHZhbGlkIGFjY2VzcyB0b2tlbgpvcHQgUHJlZmlsbCBzb21lIGRhdGEKICAgAIFxBzwtAIEYBmJlOiBHZXQAgQoIJ3MAGRAAgTsKAEcIZm9ybQplbmQKABkIdXNlcjogU2hvdyByAIFdBXJhdGlvbgAjBgCBew5GaWxsIGluIGFuZFxuc2lnbgAkDnJlcXVlc3QAUggtPmF1dGg6IFJlZGlyZWN0IHRvAIJ3BSBzZXJ2aWNlIHdpdGggc2lnbmVkADMJAII1BXJpZ2gAgi4NY2xpZW50X2lkXG5yAEcHX3VyaVxuc2NvcGVcbnVzZXJfZGF0YVxuAII7BmF1dGgAgU4NZm9ybQBrBgCDNghkYXRhIHRvAIMxBgCBYwgAgSwIAIUcBXJtAIIoBmF1dGg8LS0-YmU6IENyZWF0ZQCDewhcbihpZiBuZWVkZWQpABQUAIQLCVxucGVycwCCIAVsAIJbBXNoaXAAHiF1c2VyAFISAIMnDXByb21wAIJWBnBwcm92ZSAAgg8FcwCFPQcAgn0GQQANDgCBPxIvdXBkYXRlAD0HYWxzAIU1DmJlOiBncmFudF9jb2RlAIJYBgCEeAo8PFN1AIU4BnJlc3BvbnNlPj4AhXUOAIQDBgA3CwCHHAYAgk0HRXhjaGFuZ2UgQ29kZSBHcmFuAIQnBUEAhgwGVACGDQUAhAYSYmU6IGNvZGVfAIEUBSArIHNlY3JldAoAUgUAgREKAD8HAIZTBQCBBxBiZToAhnEHXwCGcwVcbnJlZnJlc2gACQY&s=modern-blue)
 

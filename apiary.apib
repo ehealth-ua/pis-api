@@ -372,29 +372,33 @@ Patient Sign-in process:
 1. Client BE: obtains nonce from [Get nonce](#reference/public.-patient-information-system/sign-in/get-nonce), applies users digital signature;
 2. Client UI: redirects user to [Patient login UI](#reference/public.-patient-information-system/sign-in/patient-sign-in) with `client_id`, `redirect_uri`, `scope` and `user_data` that contains base64 encoded signed nonce;
 3. Login UI: completes Session auth flow with `app:authorize` scope;
-4. Login UI: renders page with Approval (that lists requested scopes);
-5. User: approves scopes;
-6. Client BE: exchanges `code` from query parameters to an `access_token` by sending [Exchange oAuth Code Grant to Access Token](#reference/public.-patient-information-system/sign-in/exchange-oauth-code-grant-to-access-token) request with `grant_type=authorization_code`;
-7. Client BE: stores `refresh_token` (in back-end!) and sends `access_token` to Client UI;
-8. Client UI: stores `access_token` (in local storage, cookie, etc.) and makes all future requests with `Auhtorization: Bearer <access_token>` header.
+4. (Optional). Login UI: in case of error redirects user to `redirect_uri` with `error` and `error_description` ([RFC 6749](https://datatracker.ietf.org/doc/html/rfc6749#section-4.1.2.1))
+5. Login UI: renders page with Approval (that lists requested scopes);
+6. User: approves scopes;
+7. (Optional). Login UI: in case of error redirects user to `redirect_uri` with `error` and `error_description` ([RFC 6749](https://datatracker.ietf.org/doc/html/rfc6749#section-4.1.2.1))
+8. Client BE: exchanges `code` from query parameters to an `access_token` by sending [Exchange oAuth Code Grant to Access Token](#reference/public.-patient-information-system/sign-in/exchange-oauth-code-grant-to-access-token) request with `grant_type=authorization_code`;
+9. Client BE: stores `refresh_token` (in back-end!) and sends `access_token` to Client UI;
+10. Client UI: stores `access_token` (in local storage, cookie, etc.) and makes all future requests with `Auhtorization: Bearer <access_token>` header.
 
 **Sequence Diagram**
 
-![PIS Sign-in Sequence](https://www.websequencediagrams.com/cgi-bin/cdraw?lz=dGl0bGUgUElTIFNpZ24tSW4KIApwYXJ0aWNpcGFudCBVc2VyIGFzIHVzZXIADA1QSVMgRkUgYXMgcGlzX2ZlAAwRQgAUCWIADw5BdXRoIFVJIGFzIGF1dGgAYg1lSGVhbHRoADYHYmUKIAp1c2VyLT4AXwY6IEdvIHRvICJMb2dpbiB0bwApCCIKAIEABi0AJAZiZTogUHJlcGFyZSBkYXRhIHRvIHNpZ24AIQViZS0tPmJlOiBHZXQgbm9uY2UKAA4FADEIPDxSZXNwb25zZT4-ACcKAHkIUmV0dXJuAEgObm90ZSBsZWZ0IG9mAIFrBzogSldUAIENCD51c2VyOiBQcm9tcHQAgQQIIHJlcXVlc3QAgVIPUwAPDACBTAlhdXRoOiBSZWRpcmVjAD4FYXV0aCBzZXJ2aWNlIHdpdGgAgVwFZWQATgkAgRAFcmlnaACBDQlmZTogY2xpZW50X2lkXG5yAEcHX3VyaVxuc2NvcGVcbnVzZXJfZGF0YQphdXRoAIEyCFNob3cgcACBNglhcHByb3ZlIAAvBXMAgxsHAIEdBkEADQ5hdXRoPACCaAdDcmVhdGUvdXBkYXRlAD0HYWxzAIIwDmJlOiBncmFudF9jb2RlAIB_BgCDDwxTdWNjZXNzIHIAgxkKAIJxDQCCIwYANwsAg2UNRXhjaGFuZ2UgQ29kZSBHcmFuAIMKBUEATgZUb2tlAINGBwCCKw1iZTogY29kZV8AgRQFICsgc2VjcmV0AIQmEAA_B3Rva2VuAIEHEGJlOiBhAIE1BV8AGwVcbnJlZnJlc2gACQY&s=modern-blue)
+![PIS Sign-in Sequence](https://www.websequencediagrams.com/cgi-bin/cdraw?lz=dGl0bGUgUElTIFNpZ24tSW4KIApwYXJ0aWNpcGFudCBVc2VyIGFzIHVzZXIADA1QSVMgRkUgYXMgcGlzX2ZlAAwRQgAUCWIADw5BdXRoIFVJIGFzIGF1dGgAYg1lSGVhbHRoADYHYmUKIAp1c2VyLT4AXwY6IEdvIHRvICJMb2dpbiB0bwApCCIKAIEABi0AJAZiZTogUHJlcGFyZSBkYXRhIHRvIHNpZ24AIQViZS0tPmJlOiBHZXQgbm9uY2UKAA4FADEIPDxSZXNwb25zZT4-ACcKAHkIUmV0dXJuAEgObm90ZSBsZWZ0IG9mAIFrBzogSldUAIENCD51c2VyOiBQcm9tcHQAgQQIIHJlcXVlc3QAgVIPUwAPDACBTAlhdXRoOiBSZWRpcmVjAD4FYXV0aCBzZXJ2aWNlIHdpdGgAgVwFZWQATgkAgRAFcmlnaACBDQlmZTogY2xpZW50X2lkXG5yAEcHX3VyaVxuc2NvcGVcbnVzZXJfZGF0YQphdXRoPACCIwdBdXRoZW50aWNhdGUKb3B0IEVycm9yCiAgIACDPgUAgi4PAIEeBwCBEAUAJAUgcgCCRwogICAgAIIjDQCBVQZlACMFXG4AAwVfZGVzY3JpcHRpb24KZW5kAIEHBQCCPghTaG93IHAAgkIJYXBwcm92ZSAAgTsFcwCEJwcAgikGQQANDgCBRQxDcmVhdGUvdXBkYXRlAD0HYWxzAIM8DmJlOiBncmFudF9jb2RlCmFsdCBTdWNjZXNzAIFWJAAkBwCBWSMAWQsgICAAhiwHAIUdB0V4Y2hhbmdlIENvZGUgR3JhbgCEPAVBAFYGVG9rZW4AgkkKAINhDWJlOiBjb2RlXwCBPgUgKyBzZWNyZXQAgzAFAIVhDwBHB3Rva2VuAIMPFGJlOiBhAIF0BV8AHwVcbnJlZnJlc2gACQYKZWxzZQCDJG8&s=modern-blue)
 
 Confidant Patient Sign-in process:
 1. Client BE: forms patient data, applies users digital signature;
 2. Client UI: redirects user to [Confidant patient login UI](#reference/public.-patient-information-system/sign-in/confidant-patient-sign-in) with `client_id`, `redirect_uri`, `scope`, `user_data` that contains base64 encoded signed patient data;
 3. Login UI: completes Session auth flow with `app:authorize` scope;
-4. Login UI: renders page with Approval (that lists requested scopes);
-5. User: approves scopes;
-6. Client BE: exchanges `code` from query parameters to an `access_token` by sending [Exchange oAuth Code Grant to Access Token](#reference/public.-patient-information-system/sign-in/exchange-oauth-code-grant-to-access-token) request with `grant_type=authorization_code`;
-7. Client BE: stores `refresh_token` (in back-end!) and sends `access_token` to Client UI;
-8. Client UI: stores `access_token` (in local storage, cookie, etc.) and makes all future requests with `Auhtorization: Bearer <access_token>` header.
+4. (Optional). Login UI: in case of error redirects user to `redirect_uri` with `error` and `error_description` ([RFC 6749](https://datatracker.ietf.org/doc/html/rfc6749#section-4.1.2.1))
+5. Login UI: renders page with Approval (that lists requested scopes);
+6. User: approves scopes;
+7. (Optional). Login UI: in case of error redirects user to `redirect_uri` with `error` and `error_description` ([RFC 6749](https://datatracker.ietf.org/doc/html/rfc6749#section-4.1.2.1))
+8. Client BE: exchanges `code` from query parameters to an `access_token` by sending [Exchange oAuth Code Grant to Access Token](#reference/public.-patient-information-system/sign-in/exchange-oauth-code-grant-to-access-token) request with `grant_type=authorization_code`;
+9. Client BE: stores `refresh_token` (in back-end!) and sends `access_token` to Client UI;
+10. Client UI: stores `access_token` (in local storage, cookie, etc.) and makes all future requests with `Auhtorization: Bearer <access_token>` header.
 
 **Sequence Diagram**
 
-![PIS Confidant Sign-in Sequence](https://www.websequencediagrams.com/cgi-bin/cdraw?lz=dGl0bGUgUElTIENvbmZpZGFudCBTaWduLUluCgpwYXJ0aWNpcGFudCBVc2VyIGFzIHVzZXIADA1QSVMgRkUgYXMgcGlzX2ZlAAwRQgAUCWIADw5BdXRoIFVJIGFzIGF1dGgAYg1lSGVhbHRoADYHYmUKCnVzZXItPgBeBjogR28gdG8gIgCBJgVpbiBhcyBjAIE3CXBlcnNvbiIKAIEKBi0-dXNlcjogU2hvdyByZWxhdGVkABwHcyBvciBhc2sgdG8gZnVsbGZpbGwgdGhlIGZvcm0Kbm90ZSBsZWZ0IG9mAIFVBzogZGF0YSBuZWVkZWQgdG8gaWRlbnRpZnkAbQdcbnRvIGJlIGxvZ2dlZCBpbgCBJw9GaWxsIGluAF8FAIEgBgBLBnRvIHNpbmcAgUQGAIEpD1JlcXVlc3QgdG8AgxQFAIF5D1NpZ24gcgAdBgCBaQgtPmF1dGg6IFJlZGlyZWMANgVhdXRoIHNlcnZpY2Ugd2l0aCBzaWduZWQAMwkAgWkFcmlnaACBYg1jbGllbnRfaWRcbnIARwdfdXJpXG5zY29wZVxudXNlcl9kYXRhCmF1dGg8LS0-YmU6IFZhbGlkYXRlAF8FYXR1cmUAGgUAFwdTZWFyY2ggcGF0aWVudAAsDQAUB3VzZXJcbgCDJAh0bwAjCQCBFw4AgWAGdGF4X2lkAFsGAINfDHByb21wAIF2BnBwcm92ZSAAgS8FcwCEQgcAgh0GQQANDgCBOQxDcmVhdGUvdXAAgUUFAD4GYWxzAIQJDmJlOiBncmFudF9jb2QAgV0JAIVmBjogPDxTdWNjZXNzIHJlc3BvbnNlPj4AhEkOAIMjBgA3CwCGIQYAgkEHRXhjaGFuZ2UgQ29kZSBHcmFuAIQCBUEATgZUb2tlbgCDJRNiZTogY29kZV8AgRQFICsgc2VjcmV0CgBSBQCBEQoAPwd0b2tlbgCBBxBiZTogYQCBNQVfABsFXG5yZWZyZXNoAAkGCmVuZA&s=modern-blue)
+![PIS Confidant Sign-in Sequence](https://www.websequencediagrams.com/cgi-bin/cdraw?lz=dGl0bGUgUElTIFNpZ24tSW4KIApwYXJ0aWNpcGFudCBVc2VyIGFzIHVzZXIADA1QSVMgRkUgYXMgcGlzX2ZlAAwRQgAUCWIADw5BdXRoIFVJIGFzIGF1dGgAYg1lSGVhbHRoADYHYmUKIAp1c2VyLT4AXwY6IEdvIHRvICJMb2dpbiB0bwApCCIKAIEABi0AJAZiZTogUHJlcGFyZSBkYXRhIHRvIHNpZ24AIQViZS0tPmJlOiBHZXQgbm9uY2UKAA4FADEIPDxSZXNwb25zZT4-ACcKAHkIUmV0dXJuAEgObm90ZSBsZWZ0IG9mAIFrBzogSldUAIENCD51c2VyOiBQcm9tcHQAgQQIIHJlcXVlc3QAgVIPUwAPDACBTAlhdXRoOiBSZWRpcmVjAD4FYXV0aCBzZXJ2aWNlIHdpdGgAgVwFZWQATgkAgRAFcmlnaACBDQlmZTogY2xpZW50X2lkXG5yAEcHX3VyaVxuc2NvcGVcbnVzZXJfZGF0YQphdXRoPACCIwdBdXRoZW50aWNhdGUKb3B0IEVycm9yCiAgIACDPgUAgi4PAIEeBwCBEAUAJAUgcgCCRwogICAgAIIjDQCBVQZlACMFXG4AAwVfZGVzY3JpcHRpb24KZW5kAIEHBQCCPghTaG93IHAAgkIJYXBwcm92ZSAAgTsFcwCEJwcAgikGQQANDgCBRQxDcmVhdGUvdXBkYXRlAD0HYWxzAIM8DmJlOiBncmFudF9jb2RlCmFsdCBTdWNjZXNzAIFWJAAkBwCBWSMAWQsgICAAhiwHAIUdB0V4Y2hhbmdlIENvZGUgR3JhbgCEPAVBAFYGVG9rZW4AgkkKAINhDWJlOiBjb2RlXwCBPgUgKyBzZWNyZXQAgzAFAIVhDwBHB3Rva2VuAIMPFGJlOiBhAIF0BV8AHwVcbnJlZnJlc2gACQYKZWxzZQCDJG8&s=modern-blue)
 
 **Notes:**
 - If User does not exist, but patient exists in `mpi`, User is created before scopes approval step.

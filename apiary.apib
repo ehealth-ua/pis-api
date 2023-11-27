@@ -909,7 +909,7 @@ This process describes adding an additional authentication method to an existing
             + status: `NEW` (string, required)
             + channel: `PIS` (enum, required) - channel that invoke add auth methods
         + urgent (object, required)
-            + `authentication_method_current` (array[`Authentication_Method_for_request`], required) - if the person doesn't have active auth methods, then this block will be nill
+            + `authentication_method_current` (array[`Authentication_Method_for_request`], optinal) - if the person doesn't have active auth methods, then this block will be nill
            
 
 + Response 422 (application/json)

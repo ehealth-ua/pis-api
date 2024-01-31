@@ -444,7 +444,6 @@ For security purposes, we will set `X-Frame-Options: deny` header that will disa
 
     + Headers
 
-            X-CSRF-Token: my-csrf-token
 
 ### Confidant patient sign-in [GET /confidant/sign-in{?client_id,redirect_uri,scope,user_data,state}]
 
@@ -465,7 +464,6 @@ For security purposes, we will set `X-Frame-Options: deny` header that will disa
 
     + Headers
 
-            X-CSRF-Token: my-csrf-token
 
 ### Exchange oAuth Code Grant to Access Token [POST /oauth/tokens]
 
@@ -482,7 +480,6 @@ Exposed client credentials may be blocked for a security reasons, you will need 
 
     + Headers
 
-            X-CSRF-Token: my-csrf-token
 
     + Attributes (object)
         + token (object)
@@ -582,7 +579,6 @@ User will see rendered registration page signed on PIS side and provided via que
 
     + Headers
 
-            X-CSRF-Token: my-csrf-token
 
 ### Confidant patient sign-up [GET /confidant/sign-up{?client_id,redirect_uri,scope,user_data}]
 
@@ -600,7 +596,6 @@ User will see rendered registration page signed on PIS side and provided via que
 
     + Headers
 
-            X-CSRF-Token: my-csrf-token
 
 ##Approvals [/api/pis/apps]
 

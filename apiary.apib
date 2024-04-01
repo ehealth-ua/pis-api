@@ -1,11 +1,9 @@
 FORMAT: 1A
-HOST: https://ehealth.edenlabllc.com/
+HOST: https://api.ehealth.gov.ua
 
-# eHealth PIS API
+# PIS API
 
-Version: MA 9.5.2 v.1
-
-Environment: **PROD** test, test 2, test 3, test 4
+Version: 9.5.2 v.1
 
 This is a **PIS-related consumers part** of API documentation for Ukrainian Health Services government institution back-end, that should provide:
 
@@ -22,7 +20,9 @@ This document contains both private and public (usually `/api/..`) API specifica
 The table below lists the actual API endpoints for all eHealth environments:
 Env     | Host
 --------|-----
-DEV     | https://pis.dev.edenlab.com.ua
+DEMO     | https://auth-demo.ehealth.gov.ua
+PREPROD  | https://auth-preprod.ehealth.gov.ua
+PROD     | https://auth-preprod.ehealth.gov.ua
 
 # Group Private. Patient Information System
 
@@ -359,7 +359,9 @@ Use following HOSTs for oAuth 2.0 Authentication
 
 Env     | Host
 --------|-----
-DEV     | https://pis-auth.dev.edenlab.com.ua
+DEMO    | http://my-demo.ehealth.gov.ua
+PREPROD | https://my-preprod.ehealth.gov.ua
+PROD    | https://my.ehealth.gov.ua
 
 ##Sign-in [/api/sign-in]
 Patient Sign-in process:

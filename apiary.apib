@@ -1141,6 +1141,12 @@ Current WS allows to see details of declaration knowing its' id.
 
 This WS allows to see all patient's declarations and filter them.
 
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9
+            api-key: uXhEczJ56adsfh3Ri9SUkc4en
+
 + Parameters
     + status: active (string, optional)
     + start_date_from: `2022-08-19` (string, optional)
@@ -1159,10 +1165,10 @@ This WS allows to see all patient's declarations and filter them.
 Patient can terminate active declaration using this method.
 
 + Request (application/json)
-
     + Headers
 
-            Authorization: Bearer c2778f3064753ea70de870a53795f5c9
+            Authorization: Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9
+            api-key: uXhEczJ56adsfh3Ri9SUkc4en
 
     + Attributes (object)
         + reason_description: `Неякісне обслуговування` (string, optional)
@@ -1179,6 +1185,11 @@ Patient can terminate active declaration using this method.
 Current WS allows to see details of declaration request knowing its' id.
 If the request has been cleared of personal patient data due to security requirements, such data will not be returned
 
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9
+            api-key: uXhEczJ56adsfh3Ri9SUkc4en
 
 + Parameters
     + id: 7e9cffd9-c75f-45fb-badf-6e8d20b6a8a8 (uuid)
@@ -1201,6 +1212,11 @@ If the request has been cleared of personal patient data due to security require
 This WS allows to see patient's declaration requests and filter them.
 If the request has been cleared of personal patient data due to security requirements, such data will not be returned
 
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9
+            api-key: uXhEczJ56adsfh3Ri9SUkc4en
 
 + Parameters
     + status: active (string, optional)
@@ -1221,10 +1237,10 @@ If the request has been cleared of personal patient data due to security require
 This WS allows patient to register new declaration request
 
 + Request (application/json)
-
     + Headers
 
-            Authorization: Bearer c2778f3064753ea70de870a53795f5c9
+            Authorization: Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9
+            api-key: uXhEczJ56adsfh3Ri9SUkc4en
 
     + Attributes (object)
         + include `Create_Declaration_Request_PIS`
@@ -1238,10 +1254,10 @@ This WS allows patient to register new declaration request
 This WS allows patient to sign previously created declaration request
 
 + Request (application/json)
-
     + Headers
 
-            Authorization: Bearer c2778f3064753ea70de870a53795f5c9
+            Authorization: Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9
+            api-key: uXhEczJ56adsfh3Ri9SUkc4en
 
     + Attributes (object)
         + `signed_content`: `eyJhbGciOiJIUzUxMiIARUUWYNyfkA` (string, required) - signed declaration request
@@ -1259,10 +1275,10 @@ This WS is designed to reject previously created Declaration Request by patient
     + id: `d290f1ee-6c54-4b01-90e6-d701748f0851` (string, required)
 
 + Request (application/json)
-
     + Headers
 
-            Authorization: Bearer c2778f3064753ea70de870a53795f5c9
+            Authorization: Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9
+            api-key: uXhEczJ56adsfh3Ri9SUkc4en
 
 + Response 201 (application/json)
     + Attributes (`Response_OK`)

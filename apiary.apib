@@ -1057,6 +1057,7 @@ If the request has been cleared of personal patient data due to security require
         - SIGNED
         - REJECTED
         - CANCELLED
+        - EXPIRED
     + channel: `PIS` (string, optional)
     + page: 2 (number, optional) - Page number.
     + page_size: 50 (number, optional) - A limit on the number of objects to be returned, between 1 and 300. Default: 50
@@ -2507,7 +2508,7 @@ Get declaration limit and count per practitioner
     - SIGNED
     - REJECTED
     - EXPIRED
-    - CANCELED
+    - CANCELLED
 + channel: `PIS` (string, optional)
 + inserted_at: `2021-11-09T00:00:00.000Z` (string, required) - ISO Datetime
 + updated_at: `2021-11-09T00:00:00.000Z` (string, optional) - ISO Datetime

@@ -904,7 +904,7 @@ This process describes adding an additional authentication method to an existing
             + status: `NEW` (string, required)
             + channel: `PIS` (enum, required) - channel that invoke add auth methods
         + urgent (object, required)
-            + `authentication_method_current` (array[`Authentication_Method_for_request`], optinal) - if the person doesn't have active auth methods, then this block will be nill
+            + `authentication_method_current` (array[`Authentication_Method_for_request`], optional) - if the person doesn't have active auth methods, then this block will be nill
            
 
 + Response 422 (application/json)
@@ -1915,6 +1915,18 @@ Get declaration limit and count per practitioner
         + `verification_status`: `NOT_VERIFIED` (string, required) - status of person manual NHS verification according to `PERSON_VERIFICATION_STATUSES` dictionary
         + `verification_reason`: `AUTO` (string, required) - how current manual NHS verification status has been set according to `PERSON_VERIFICATION_STATUS_REASONS` dictionary
         + `verification_comment`: `Бракує даних паспорту пацієнта та його ІПН` (string, optional) - verification status description set by NHS in case NOT_VERIFIED
+    + `unzr` (object)
+        + `verification_status`: `NOT_VERIFIED` (string, required) - status of person UNZR verification according to `PERSON_VERIFICATION_STATUSES` dictionary
+        + `verification_reason`: `AUTO` (string, required) - how current UNZR verification status has been set according to `PERSON_VERIFICATION_STATUS_REASONS` dictionary
+        + `status`: 0 (number, optional) - status of the UNZR record in EIS MVS register for the person. It is set by synchronization according to `EIS_MVS_STATUS` dictionary
+    + `mvs_passport` (object)
+        + `verification_status`: `NOT_VERIFIED` (string, required) - status of MVS passport verification for the person according to `PERSON_VERIFICATION_STATUSES` dictionary
+        + `verification_reason`: `AUTO` (string, required) - how current MVS passport verification status has been set according to `PERSON_VERIFICATION_STATUS_REASONS` dictionary
+        + `status`: 1 (number, optional) - status of the record in EIS MVS register for the passport document. It is set by synchronization according to `EIS_MVS_STATUS` dictionary
+    + `dms_passport` (object)
+        + `verification_status`: `NOT_VERIFIED` (string, required) - status of DMS passport verification for the person according to `PERSON_VERIFICATION_STATUSES` dictionary
+        + `verification_reason`: `AUTO` (string, required) - how current DMS passport verification status has been set according to `PERSON_VERIFICATION_STATUS_REASONS` dictionary
+        + `status`: 1 (number, optional) - status of the record in EIS MVS register for the passport document. It is set by synchronization according to `EIS_MVS_STATUS` dictionary
 
 ### `pis_person_response`
 + id: `7e9cffd9-c75f-45fb-badf-6e8d20b6a8a8` (string, required) - person id

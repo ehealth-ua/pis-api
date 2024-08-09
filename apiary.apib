@@ -1285,83 +1285,6 @@ This WS is designed to reject previously created Declaration Request by patient
         + data (`Declaration_request_details`, required)
        
 
-##Search [/api/search]
-
-### Search legal entities [GET /api/pis/legal_entities{?type,settlement_id,settlement,name,page,page_size}]
-Service to search legal entities
-
-+ Parameters
-    + type: MSP (string, optional) - legal entity type
-    + settlement_id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, optional) - name of settlement where legal entity is located
-    + settlement: `Луцьк` (string, optional) - name of settlement where division is located
-    + name: `Клініка1` (string, optional) - legal entity name
-    + page: 2 (number, optional) - page number
-    + page_size: 50 (number, optional) - A limit on the number of objects to be returned, between 1 and 300. Default: 50
-
-+ Request (application/json)
-
-+ Response 200 (application/json)
-    + Attributes (`Response_Collection_V2`)
-        + data (array[`Search_Legal_Entity_Response`])
-
-### Search divisions [GET /api/pis/divisions{?type,name,area,region,settlement_id,settlement,location_north,location_east,location_south,location_west,healthcare_service_speciality_type,healthcare_service_providing_condition,legal_entity_id,legal_entity_name,legal_entity_type,page,page_size}]
-Service to search divisions
-
-+ Parameters
-    + type: CLINIC (enum, optional) - `Dictionary DIVISION_TYPE`
-    + name: Відділення1 (string, optional) - the name of division
-    + area:`Волинська` (string, optional) - the name of region where division is located
-    + region: `Луцький` (string, optional) - the name of district where division is located
-    + settlement_id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, optional) - name of settlement where division is located
-    + settlement: `Луцьк` (string, optional) - the name of settlement where division is located
-    + location_north: 30.1233 (number, optional)
-    + location_east: 50.32423 (number, optional)
-    + location_south: 50.32423 (number, optional)
-    + location_west: 50.32423 (number, optional)
-    + `healthcare_service_speciality_type`: `FAMILY_DOCTOR` (string, optional) - specialization of healthcare services provided in this division
-    + `healthcare_service_providing_condition`: OUTPATIENT (string, optional) - conditions of healthcare service provided in this division
-    + `legal_entity_id`: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, optional) - legal entity ID
-    + `legal_entity_name`: `Аптека 199` (string, optional) - legal_entity name
-    + `legal_entity_type`: MSP (string, optional) - legal entity type
-    + page: 2 (number, optional) - page number
-    + page_size: 50 (number, optional) - A limit on the number of objects to be returned, between 1 and 300. Default: 50
-
-+ Request (application/json)
-
-+ Response 200 (application/json)
-    + Attributes (`Response_Collection_V2`)
-        + data (array[`Search_Divisions_Response`])
-
-### Search practitioners [GET /api/pis/practitioners{?full_name,overlimit,speciality,employee_type,providing_condition,division_id,division_name,area,region,settlement_id,settlement,location_north,location_east,location_south,location_west,legal_entity_id,legal_entity_name,page,page_size}]
-Service to search practitioners
-
-+ Parameters
-    + full_name: `Іванов Іван Іванович` (string, optional) - practitioner full name
-    + overlimit: false (boolean, optional) - flag that shows whether it is exceeded number of declarations or not
-    + speciality: `FAMILY_DOCTOR` (string, required) - specialization of healthcare services provided by practitioner
-    + employee_type: DOCTOR (string, optional)
-    + providing_condition: OUTPATIENT (string, optional) - conditions of healthcare service provided by practitioner
-    + division_id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, optional) - division identifier
-    + division_name: `Відділення1` (string, optional) - division name
-    + area: `Волинська` (string, optional) - name of region where division is located
-    + region: `Луцький` (string, optional) - name of district where division is located
-    + settlement_id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, optional) - name of settlement where division is located
-    + settlement: `Луцьк` (string, optional) - name of settlement where division is located
-    + location_north: 30.1233 (number, optional)
-    + location_east: 50.32423 (number, optional)
-    + location_south: 50.32423 (number, optional)
-    + location_west: 50.32423 (number, optional)
-    + legal_entity_id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, optional) - legal entity identifier
-    + `legal_entity_name`: `Клініка1` (string, optional) - legal entity name
-    + page: 2 (number, optional) - page number
-    + page_size: 50 (number, optional) - A limit on the number of objects to be returned, between 1 and 300. Default: 50
-
-+ Request (application/json)
-
-+ Response 200 (application/json)
-    + Attributes (`Response_Collection_V2`)
-        + data (array[`Practitioner_map`])
-
 ##Bulk data export [/api/pis/bulk]
 
 ### Get parties [GET /api/pis/bulk/parties{?depth}]
@@ -2650,29 +2573,6 @@ Get declaration limit and count per practitioner
 + sat (array, optional)
 + sun (array, optional)
 
-### `Search_Legal_Entity_Response`
-+ id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required)
-+ type: PRIMARY_CARE (string, required) - type of legal entity [PRIMARY_CARE/OUTPATIENT/PHARMACY]. MIS can't be created using this WS.
-+ status: ACTIVE (string, required)
-+ `edr` (EDR_data, required)
-+ edrpou: 54323454 (string, required) -  Unified Register of Businesses and Organizations
-+ residence_address (Address, required) - address where the legal entity is physically located
-+ phones (array[`Phone`], required)
-+ email: email@example.com (string, required) - email to contact person in charge from legal entity
-+ website: `www.msp.com.ua` (string, optional) - legal entity website
-+ accreditation (MSP_Accreditation, optional)
-+ license (object)
-    + id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string)
-    + type: MSP (string, optional) - License type `Dictionary LICENSE_TYPE`
-    + license_number: fd123443 (string, optional)
-    + issued_by: Кваліфікацйна комісія (string)
-    + issued_date: `2017-02-28` (string)
-    + expiry_date: `2017-02-28` (string)
-    + `active_from_date`: `2017-02-28` (string)
-    + what_licensed: реалізація наркотичних засобів (string, optional)
-    + order_no: ВА43234 (string) - номер наказу
-+ `archive`(array[`Archive`], optional)
-
 ### `EDR_data`
 + id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required)
 + name: Клініка Ноунейм (string, required) - full official name of legal entity also the name to show on public sources [as map, portal etc]
@@ -2699,19 +2599,6 @@ Get declaration limit and count per practitioner
 ### `Archive`
 + date: `2017-02-28` (string, required) - the date when paper documents were transferred to archive
 + place: `вул. Грушевського 15` (string, required) - the address of building where paper documents are
-
-### `Search_Divisions_Response`
-+ id: `asSbcy12sYs8c` (string, required)
-+ type: CLINIC, AMBULANT_CLINIC, FAP (enum, required)
-+ name: `Aдоніс` (string, required)
-+ status: ACTIVE (string, optional)
-+ addresses (array[`Address`], required)
-+ phones (array[`Phone`], required)
-+ email: email@example.com (string, required) - division's email
-+ working_hours (`workinghours`) - optional field, business hours by each day weekly, doesn't make any influence on business process and will be shown on portal and map.
-+ location (Location, optional) - optional field. geographical location, if it's empty, division won't be shown on a map.
-+ `legal_entity` (`Legal_entity_map`, required)
-+ `healthcare_services` (array[`Healthcare_service_map`], required, fixed-type)
 
 ### `Healthcare_service_map`
 + `speciality_type`: `FAMILY_DOCTOR` (string, required) - `Dictionary SPECIALITY_TYPE`

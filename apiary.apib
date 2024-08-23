@@ -55,6 +55,46 @@ This endpoint should be reachable only by the eHealth authorization front-end ap
                 - REQUEST_APPS
                 - RESEND_OTP
 
+### Authorize an Approval [POST /oauth/apps/authorize]
+This endpoint should be reachable only by the eHealth authorization front-end application.
+It will update or create Approval. It's idempotent.
+
+After creating Approval user should be redirected to `redirect_url` with `code` query parameter.
+
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer 432fsdfg543252345tfgdsgdft2345 - access_token with the `app:authorize` scope
+
+
+    + Attributes
+        + app (required)
+            + client_id: `client-1380df72-275a-11e7-93ae-92361f002671` (string, required) - ID of client that is granted with access to user's resources.
+            + scope: `notebooks:read notebooks:create patients:read` (string, required) - List of scopes that are granted to the client on the user's behalf.
+            + `redirect_uri`: `http://example.com/my_success_login_page` (string, required) - URL of client where user will be redirected on Approval creation.
+
++ Response 201 (application/json)
+    + Headers
+
+            Location: http://example.com/my_success_login_page?code=authorization_code-cTdHUE9jN29yWHo0VTAwL3lwSVRoUT09
+
+    + Attributes (`Response_OK`)
+        + meta (`Response__Meta`)
+            + code: 201 (number)
+        + data (`Approval_Response_v2`)
+        + urgent
+            + `redirect_uri`: `http://example.com/my_success_login_page?code=authorization_code-cTdHUE9jN29yWHo0VTAwL3lwSVRoUT09`
+
++ Response 200 (application/json)
+    + Headers
+
+            Location: http://example.com/my_success_login_page?code=authorization_code-cTdHUE9jN29yWHo0VTAwL3lwSVRoUT09
+
+    + Attributes (`Response_OK`)
+        + data (`Approval_Response`)
+
+
 ### Confidant patient login [POST /api/pis/confidant/login]
 
 This endpoint is used to create authorization token for confidant person to approve or reject scopes request for related person
@@ -146,6 +186,35 @@ Look at [**Dummy patient sign-up validation**](#reference/private.-dummy-methods
         + error (Response__Error, fixed-type)
             + type: `conflict`
             + message: `User with such tax_id already exists` (string)
+
+### Verify phone number [POST /api/sms_verifications]
+
+This endpoint is used to verify submitted phone number as a part of person registration process. 
+
+In case number needs verification - generate and send OTP, in case phone does not need verification - return OK.
+
++ Request (application/json)
+
+    + Headers
+            Authorization: Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJjYWJpbmV0LXJlZ2lzdHJhdGlvbiIsImVtYWlsIjoiYXByb2tvcHBoYXJtZGlyNEB1a3IubmV0IiwiZXhwIjoxNjgyNjkzNTc3LCJpYXQiOjE2ODI2NjQ3NzcsImlzcyI6IkVIZWFsdGgiLCJqdGkiOiIxOTAyYTkyYS00MDcyLTQ3MWEtYmU4NS1iZWU0MzQzNmNlYjEiLCJuYmYiOjE2ODI2NjQ3NzYsInN1YiI6ImFwcm9rb3BwaGFybWRpcjRAdWtyLm5ldCIsInR5cCI6ImFjY2VzcyJ9.EXTuYRQenjqzsjNAJ5agmEbSHcg_XRKwc3VOGAtSjfMOy4uIJ_BBMUeUWSVzy4_OezPjEIiVcnaLTN4pZbtgow
+           
+            
+    + Attributes (object)
+        + `factor`: `+380501112233` (string, required) - phone number that needs to be verified.
+        + `type`: SMS (enum, required) - verification type.
+            - SMS
+        + `content_hash`: `76dea970d89477ed03dc5289f297443c` (string, optional) - MD5 hash of content with phone number that needs to be verified.
+
++ Response 200 (application/json)
+    + Attributes (`Response_OK`)
+        + meta (`Response__Meta`)
+            + code: 200 (number)
+        + data (object, required)
+            + `result`: `OTP sent` (enum, required) - phone verification result.
+                - `OTP sent`
+                - `Verified`
+        + urgent (object, required)
+            + `next_step`: `REQUEST_OTP` (string, optional) - next step that needs to be taken in phone verification process.
 
 ### Patient sign-up registration [POST /api/pis/register]
 
@@ -596,80 +665,6 @@ User will see rendered registration page signed on PIS side and provided via que
 
     + Headers
 
-
-##oAuth [/api/oauth]
-
-### Authorize an Approval [POST /oauth/apps/authorize]
-This endpoint should be reachable only by the eHealth authorization front-end application.
-It will update or create Approval. It's idempotent.
-
-After creating Approval user should be redirected to `redirect_url` with `code` query parameter.
-
-
-+ Request (application/json)
-    + Headers
-
-            Authorization: Bearer 432fsdfg543252345tfgdsgdft2345 - access_token with the `app:authorize` scope
-
-
-    + Attributes
-        + app (required)
-            + client_id: `client-1380df72-275a-11e7-93ae-92361f002671` (string, required) - ID of client that is granted with access to user's resources.
-            + scope: `notebooks:read notebooks:create patients:read` (string, required) - List of scopes that are granted to the client on the user's behalf.
-            + `redirect_uri`: `http://example.com/my_success_login_page` (string, required) - URL of client where user will be redirected on Approval creation.
-
-+ Response 201 (application/json)
-    + Headers
-
-            Location: http://example.com/my_success_login_page?code=authorization_code-cTdHUE9jN29yWHo0VTAwL3lwSVRoUT09
-
-    + Attributes (`Response_OK`)
-        + meta (`Response__Meta`)
-            + code: 201 (number)
-        + data (`Approval_Response_v2`)
-        + urgent
-            + `redirect_uri`: `http://example.com/my_success_login_page?code=authorization_code-cTdHUE9jN29yWHo0VTAwL3lwSVRoUT09`
-
-+ Response 200 (application/json)
-    + Headers
-
-            Location: http://example.com/my_success_login_page?code=authorization_code-cTdHUE9jN29yWHo0VTAwL3lwSVRoUT09
-
-    + Attributes (`Response_OK`)
-        + data (`Approval_Response`)
-
-
-
-## OTP Verification [/api/verifications]
-
-### Verify phone number [POST /api/sms_verifications]
-
-This endpoint is used to verify submitted phone number as a part of person registration process. 
-
-In case number needs verification - generate and send OTP, in case phone does not need verification - return OK.
-
-+ Request (application/json)
-
-    + Headers
-            Authorization: Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJjYWJpbmV0LXJlZ2lzdHJhdGlvbiIsImVtYWlsIjoiYXByb2tvcHBoYXJtZGlyNEB1a3IubmV0IiwiZXhwIjoxNjgyNjkzNTc3LCJpYXQiOjE2ODI2NjQ3NzcsImlzcyI6IkVIZWFsdGgiLCJqdGkiOiIxOTAyYTkyYS00MDcyLTQ3MWEtYmU4NS1iZWU0MzQzNmNlYjEiLCJuYmYiOjE2ODI2NjQ3NzYsInN1YiI6ImFwcm9rb3BwaGFybWRpcjRAdWtyLm5ldCIsInR5cCI6ImFjY2VzcyJ9.EXTuYRQenjqzsjNAJ5agmEbSHcg_XRKwc3VOGAtSjfMOy4uIJ_BBMUeUWSVzy4_OezPjEIiVcnaLTN4pZbtgow
-           
-            
-    + Attributes (object)
-        + `factor`: `+380501112233` (string, required) - phone number that needs to be verified.
-        + `type`: SMS (enum, required) - verification type.
-            - SMS
-        + `content_hash`: `76dea970d89477ed03dc5289f297443c` (string, optional) - MD5 hash of content with phone number that needs to be verified.
-
-+ Response 200 (application/json)
-    + Attributes (`Response_OK`)
-        + meta (`Response__Meta`)
-            + code: 200 (number)
-        + data (object, required)
-            + `result`: `OTP sent` (enum, required) - phone verification result.
-                - `OTP sent`
-                - `Verified`
-        + urgent (object, required)
-            + `next_step`: `REQUEST_OTP` (string, optional) - next step that needs to be taken in phone verification process.
 
 ##Approvals [/api/pis/apps]
 

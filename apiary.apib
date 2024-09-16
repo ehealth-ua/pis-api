@@ -1465,11 +1465,183 @@ Get declaration limit and count per practitioner
     + Attributes (`Response_Collection_wo_Paging_with_Date`)
         + data (array[`Declarations_limit_bulk`])
 
+## Get Events [/api/events]
+
+### Get events by ID [GET /api/events/{id}]
+
+This method is used to obtain events by id.
+
+Object `properties` may has a different fields depending on the `entity_type`. 
+
+Entity_type|Possible fields
+----------|-----------
+Approval|`status`
+CarePlan|`status`
+CarePlan Activity|`detail.status`
+Contract|`is_suspended` or `status`
+ContractRequest|`status`
+Declaration|`status`
+Division|`dls_verified`
+Employee|`status`
+EmployeeRequest|`status` and `employee_id`
+MedicationDispense|`status`
+MedicationRequest|`status`
+LegalEntity|`status`
+Person|`verification_status` or `status`
+Preperson|`status`
+ServiceRequest|`program_processing_status` or `status`
+DeviceRequest |`status`
+DeviceDispense|`status`
+
++ Parameters
+    + `id`: `a89f6a26-4221-4597-a1d2-542d5e40b565` (string, required)
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer c2778f3064753ea70de870a53795f5c9
+            X-Custom-PSK: a2aa05c76f3f2d91870f923a53cc8aa8f23bbc01a8238d1c2c26d4299715a7e4
+
++ Response 200 (application/json)
+    + Attributes (`Response_OK`)
+         + data (array[`Get_events`])
+
+### Get events list [GET /api/events/{?date,date_to,event_type,entity_type,attribute_name,new_value,page,page_size}]
+
+This method is used to obtain list of events with filters.
+
+The period of events provided in response is also limited by configuration, not only by the request parameters.
+
+Object `properties` may has a different fields depending on the `entity_type`. 
+
+Entity_type|Possible fields
+----------|-----------
+Approval|`status`
+CarePlan|`status`
+CarePlan Activity|`detail.status`
+Contract|`is_suspended` or `status`
+ContractRequest|`status`
+Declaration|`status`
+Division|`dls_verified`
+Employee|`status`
+EmployeeRequest|`status` and `employee_id`
+MedicationDispense|`status`
+MedicationRequest|`status`
+LegalEntity|`status`
+Person|`verification_status` or `status`
+Preperson|`status`
+ServiceRequest|`program_processing_status` or `status`
+DeviceRequest |`status`
+DeviceDispense|`status`
+
++ Parameters
+    + date: `2017-12-07T12:00:00` (datetime, optional) - evets created between datetime and datetime plus 3 hours (or 'date_to' if included, but max 3 hours).
+    + date_to: `2017-12-07T15:00:00` (datetime, optional) - evets created from 'date' (if included) and before datetime, max difference 3 hours.
+    + event_type: `StatusChangeEvent` (enum, optional) - type of event.
+    + entity_type: `MedicationDispense` (enum, optional) - type of entity.
+    + attribute_name: `status` (string, optional) - name of event in properties.
+    + new_value: `COMPLETED` (enum, optional)- new status of entity.
+    + page: 2 (number, optional) - Page number.
+    + page_size: 50 (number, optional) - A limit on the number of objects to be returned, between 1 and 300. Default: 50
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer c2778f3064753ea70de870a53795f5c9
+            X-Custom-PSK: a2aa05c76f3f2d91870f923a53cc8aa8f23bbc01a8238d1c2c26d4299715a7e4
+
++ Response 200 (application/json)
+    + Attributes (`Response_Collection_V2`)
+         + data (array[`Get_events`])
+
+## UAaddresses [/api]
+
+### List of Streets by Search Params [GET /streets{?settlement_id,name,type}]
+
++ Parameters
+    + settlement_id: `eea333b5-e26d-4e3e-92e2-2ab37b131502` (string, required) - Settlement identifier
+    + name: `Незалежності` (string, optional) - Street name
+    + type: STREET (string, optional) - Street type (Dictionary STREET_TYPE)
+
++ Response 200 (application/json)
+    + Attributes (Response_Collection)
+        + meta (Response_Meta)
+            + code: 200 (number)
+        + data (array[`Response_Street`])
+
+### List Of Cities By Search Params [GET /settlements{?name,region,district,koatuu,mountain_group,type}]
+
++ Parameters
+    + name: Новосілки (string, optional) - Name of searching settlement
+    + region: Київ (string, required) - Province name
+    + district: `Києво-Святошинський` (string, optional) - Administrative district of province
+    + koatuu: `2625286301` (string, optional) - koatuu classifier id
+    + `mountain_group`: true (boolean, optional) - flag whether settlements belongs to mountian group
+    + type: `С` (string, optional) - Settlement type
+    
++ Response 200 (application/json)
+    + Attributes (Response_Collection)
+        + meta (Response_Meta)
+            + code: 200 (number)
+        + data (array[`Response_Settlement`])
+
+### List Of Regions By Search Params [GET /regions{?name,koatuu}]
++ Parameters
+    + name: Київ (string, optional) - Province name
+    + koatuu: `2625286301` (string, optional) - koatuu classifier id
+
++ Response 200 (application/json)
+    + Attributes (Response_Collection)
+        + meta (Response_Meta)
+            + code: 200 (number)
+        + data (array[`Response_Region`])
+
+### List Of Districts By Search Params [GET /districts{?region_id,region,name,koatuu}]
++ Parameters 
+    + region_id: `290f1ee-6c54-4b01-90e6-d701748f0851` (string) - Province id
+    + region: Київ (string) - Province name
+    + name: `Києво-Святошинський` (string, optional) - Administrative district of province
+    + koatuu: `2625286301` (string, optional) - koatuu classifier id
+
++ Response 200 (application/json)
+    + Attributes (Response_Collection)
+        + meta (Response_Meta)
+            + code: 200 (number)
+        + data (array[`Response_District`])
+
+### Districts by Region [GET /details/region/290f1ee-6c54-4b01-90e6-d701748f0851/districts{?name,koatuu}]
++ Parameters
+    + name: `Києво-Святошинський` (string, optional) - Filter by district name
+    + koatuu: `2625286301` (string, optional) - koatuu classifier id
+
++ Response 200 (application/json)
+    + Attributes (Response_Collection)
+        + meta (Response_Meta)
+            + code: 200 (number)
+        + data (array[`Response_District_Short`])
+
+### Settlements by district [GET /details/district/290f1ee-6c54-4b01-90e6-d701748f0851/settlements{?name,koatuu}]
+
+Get list of cities by district
+
++ Parameters
+    + name: `Київ` (string, optional) - Filter by settlement name
+    + koatuu: `2625286301` (string, optional) - koatuu classifier id
+
++ Response 200 (application/json)
+    + Attributes (Response_Collection)
+        + meta (Response_Meta)
+            + code: 200 (number)
+        + data (array[`Response_Settlement_Short`])
+
 # Data Structures
 
 ### `Response_OK`
 + meta (Response__Meta, fixed-type)
 + data (object, fixed-type)
++ paging (Response_Pagination, fixed-type)
 
 ### `Response__Meta`
 + code: 200 (number) - HTTP response code.
@@ -1478,6 +1650,16 @@ Get declaration limit and count per practitioner
     - object (string) - `data` attribute is a JSON object.
     - list (string) - `data` attribute is a list.
 + `request_id`: `6617aeec-15e2-4d6f-b9bd-53559c358f97#17810` (string) - [Request ID](https://docs.apimanifest.apiary.io/#introduction/interacting-with-api/request-id). Send it with `X-Request-ID` header.
+
+### `Response_Meta`
++ code: 200 (number) - HTTP response code.
++ url: http://example.com/resource (string) - URL to requested resource.
++ type (enum) - Type of data that is located in `data` attribute.
+    - object (string) - `data` attribute is a JSON object.
+    - list (string) - `data` attribute is a list.
++ code: 200 (number) - HTTP response code.
++ `idempotency_key`: `idemp-ssjssdjoa8308u0us0` (string, optional) - [Idempotency key](http://docs.apimanifest.apiary.io/#introduction/optional-features/idempotent-requests). Send it trough `X-Idempotency-Key` header.
++ `request_id`: `req-adasdoijasdojsda` (string) - [Request ID](http://docs.apimanifest.apiary.io/#introduction/interacting-with-api/request-id). Send it with `X-Request-ID` header.
 
 ### `Response__Meta_Date`
 + code: 200 (number) - HTTP response code.
@@ -2916,3 +3098,77 @@ Get declaration limit and count per practitioner
     - OTP
     - OFFLINE
 + phone_number: `+38093*****81` (string, optional)
+
+### `Response_Street`
++ aliases: Світлицького, Шевченко
++ id: `d290f1ee-6c54-4b01-90e6-d701748f0851` (string) - Address ID
++ settlement_id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string) - Settlement ID
++ type: STREET (string, required) - Type of street, validation with STREET_TYPE dictionary
+
+### `Response_Settlement_Short`
++ id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string) - Settlement ID
++ settlement_name: Новосілки (string) - City name
+
+### `Response_Settlement`
++ id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string) - Settlement ID
++ region: Київ (string) -  Region name
++ region_id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b8b` (string) - Region ID
++ district: `Києво-Святошинський` (string) - District name
++ district_id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b8b` (string) - District ID
++ name: Новосілки (string) - City name
++ mountain_group: 0 (string) - Mountain group
++ type: `CITY` (string, optional) - Settlement type
++ koatuu: 3520380802 (string, optional) - KOATUU code
++ parent_settlement: Берегово (string, optional) - Parent settlement name
++ parent_settlement_id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b8b` (string) - Parent settlement ID
+
+### `Response_Region`
++ id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string) - Region ID
++ region: Київ (string) -  Region name
++ koatuu: 3520380802 (string, optional) - KOATUU code
+
+### `Response_District_Short`
++ id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string) - District ID
++ district: `Києво-Святошинський` (string) - District name
+
+### `Response_District`
++ id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string) - District ID
++ region: Київ (string) -  Region name
++ district: `Києво-Святошинський` (string) - District name
++ koatuu: 3520380802 (string, optional) - KOATUU code
+
+### `Create_Settlement`
++ settlement (object)
+    + area_id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required) -  Area ID
+    + name: Новосілки (string, required) - City name
+
+### `Create_Street`
++ street (object)
+    + settlement_id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required) - Settlement ID
+    + type: STREET (string, required) - Type of street, validation with STREET_TYPE dictionary
+    + name: Світлицького (string, required) - The name of the street
+
+### `Response_Pagination`
++ limit: 20 (number) - A limit on the number of objects to be returned, between 1 and 100. Default: 50.
++ cursors (object)
+    + `starting_after`: 56c31536a60ad644060041af (string) - A cursor for use in pagination. An object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `obj_foo`, your subsequent call can include `starting_after=obj_foo` in order to fetch the next page of the list.
+    + `ending_before`: 56c31536a60ad644060041aa (string) - A cursor for use in pagination. An object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with `obj_bar`, your subsequent call can include `ending_before=obj_bar` in order to fetch the previous page of the list.
++ size: 1000 (number) - Total number of objects in collection.
++ has_more: false (boolean) - Is this collection have more data to load in the same style as last request loaded it.
+
+## Events
+### `Get_events`
++ id: `df9f70ee-4b12-4740-b0f5-bb5aea116863` (string, required) - Event identifier
++ event_type: `StatusChangeEvent` (string, required) - the name of event
++ entity_type: `MedicationDispense` (string, required) - the name of entity that was changed
++ entity_id: `df9f70ee-4b12-4740-b0f5-bb5aea116863` (string, required) - uuid of changed object
++ properties (object, required)
+    + status (object, optional) - may has a different name depending on the `entity_type` (`program_processing_status`, `detail.status`, `is_suspended`, `dls_verified`, `verification_status`, `is_blocked`)
+        + include (`Event_properties`, required)
+    + `employee_id` (object, optional) - field is required if parameter `entity_type = EmployeeRequest`
+        + new_value: `e1453f4c-1077-4e85-8c98-c13ffca0063e` (string)
++ event_time: `2017-04-20T19:14:13Z` (string, required) - time, when the entity was changed
++ changed_by: `df9f70ee-4b12-4740-b0f5-bb5aea116863` (string, required) - uuid of the person who changed the entity
+
+### `Event_properties`
++ new_value: `COMPLETED` (string) - new status of entity

@@ -1636,6 +1636,40 @@ Get list of cities by district
             + code: 200 (number)
         + data (array[`Response_Settlement_Short`])
 
+## Dictionaries [/api/dictionaries]
+
+Methods is used to retreive eHealth dictionaries
+
+Response **$.data** object contains a list of all dictionaries.
+
+### Get dictionaries v2 [GET /api/v2/dictionaries{?name,is_active,value_code,value_description,value_is_active}]
+Each dictionary is an object that contains not only a code and description of a value, but also a status of the value. In addition, it can represent hierarchical dictionaries with subordinate (child) values
+
++ Parameters
+    + `name`: `eHealth/ICF/classifiers` (string, optional) - dictionary name
+    + `is_active`: true (boolean, optional) - dictionary status
+    + `value_code`: `b1142` (string, optional) - code of the dictionary value
+    + `value_description`: `Орієнтація в особі` (string, optional) - description of the dictionary value
+    + `value_is_active`: true (string, optional) - status of the dictionary value
+
++ Request (application/json)
+
+    + Headers
+        X-Custom-PSK: a2aa05c76f3f2d91870f923a53cc8aa8f23bbc01a8238d1c2c26d4299715a7e4
+
++ Response 200 (application/json)
+    + Attributes (`Response_OK`)
+        + data (array[`Dictionary_v2`])
+            + (object)
+                + include `Dictionary_v2`
+                + name: `eHealth/ICPC2/condition_codes` (string, required) - Unique dictionary name
+                + description: `Коди станів за ICPC2` (string, required) - dictionary description for a user
+                + values (array, required)
+                    + (Dictionary_value)
+                        + code: `D88` (string, required) - code of the dictionary value
+                        + description: `Апендицит` (string, required) - description of the code
+
+
 # Data Structures
 
 ### `Response_OK`
@@ -3155,6 +3189,37 @@ Get list of cities by district
     + `ending_before`: 56c31536a60ad644060041aa (string) - A cursor for use in pagination. An object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with `obj_bar`, your subsequent call can include `ending_before=obj_bar` in order to fetch the previous page of the list.
 + size: 1000 (number) - Total number of objects in collection.
 + has_more: false (boolean) - Is this collection have more data to load in the same style as last request loaded it.
+
+## Dictionaries
+### `Dictionary`
++ name: DOCUMENT_TYPE (string, required) - Unique dictionary name
++ values (object)
+    + key: value (string, optional) - List of dictionary entries as Key:Value pairs
++ labels (array)
+    - SYSTEM
+    - EXTERNAL
++ is_active: true (boolean, required)
+
+### `Dictionary_value`
++ code: `b1142` (string, required) - code of the dictionary value
++ description: `Орієнтація в особі` (string, required) - description of the code
++ is_active: true (boolean, required) - status of the dictionary value
++ child_values(array) - subordinate values of the dictionary
+
+### `Dictionary_v2`
++ name: `eHealth/ICF/classifiers` (string, required) - Unique dictionary name
++ description: `Класифікатори МКФ` (string, required) - dictionary description for a user
++ values (array, required)
+    + (Dictionary_value)
+        + child_values (array)
+            + (object)
+                + include `Dictionary_value`
+                + code: `b11429` (string, required) - code of the dictionary value
+                + description: `Орієнтація в особі неуточнена` (string, required) - description of the code
++ labels (array)
+    - SYSTEM
+    - EXTERNAL
++ is_active: true (boolean, required)
 
 ## Events
 ### `Get_events`

@@ -688,7 +688,7 @@ Approvals are filtered by user from Authorization token.
             api-key: uXhEczJ56adsfh3Ri9SUkc4en
 
 + Response 200 (application/json)
-    + Attributes (`Response_Collection`)
+    + Attributes (`Response_Collection_V2`)
         + data (array[`Approval_Response`])
 
 ### Get Approval details [GET /api/pis/apps/{id}]
@@ -708,7 +708,7 @@ Approval is filtered by user from Authorization token.
             api-key: uXhEczJ56adsfh3Ri9SUkc4en
 
 + Response 200 (application/json)
-    + Attributes (`Response_OK`)
+    + Attributes (`Response__Process_OK`)
         + data (`Approval_Response`)
 
 ### Delete Approval [DELETE /api/pis/apps/{id}]
@@ -746,7 +746,7 @@ After documents upload to urls, [Complete Person documents upload](#reference/pu
             api-key: uXhEczJ56adsfh3Ri9SUkc4en
 
 + Response 201 (application/json)
-    + Attributes (`Response_OK`)
+    + Attributes (`Response__Process_OK`)
         + meta (`Response__Meta`)
             + code: 201 (number)
         + data (array[`media_content`])
@@ -764,7 +764,7 @@ Endpoint checks list of documents that needs to be uploaded for person. In case 
             api-key: uXhEczJ56adsfh3Ri9SUkc4en
 
 + Response 200 (application/json)
-    + Attributes (`Response_OK`)
+    + Attributes (`Response__Process_OK`)
         + meta (`Response__Meta`)
             + code: 200 (number)
         + data (array[`media_content`])
@@ -782,7 +782,7 @@ This WS designed to get information of person by token.
             api-key: uXhEczJ56adsfh3Ri9SUkc4en
 
 + Response 200 (application/json)
-    + Attributes (`Response_OK`)
+    + Attributes (`Response__Process_OK`)
         + data (`pis_person_response`)
        
 
@@ -797,7 +797,7 @@ This method allows to find the active person's authentication methods.
             api-key: uXhEczJ56adsfh3Ri9SUkc4en
 
 + Response 200 (application/json)
-    + Attributes (`Response_OK`)
+    + Attributes (`Response__Process_OK`)
         + data (array[`Person_auth_methods`, `Person_auth_methods_v2`])
 
 + Response 403 (application/json)
@@ -821,7 +821,7 @@ This WS designed to get current user's person verification status & data and rel
      
     
 + Response 200 (application/json)
-    + Attributes (`Response_OK`)
+    + Attributes (`Response__Process_OK`)
          + data (object)
              + `person_verification` (object, required) 
                 + include (`Person_Verification_Details`)
@@ -985,7 +985,7 @@ Use this method to initialize creation of Person request to update the person de
         + `process_disclosure_data_consent`: true (boolean, required)
 
 + Response 201 (application/json)
-    + Attributes (`Response_OK`)
+    + Attributes (`Response__Process_OK`)
         + meta (`Response__Meta`)
             + code: 201 (number)
         + data (object, required)
@@ -1013,7 +1013,7 @@ Use this method to compete Person request to update the person details according
         + `signed_content_encoding`: `base64` (string, required) - signed content encoding type.
 
 + Response 200 (application/json)
-    + Attributes (`Response_OK`)
+    + Attributes (`Response__Process_OK`)
         + meta (`Response__Meta`)
             + code: 200 (number)
         + data (object, required)
@@ -1065,7 +1065,7 @@ If the request has been cleared of personal patient data due to security require
     + id: `7e9cffd9-c75f-45fb-badf-6e8d20b6a8a8` (string, required)
 
 + Response 200 (application/json)
-    + Attributes (`Response_OK`)
+    + Attributes (`Response__Process_OK`)
         + meta (`Response__Meta`)
             + code: 200 (number)
         + data (object, required)
@@ -1088,7 +1088,7 @@ This WS designed to reject person requests previously created by patient.
             Authorization: Bearer c2778f3064753ea70de870a53795f5c9
 
 + Response 200 (application/json)
-    + Attributes (`Response_OK`)
+    + Attributes (`Response__Process_OK`)
         + data (object, required)
             + include `Person_request_details`
 
@@ -1108,7 +1108,7 @@ Current WS allows to see details of declaration knowing its' id.
     + id: 7e9cffd9-c75f-45fb-badf-6e8d20b6a8a8 (uuid)
 
 + Response 200 (application/json)
-    + Attributes (`Response_OK`)
+    + Attributes (`Response__Process_OK`)
         + data (`Declaration_Details_PIS`)
         + urgent (object, required)
             + links (array[`signed_content`], optional)
@@ -1151,7 +1151,7 @@ Patient can terminate active declaration using this method.
         + reason_description: `Неякісне обслуговування` (string, optional)
 
 + Response 200 (application/json)
-    + Attributes (`Response_Collection_V2`)
+    + Attributes (`Response__Process_OK`)
         + data (`Declaration_Details_terminated`)
         
 
@@ -1172,7 +1172,7 @@ If the request has been cleared of personal patient data due to security require
     + id: 7e9cffd9-c75f-45fb-badf-6e8d20b6a8a8 (uuid)
 
 + Response 200 (application/json)
-    + Attributes (`Response_OK`)
+    + Attributes (`Response__Process_OK`)
         + data (`Declaration_request_details`, required)
         + urgent (object, required)
             + `authentication_method_current` (object, required)
@@ -1223,7 +1223,7 @@ This WS allows patient to register new declaration request
         + include `Create_Declaration_Request_PIS`
 
 + Response 201 (application/json)
-    + Attributes (`Response_OK`)
+    + Attributes (`Response__Process_OK`)
         + data (`Create_Declaration_Request_Response_PIS`)
 
 ### Sign Declaration request [PATCH /api/pis/declaration_requests/{id}/actions/sign]
@@ -1241,7 +1241,7 @@ This WS allows patient to sign previously created declaration request
         + `signed_content_encoding`: `base64` (string, required) - signed content encoding type.
 
 + Response 201 (application/json)
-    + Attributes (`Response_OK`)
+    + Attributes (`Response__Process_OK`)
         + data (`Sign_Declaration_Request_Response_PIS`)
 
 ### Reject Declaration request  [PATCH /api/pis/declaration_requests/{id}/actions/reject]
@@ -1258,7 +1258,7 @@ This WS is designed to reject previously created Declaration Request by patient
             api-key: uXhEczJ56adsfh3Ri9SUkc4en
 
 + Response 201 (application/json)
-    + Attributes (`Response_OK`)
+    + Attributes (`Response__Process_OK`)
         + data (`Declaration_request_details`, required)
        
 
@@ -1412,7 +1412,7 @@ DeviceDispense|`status`
             X-Custom-PSK: a2aa05c76f3f2d91870f923a53cc8aa8f23bbc01a8238d1c2c26d4299715a7e4
 
 + Response 200 (application/json)
-    + Attributes (`Response_OK`)
+    + Attributes (`Response__Process_OK`)
          + data (array[`Get_events`])
 
 ### Get events list [GET /api/events/{?date,date_to,event_type,entity_type,attribute_name,new_value,page,page_size}]
@@ -1567,7 +1567,7 @@ Each dictionary is an object that contains not only a code and description of a 
         X-Custom-PSK: a2aa05c76f3f2d91870f923a53cc8aa8f23bbc01a8238d1c2c26d4299715a7e4
 
 + Response 200 (application/json)
-    + Attributes (`Response_OK`)
+    + Attributes (`Response__Process_OK`)
         + data (array[`Dictionary_v2`])
             + (object)
                 + include `Dictionary_v2`

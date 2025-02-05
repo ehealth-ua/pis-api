@@ -48,7 +48,7 @@ This endpoint should be reachable only by the eHealth authorization front-end ap
         + meta (Response__Meta)
             + code: 201 (number)
         + data (Access_Token)
-            + urgent (object, required)
+        + urgent (object, required)
             + `next_step`: `REQUEST_FACTOR` (enum, required) - Next step of authorization process.
                 - REQUEST_FACTOR
                 - REQUEST_OTP
@@ -348,8 +348,8 @@ Look at [**Dummy confidant patient sign-up registration**](#reference/private.-d
     + Attributes (object)
         + `person` (object, required)
             + include (`Person_Request_PIS`, required)
-        + `patient_signed`: true (boolean, required)
-        + `process_disclosure_data_consent`: true (boolean, required)
+        + `patient_signed`: true (boolean, required) - Person's evidence of sign the declaration request
+        + `process_disclosure_data_consent`: true (boolean, required) - Person's evidence of information about consent to data disclosure
         + `jwt`: `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNwLnZpcm55QGdtYWlsLmNvbSIsInRpbWVzdGFtcCI6IjIwMTgtMDItMjggMTA6Mzg6MDAifQ.LJRLTqK-zf9gxDNMONcI8cMCSYosDtmAIZqhzZUdhz4` (string, required)
 
 + Response 200 (application/json)
@@ -369,8 +369,8 @@ Look at [**Dummy confidant patient sign-up registration**](#reference/private.-d
     + Attributes (object)
         + `person` (object, required)
             + include `Person_Request_PIS`
-        + `patient_signed`: true (boolean, required)
-        + `process_disclosure_data_consent`: true (boolean, required)
+        + `patient_signed`: true (boolean, required) - Person's evidence of sign the declaration request
+        + `process_disclosure_data_consent`: true (boolean, required) - Person's evidence of information about consent to data disclosure
 
 + Response 201 (application/json)
     + Attributes (`Response_OK`)
@@ -393,8 +393,8 @@ Look at [**Dummy confidant patient sign-up registration**](#reference/private.-d
     + Attributes (object)
         + `person` (object, required)
             + include (`Person_Request_PIS_With_Confidant`, required)
-        + `patient_signed`: true (boolean, required)
-        + `process_disclosure_data_consent`: true (boolean, required)
+        + `patient_signed`: true (boolean, required) - Person's evidence of sign the declaration request
+        + `process_disclosure_data_consent`: true (boolean, required) - Person's evidence of information about consent to data disclosure
 
 + Response 200 (application/json)
     + Attributes (`Response_OK`)
@@ -411,8 +411,8 @@ Look at [**Dummy confidant patient sign-up registration**](#reference/private.-d
     + Attributes (object)
         + `person` (object, required)
             + include `Person_Request_PIS_With_Confidant`
-        + `patient_signed`: true (boolean, required)
-        + `process_disclosure_data_consent`: true (boolean, required)
+        + `patient_signed`: true (boolean, required) - Person's evidence of sign the declaration request
+        + `process_disclosure_data_consent`: true (boolean, required) - Person's evidence of information about consent to data disclosure
 
 + Response 201 (application/json)
     + Attributes (`Response_OK`)
@@ -981,8 +981,8 @@ Use this method to initialize creation of Person request to update the person de
     + Attributes (object)
         + `person` (object, required)
             + include `Update_Person_Request_PIS`
-        + `patient_signed`: false (boolean, required)
-        + `process_disclosure_data_consent`: true (boolean, required)
+        + `patient_signed`: false (boolean, required) - Person's evidence of sign the declaration request
+        + `process_disclosure_data_consent`: true (boolean, required) - Person's evidence of information about consent to data disclosure
 
 + Response 201 (application/json)
     + Attributes (`Response__Process_OK`)
@@ -2140,7 +2140,7 @@ Each dictionary is an object that contains not only a code and description of a 
     - active
 + scope (enum, required)
     - family_doctor
-+ `declaration_request_id`: `74a6fae6-4207-4e03-a136-f2e70c6b0c02` c
++ `declaration_request_id`: `74a6fae6-4207-4e03-a136-f2e70c6b0c02`
 + content: `Declaration content` (string, required) - HTML document that MUST be shown to a end-user and signed by hes key. - Should be defined on the client side.
 + inserted_at: `2017-03-02T10:45:16.000Z` (string, required)
 + updated_at: `2017-03-02T10:45:16.000Z` (string, optional)
@@ -2168,7 +2168,7 @@ Each dictionary is an object that contains not only a code and description of a 
         + expiry_date: `2017-02-28` (string, optional)
         + `active_from_date`: `2017-02-28` (string, required)
         + what_licensed: реалізація наркотичних засобів (string, optional)
-        + order_no: ВА43234 (string, required) - номер наказу
+        + order_no: ВА43234 (string, required) - Order number
     + license (object, required)
         + id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required)
 + email: `email@example.com` (string, required)
@@ -2206,9 +2206,9 @@ Each dictionary is an object that contains not only a code and description of a 
 + doctor (DoctorNew)
 
 ### DoctorNew
-+ educations (array[`Education`], required)  - освіта
-+ qualifications (array[`Qualification`], optional) - підвищення кваліфікації
-+ specialities (array[`Speciality`], required)  - блок інформації про отримання сертифікату спеціалісту та проходження атестацій
++ educations (array[`Education`], required)  - Information about the employee's education
++ qualifications (array[`Qualification`], optional) - Information about employee qualification improvement
++ specialities (array[`Speciality`], required)  - Block of information on obtaining a specialist certificate and passing attestations
 + science_degree (ScienceDegree, optional)
 
 ### ScienceDegree
@@ -2222,22 +2222,22 @@ Each dictionary is an object that contains not only a code and description of a 
 
 ### Speciality
 + speciality: THERAPIST (string, required) - `Dictionary SPECIALITY_TYPE`
-+ speciality_officio: true (boolean, required) - основна спеціалазація, лише одна має бути true
++ speciality_officio: true (boolean, required) - Main specialty, only one must be true
 + level: FIRST (string, required) - `Dictionary SPECIALITY_LEVEL`
 + `qualification_type`: AWARDING (string, required) - `Dictionary SPEC_QUALIFICATION_TYPE`
-+ attestation_name: Академія Богомольця (string, required) - орган що видав
-+ attestation_date: `2017-02-28` (string, required) - дата отримання
-+ valid_to_date: `2020-02-28` (string, optional) - дата дії до
++ attestation_name: Академія Богомольця (string, required) - Authority which issued the document
++ attestation_date: `2017-02-28` (string, required) - The date when document was issued
++ valid_to_date: `2020-02-28` (string, optional) - Document expiration date
 + certificate_number: AB/21331 (string, required)
 
 ### Qualification
 + type: SPECIALIZATION (string, required) - `Dictionary QUALIFICATION_TYPE`
 + institution_name: Академія Богомольця (string, required)
 + speciality: Педіатр (string, required)
-+ issued_date: `2017-02-28` (string, required) - дата отримання сертифікату
++ issued_date: `2017-02-28` (string, required) - Document issue date
 + certificate_number: `2017-02-28` (string, required)
-+ valid_to: `2017-02-28` (string, optional) - дійсний до
-+ additional_info: додаткова інофрмація (string, optional) - додаткова інформація
++ valid_to: `2017-02-28` (string, optional) - Document expiration date
++ additional_info: додаткова інофрмація (string, optional) - Additional information
 
 ### Education
 + country: UA (string, required) - `Dictionary COUNTRY`
@@ -2287,7 +2287,7 @@ Each dictionary is an object that contains not only a code and description of a 
 + tax_id: 3126509816 (string, optional)
 + phones (array[`Phone`], optional)
 + birth_settlement: Вінниця (string, required)
-+ birth_country: Україна (string, required) - країна народження
++ birth_country: Україна (string, required) - Country of birth
 
 ### `Person_Short_person_request`
 + first_name: Петро (string, required)
@@ -2296,10 +2296,10 @@ Each dictionary is an object that contains not only a code and description of a 
 
 ### `MSP_Accreditation`
 + category: SECOND (string, required) - `Dictionary ACCREDITATION_CATEGORY` category of accreditation legal entity. At least one of type must be present. Each type can be represented only once.
-+ issued_date: `2017-02-28` (string, optional) - дата видачі
++ issued_date: `2017-02-28` (string, optional) - The date when document was issued
 + expiry_date: `2017-02-28` (string, optional)
-+ order_no: fd123443 (string, required) - номер наказу МОЗ
-+ order_date: `2017-02-28` (string, required) - дата наказу МОЗ
++ order_no: fd123443 (string, required) - Ministry of Health order number
++ order_date: `2017-02-28` (string, required) - Ministry of Health order date
 
 ### `Division_Declaration`
 + id: `d290f1ee-6c54-4b01-90e6-d701748f0851` (string, required)
@@ -2339,7 +2339,7 @@ Each dictionary is an object that contains not only a code and description of a 
 + expiry_date: `2017-02-28` (string, optional)
 + `active_from_date`: `2017-02-28` (string, required)
 + what_licensed: реалізація наркотичних засобів (string, optional)
-+ order_no: ВА43234 (string, required) - номер наказу
++ order_no: ВА43234 (string, required) - Order number
 
 ### `Employee_Minimal`
 + id: `d290f1ee-6c54-4b01-90e6-d701748f0851` (string, required)
@@ -2371,7 +2371,7 @@ Each dictionary is an object that contains not only a code and description of a 
 + include `Declaration_Request_Public_ResponseV2`
 + division (`Division_Declaration`, required)
 + employee (`Employee_Minimal`, required)
-                + speciality: `FAMILY_DOCTOR` (string, required) - інформація про спеціальність лікаря
+                + speciality: `FAMILY_DOCTOR` (string, required) - Information about the employee's specialty
 + `legal_entity` (`Medical_Service_Provider`, required)
                 + id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required) 
 + seed: hash (string, required)
@@ -2528,7 +2528,7 @@ Each dictionary is an object that contains not only a code and description of a 
 + include `Declaration_Request_Public_Response`
 + status: `NEW` (string, required)
 + employee (`Employee_Minimal`, required)
-    + speciality: `FAMILY_DOCTOR` (string, required) - інформація про спеціальність лікаря
+    + speciality: `FAMILY_DOCTOR` (string, required) - Information about the employee's specialty
 + `legal_entity` (`Medical_Service_Provider`, required)
     + id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required)
 + division (`Division_Declaration`, required)
@@ -2542,7 +2542,7 @@ Each dictionary is an object that contains not only a code and description of a 
 + include `Declaration_Request_Public_Response`
 + status: `SIGNED` (string, required)
 + employee (`Employee_Minimal`, required)
-    + speciality: `FAMILY_DOCTOR` (string, required) - інформація про спеціальність лікаря
+    + speciality: `FAMILY_DOCTOR` (string, required) - Information about the employee's specialty
 + `legal_entity` (`Medical_Service_Provider`, required)
     + id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required)
 + division (`Division_Declaration`, required)
@@ -2690,7 +2690,7 @@ Each dictionary is an object that contains not only a code and description of a 
     - active
 + scope (enum, required)
     - family_doctor
-+ `declaration_request_id`: `74a6fae6-4207-4e03-a136-f2e70c6b0c02` c
++ `declaration_request_id`: `74a6fae6-4207-4e03-a136-f2e70c6b0c02`
 + content: `Declaration content` (string, required) - HTML document that MUST be shown to a end-user and signed by hes key. - Should be defined on the client side.
 + inserted_at: `2017-03-02T10:45:16.000Z` (string, required)
 + updated_at: `2017-03-02T10:45:16.000Z` (string, optional)
@@ -2723,8 +2723,8 @@ Each dictionary is an object that contains not only a code and description of a 
 + channel: `PIS` (string, optional)
 + inserted_at: `2021-11-09T00:00:00.000Z` (string, required) - ISO Datetime
 + updated_at: `2021-11-09T00:00:00.000Z` (string, optional) - ISO Datetime
-+ `patient_signed`: true (boolean, required)
-+ `process_disclosure_data_consent`: true (boolean, required)
++ `patient_signed`: true (boolean, required) - Person's evidence of sign the declaration request
++ `process_disclosure_data_consent`: true (boolean, required) - Person's evidence of information about consent to data disclosure
 + content: `Person content` (string, optional) - HTML document 
 + person (`pis_person`)
 
@@ -2739,9 +2739,9 @@ Each dictionary is an object that contains not only a code and description of a 
 + gender: MALE (string, required)
 + working_experience: 10 (number, optional)
 + about_myself: `Закінчив всі можливі курси` (string, optional)
-+ educations (array[`Education`], required)  - освіта
-+ qualifications (array[`Qualification`], optional) - підвищення кваліфікації
-+ specialities (array[`Speciality`], required)  - блок інформації про отримання сертифікату спеціалісту та проходження атестацій
++ educations (array[`Education`], required)  - Information about the employee's education
++ qualifications (array[`Qualification`], optional) - Information about employee qualification improvement
++ specialities (array[`Speciality`], required)  - Block of information on obtaining a specialist certificate and passing attestations
 + science_degree (ScienceDegree, optional)
 + employees (array[`Employees_map`], optional)
 
@@ -2904,7 +2904,7 @@ Each dictionary is an object that contains not only a code and description of a 
 + science_degree (ScienceDegree, optional)
 + about_myself: `Закінчив всі можливі курси` (string, optional)
 + working_experience: 10 (number, optional)
-+ verification_status: `VERIFICATION_NEEDED` (string, required)
++ `verification_status`: `VERIFICATION_NEEDED` (string, required)
 
 ### `Employee_bulk`
 + id: `d290f1ee-6c54-4b01-90e6-d701748f0851` (string, required)
@@ -2965,7 +2965,7 @@ Each dictionary is an object that contains not only a code and description of a 
 + inserted_at: `2021-11-09T00:00:00.000Z` (string, required) - ISO Datetime
 + updated_at: `2021-11-09T00:00:00.000Z` (string, optional) - ISO Datetime
 + website: `www.msp.com.ua` (string, optional)
-+ status_reason: AUTO_SUSPEND (string, optional) - Division status
++ `status_reason`: AUTO_SUSPEND (string, optional) - Division status
 + residence_address (`Address`, required)
 + accreditation (MSP_Accreditation, optional)
 

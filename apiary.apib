@@ -1464,22 +1464,22 @@ DeviceDispense|`status`
     + Attributes (`Response_Collection_V2`)
          + data (array[`Get_events`])
 
-## UAaddresses [/api]
+## UAaddresses [/api/uaddresses]
 
-### List of Streets by Search Params [GET /streets{?settlement_id,name,type}]
+### List of Streets by Search Params [GET /api/uaddresses/streets{?settlement_id,name,type}]
 
 + Parameters
     + settlement_id: `eea333b5-e26d-4e3e-92e2-2ab37b131502` (string, required) - Settlement identifier
     + name: `Незалежності` (string, optional) - Street name
-    + type: STREET (string, optional) - Street type (Dictionary STREET_TYPE)
+    + type: `STREET` (string, optional) - Street type (Dictionary STREET_TYPE)
 
 + Response 200 (application/json)
-    + Attributes (Response_Collection)
+    + Attributes (`Response_Collection_V2`)
         + meta (Response_Meta)
             + code: 200 (number)
         + data (array[`Response_Street`])
 
-### List Of Cities By Search Params [GET /settlements{?name,region,district,koatuu,mountain_group,type}]
+### List Of Cities By Search Params [GET /api/uaddresses/settlements{?name,region,district,koatuu,mountain_group,type}]
 
 + Parameters
     + name: Новосілки (string, optional) - Name of searching settlement
@@ -1490,23 +1490,25 @@ DeviceDispense|`status`
     + type: `С` (string, optional) - Settlement type
     
 + Response 200 (application/json)
-    + Attributes (Response_Collection)
+    + Attributes (`Response_Collection_V2`)
         + meta (Response_Meta)
             + code: 200 (number)
         + data (array[`Response_Settlement`])
 
-### List Of Regions By Search Params [GET /regions{?name,koatuu}]
+### List Of Regions By Search Params [GET /api/uaddresses/regions{?name,koatuu}]
+
 + Parameters
     + name: Київ (string, optional) - Province name
     + koatuu: `2625286301` (string, optional) - koatuu classifier id
 
 + Response 200 (application/json)
-    + Attributes (Response_Collection)
+    + Attributes (`Response_Collection_V2`)
         + meta (Response_Meta)
             + code: 200 (number)
         + data (array[`Response_Region`])
 
-### List Of Districts By Search Params [GET /districts{?region_id,region,name,koatuu}]
+### List Of Districts By Search Params [GET /api/uaddresses/districts{?region_id,region,name,koatuu}]
+
 + Parameters 
     + region_id: `290f1ee-6c54-4b01-90e6-d701748f0851` (string) - Province id
     + region: Київ (string) - Province name
@@ -1514,23 +1516,24 @@ DeviceDispense|`status`
     + koatuu: `2625286301` (string, optional) - koatuu classifier id
 
 + Response 200 (application/json)
-    + Attributes (Response_Collection)
+    + Attributes (`Response_Collection_V2`)
         + meta (Response_Meta)
             + code: 200 (number)
         + data (array[`Response_District`])
 
-### Districts by Region [GET /details/region/290f1ee-6c54-4b01-90e6-d701748f0851/districts{?name,koatuu}]
+### Districts by Region [GET /api/uaddresses/regions/290f1ee-6c54-4b01-90e6-d701748f0851/districts{?name,koatuu}]
+
 + Parameters
     + name: `Києво-Святошинський` (string, optional) - Filter by district name
     + koatuu: `2625286301` (string, optional) - koatuu classifier id
 
 + Response 200 (application/json)
-    + Attributes (Response_Collection)
+    + Attributes (`Response_Collection_V2`)
         + meta (Response_Meta)
             + code: 200 (number)
         + data (array[`Response_District_Short`])
 
-### Settlements by district [GET /details/district/290f1ee-6c54-4b01-90e6-d701748f0851/settlements{?name,koatuu}]
+### Settlements by district [GET /api/uaddresses/districts/290f1ee-6c54-4b01-90e6-d701748f0851/settlements{?name,koatuu}]
 
 Get list of cities by district
 
@@ -1539,7 +1542,7 @@ Get list of cities by district
     + koatuu: `2625286301` (string, optional) - koatuu classifier id
 
 + Response 200 (application/json)
-    + Attributes (Response_Collection)
+    + Attributes (`Response_Collection_V2`)
         + meta (Response_Meta)
             + code: 200 (number)
         + data (array[`Response_Settlement_Short`])
@@ -1559,12 +1562,6 @@ Each dictionary is an object that contains not only a code and description of a 
     + `value_code`: `b1142` (string, optional) - code of the dictionary value
     + `value_description`: `Орієнтація в особі` (string, optional) - description of the dictionary value
     + `value_is_active`: true (string, optional) - status of the dictionary value
-
-+ Request (application/json)
-
-    + Headers
-
-        X-Custom-PSK: a2aa05c76f3f2d91870f923a53cc8aa8f23bbc01a8238d1c2c26d4299715a7e4
 
 + Response 200 (application/json)
     + Attributes (`Response__Process_OK`)

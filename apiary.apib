@@ -1,9 +1,11 @@
 FORMAT: 1A
 HOST: https://api.ehealth.gov.ua
 
-# PIS API
+# eHealth PIS API
 
-**Version: 9.5.2 v.2**
+**Version: 9.10.0 v1**
+
+**Environment: PROD**
 
 This is a **PIS-related consumers part** of API documentation for Ukrainian Health Services government institution back-end, that should provide:
 
@@ -18,12 +20,12 @@ This is a **PIS-related consumers part** of API documentation for Ukrainian Heal
 This document contains both private and public (usually `/api/..`) API specifications. If you plan to use it as outside API consumer - please refer only to sections that marked as `Public`.
 
 The table below lists the actual API endpoints for all eHealth environments:
+
 Env     | Host
 --------|-----
 DEMO    | https://auth-demo.ehealth.gov.ua
 PREPROD | https://auth-preprod.ehealth.gov.ua
 PROD    | https://auth-preprod.ehealth.gov.ua
-
 
 # Group Public. Patient Information System
 
@@ -288,7 +290,7 @@ Approvals are filtered by user from Authorization token.
             api-key: uXhEczJ56adsfh3Ri9SUkc4en
 
 + Response 200 (application/json)
-    + Attributes (`Response_Collection`)
+    + Attributes (`Response_Collection_V2`)
         + data (array[`Approval_Response`])
 
 ### Get Approval details [GET /api/pis/apps/{id}]
@@ -308,7 +310,7 @@ Approval is filtered by user from Authorization token.
             api-key: uXhEczJ56adsfh3Ri9SUkc4en
 
 + Response 200 (application/json)
-    + Attributes (`Response_OK`)
+    + Attributes (`Response__Process_OK`)
         + data (`Approval_Response`)
 
 ### Delete Approval [DELETE /api/pis/apps/{id}]
@@ -346,7 +348,7 @@ After documents upload to urls, [Complete Person documents upload](#reference/pu
             api-key: uXhEczJ56adsfh3Ri9SUkc4en
 
 + Response 201 (application/json)
-    + Attributes (`Response_OK`)
+    + Attributes (`Response__Process_OK`)
         + meta (`Response__Meta`)
             + code: 201 (number)
         + data (array[`media_content`])
@@ -364,102 +366,10 @@ Endpoint checks list of documents that needs to be uploaded for person. In case 
             api-key: uXhEczJ56adsfh3Ri9SUkc4en
 
 + Response 200 (application/json)
-    + Attributes (`Response_OK`)
+    + Attributes (`Response__Process_OK`)
         + meta (`Response__Meta`)
             + code: 200 (number)
         + data (array[`media_content`])
-
-### Initialize Person request documents upload [POST /api/pis/documents/person_request]
-
-This endpoint is used to initialize person documents uploading proccess. Person is obtained from Authorization token.
-
-Endpoint returns person request id and list of documents that need to be uploaded for person and urls. In case no documents must be uploaded - error is returned.
-
-After documents upload to urls, [Complete Person request documents upload](#reference/public.-patient-information-system/documents/complete-person-request-documents-upload) method must be called.
-
-+ Request (application/json)
-    + Headers
-
-            Authorization: Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9
-            api-key: uXhEczJ56adsfh3Ri9SUkc4en
-
-+ Response 201 (application/json)
-    + Attributes (`Response_OK`)
-        + meta (`Response__Meta`)
-            + code: 201 (number)
-        + data (object, required)
-            + id: `457a68ad-9ed9-4d2c-9eaa-b03bba682742` (string, required)
-            + status: `NEW` (string, required)
-        + urgent (array[`media_content`], required)
-
-### Complete Person request documents upload [PATCH /api/pis/documents/person_request/{id}/actions/complete]
-
-This endpoint must be used to complete person documents uploading proccess, after user uploaded documents to generated urls. Person is obtained from Authorization token.
-
-Endpoint checks list of documents that needs to be uploaded for person. In case all person documents were be uploaded - persons nhs verification status is updated. In case more person documents must be uploaded - error is returned.
-
-+ Parameters
-    + id: `457a68ad-9ed9-4d2c-9eaa-b03bba682742` (string, required) - Person request identifier
-
-+ Request (application/json)
-    + Headers
-
-            Authorization: Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9
-            api-key: uXhEczJ56adsfh3Ri9SUkc4en
-
-+ Response 200 (application/json)
-    + Attributes (`Response_OK`)
-        + meta (`Response__Meta`)
-            + code: 200 (number)
-        + data (object, required)
-            + id: `457a68ad-9ed9-4d2c-9eaa-b03bba682742` (string, required)
-            + status: `SIGNED` (string, required)
-
-### Initialize Confidant person relationship documents upload [POST /api/pis/documents/confidant_person_relationship_request]
-
-This endpoint is used to initialize confidant person relationship documents uploading proccess. Person is obtained from Authorization token.
-
-Endpoint returns confidant person relationship request id and list of documents that need to be uploaded for relationship and urls. In case no documents must be uploaded - error is returned.
-
-After documents upload to urls, [Complete Confidant person relationship documents upload](#reference/public.-patient-information-system/documents/complete-confidant-person-relationship-documents-upload) method must be called.
-
-+ Request (application/json)
-    + Headers
-
-            Authorization: Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9
-            api-key: uXhEczJ56adsfh3Ri9SUkc4en
-
-+ Response 201 (application/json)
-    + Attributes (`Response_OK`)
-        + meta (`Response__Meta`)
-            + code: 201 (number)
-        + data (object, required)
-            + id: `457a68ad-9ed9-4d2c-9eaa-b03bba682742` (string, required)
-            + status: `NEW` (string, required)
-        + urgent (array[`media_content`], required)
-
-### Complete Confidant person relationship documents upload [PATCH /api/pis/documents/confidant_person_relationship_request/{id}/actions/complete]
-
-This endpoint must be used to complete confidant person relationship documents uploading proccess, after user uploaded documents to generated urls. Person is obtained from Authorization token.
-
-Endpoint checks list of documents that needs to be uploaded for confidant person relationship. In case all confidant person relationship documents were be uploaded - relationship verification status is updated. In case more relationship documents must be uploaded - error is returned.
-
-+ Parameters
-    + id: `457a68ad-9ed9-4d2c-9eaa-b03bba682742` (string, required) - Confidant person relationship request identifier
-
-+ Request (application/json)
-    + Headers
-
-            Authorization: Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9
-            api-key: uXhEczJ56adsfh3Ri9SUkc4en
-
-+ Response 200 (application/json)
-    + Attributes (`Response_OK`)
-        + meta (`Response__Meta`)
-            + code: 200 (number)
-        + data (object, required)
-            + id: `457a68ad-9ed9-4d2c-9eaa-b03bba682742` (string, required)
-            + status: `COMPLETED` (string, required)
 
 ## Person information [/api/person]
 
@@ -474,7 +384,7 @@ This WS designed to get information of person by token.
             api-key: uXhEczJ56adsfh3Ri9SUkc4en
 
 + Response 200 (application/json)
-    + Attributes (`Response_OK`)
+    + Attributes (`Response__Process_OK`)
         + data (`pis_person_response`)
        
 
@@ -489,7 +399,7 @@ This method allows to find the active person's authentication methods.
             api-key: uXhEczJ56adsfh3Ri9SUkc4en
 
 + Response 200 (application/json)
-    + Attributes (`Response_OK`)
+    + Attributes (`Response__Process_OK`)
         + data (array[`Person_auth_methods`, `Person_auth_methods_v2`])
 
 + Response 403 (application/json)
@@ -513,7 +423,7 @@ This WS designed to get current user's person verification status & data and rel
      
     
 + Response 200 (application/json)
-    + Attributes (`Response_OK`)
+    + Attributes (`Response__Process_OK`)
          + data (object)
              + `person_verification` (object, required) 
                 + include (`Person_Verification_Details`)
@@ -573,7 +483,7 @@ This process describes adding an additional authentication method to an existing
             + status: `NEW` (string, required)
             + channel: `PIS` (enum, required) - channel that invoke add auth methods
         + urgent (object, required)
-            + `authentication_method_current` (array[`Authentication_Method_for_request`], optinal) - if the person doesn't have active auth methods, then this block will be nill
+            + `authentication_method_current` (array[`Authentication_Method_for_request`], optional) - if the person doesn't have active auth methods, then this block will be nill
            
 
 + Response 422 (application/json)
@@ -673,11 +583,11 @@ Use this method to initialize creation of Person request to update the person de
     + Attributes (object)
         + `person` (object, required)
             + include `Update_Person_Request_PIS`
-        + `patient_signed`: false (boolean, required)
-        + `process_disclosure_data_consent`: true (boolean, required)
+        + `patient_signed`: false (boolean, required) - Person's evidence of sign the declaration request
+        + `process_disclosure_data_consent`: true (boolean, required) - Person's evidence of information about consent to data disclosure
 
 + Response 201 (application/json)
-    + Attributes (`Response_OK`)
+    + Attributes (`Response__Process_OK`)
         + meta (`Response__Meta`)
             + code: 201 (number)
         + data (object, required)
@@ -705,7 +615,7 @@ Use this method to compete Person request to update the person details according
         + `signed_content_encoding`: `base64` (string, required) - signed content encoding type.
 
 + Response 200 (application/json)
-    + Attributes (`Response_OK`)
+    + Attributes (`Response__Process_OK`)
         + meta (`Response__Meta`)
             + code: 200 (number)
         + data (object, required)
@@ -757,7 +667,7 @@ If the request has been cleared of personal patient data due to security require
     + id: `7e9cffd9-c75f-45fb-badf-6e8d20b6a8a8` (string, required)
 
 + Response 200 (application/json)
-    + Attributes (`Response_OK`)
+    + Attributes (`Response__Process_OK`)
         + meta (`Response__Meta`)
             + code: 200 (number)
         + data (object, required)
@@ -780,7 +690,7 @@ This WS designed to reject person requests previously created by patient.
             Authorization: Bearer c2778f3064753ea70de870a53795f5c9
 
 + Response 200 (application/json)
-    + Attributes (`Response_OK`)
+    + Attributes (`Response__Process_OK`)
         + data (object, required)
             + include `Person_request_details`
 
@@ -800,7 +710,7 @@ Current WS allows to see details of declaration knowing its' id.
     + id: 7e9cffd9-c75f-45fb-badf-6e8d20b6a8a8 (uuid)
 
 + Response 200 (application/json)
-    + Attributes (`Response_OK`)
+    + Attributes (`Response__Process_OK`)
         + data (`Declaration_Details_PIS`)
         + urgent (object, required)
             + links (array[`signed_content`], optional)
@@ -843,7 +753,7 @@ Patient can terminate active declaration using this method.
         + reason_description: `Неякісне обслуговування` (string, optional)
 
 + Response 200 (application/json)
-    + Attributes (`Response_Collection_V2`)
+    + Attributes (`Response__Process_OK`)
         + data (`Declaration_Details_terminated`)
         
 
@@ -864,7 +774,7 @@ If the request has been cleared of personal patient data due to security require
     + id: 7e9cffd9-c75f-45fb-badf-6e8d20b6a8a8 (uuid)
 
 + Response 200 (application/json)
-    + Attributes (`Response_OK`)
+    + Attributes (`Response__Process_OK`)
         + data (`Declaration_request_details`, required)
         + urgent (object, required)
             + `authentication_method_current` (object, required)
@@ -915,7 +825,7 @@ This WS allows patient to register new declaration request
         + include `Create_Declaration_Request_PIS`
 
 + Response 201 (application/json)
-    + Attributes (`Response_OK`)
+    + Attributes (`Response__Process_OK`)
         + data (`Create_Declaration_Request_Response_PIS`)
 
 ### Sign Declaration request [PATCH /api/pis/declaration_requests/{id}/actions/sign]
@@ -933,7 +843,7 @@ This WS allows patient to sign previously created declaration request
         + `signed_content_encoding`: `base64` (string, required) - signed content encoding type.
 
 + Response 201 (application/json)
-    + Attributes (`Response_OK`)
+    + Attributes (`Response__Process_OK`)
         + data (`Sign_Declaration_Request_Response_PIS`)
 
 ### Reject Declaration request  [PATCH /api/pis/declaration_requests/{id}/actions/reject]
@@ -950,86 +860,9 @@ This WS is designed to reject previously created Declaration Request by patient
             api-key: uXhEczJ56adsfh3Ri9SUkc4en
 
 + Response 201 (application/json)
-    + Attributes (`Response_OK`)
+    + Attributes (`Response__Process_OK`)
         + data (`Declaration_request_details`, required)
        
-
-##Search [/api/search]
-
-### Search legal entities [GET /api/pis/legal_entities{?type,settlement_id,settlement,name,page,page_size}]
-Service to search legal entities
-
-+ Parameters
-    + type: MSP (string, optional) - legal entity type
-    + settlement_id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, optional) - name of settlement where legal entity is located
-    + settlement: `Луцьк` (string, optional) - name of settlement where division is located
-    + name: `Клініка1` (string, optional) - legal entity name
-    + page: 2 (number, optional) - page number
-    + page_size: 50 (number, optional) - A limit on the number of objects to be returned, between 1 and 300. Default: 50
-
-+ Request (application/json)
-
-+ Response 200 (application/json)
-    + Attributes (`Response_Collection_V2`)
-        + data (array[`Search_Legal_Entity_Response`])
-
-### Search divisions [GET /api/pis/divisions{?type,name,area,region,settlement_id,settlement,location_north,location_east,location_south,location_west,healthcare_service_speciality_type,healthcare_service_providing_condition,legal_entity_id,legal_entity_name,legal_entity_type,page,page_size}]
-Service to search divisions
-
-+ Parameters
-    + type: CLINIC (enum, optional) - `Dictionary DIVISION_TYPE`
-    + name: Відділення1 (string, optional) - the name of division
-    + area:`Волинська` (string, optional) - the name of region where division is located
-    + region: `Луцький` (string, optional) - the name of district where division is located
-    + settlement_id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, optional) - name of settlement where division is located
-    + settlement: `Луцьк` (string, optional) - the name of settlement where division is located
-    + location_north: 30.1233 (number, optional)
-    + location_east: 50.32423 (number, optional)
-    + location_south: 50.32423 (number, optional)
-    + location_west: 50.32423 (number, optional)
-    + `healthcare_service_speciality_type`: `FAMILY_DOCTOR` (string, optional) - specialization of healthcare services provided in this division
-    + `healthcare_service_providing_condition`: OUTPATIENT (string, optional) - conditions of healthcare service provided in this division
-    + `legal_entity_id`: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, optional) - legal entity ID
-    + `legal_entity_name`: `Аптека 199` (string, optional) - legal_entity name
-    + `legal_entity_type`: MSP (string, optional) - legal entity type
-    + page: 2 (number, optional) - page number
-    + page_size: 50 (number, optional) - A limit on the number of objects to be returned, between 1 and 300. Default: 50
-
-+ Request (application/json)
-
-+ Response 200 (application/json)
-    + Attributes (`Response_Collection_V2`)
-        + data (array[`Search_Divisions_Response`])
-
-### Search practitioners [GET /api/pis/practitioners{?full_name,overlimit,speciality,employee_type,providing_condition,division_id,division_name,area,region,settlement_id,settlement,location_north,location_east,location_south,location_west,legal_entity_id,legal_entity_name,page,page_size}]
-Service to search practitioners
-
-+ Parameters
-    + full_name: `Іванов Іван Іванович` (string, optional) - practitioner full name
-    + overlimit: false (boolean, optional) - flag that shows whether it is exceeded number of declarations or not
-    + speciality: `FAMILY_DOCTOR` (string, required) - specialization of healthcare services provided by practitioner
-    + employee_type: DOCTOR (string, optional)
-    + providing_condition: OUTPATIENT (string, optional) - conditions of healthcare service provided by practitioner
-    + division_id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, optional) - division identifier
-    + division_name: `Відділення1` (string, optional) - division name
-    + area: `Волинська` (string, optional) - name of region where division is located
-    + region: `Луцький` (string, optional) - name of district where division is located
-    + settlement_id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, optional) - name of settlement where division is located
-    + settlement: `Луцьк` (string, optional) - name of settlement where division is located
-    + location_north: 30.1233 (number, optional)
-    + location_east: 50.32423 (number, optional)
-    + location_south: 50.32423 (number, optional)
-    + location_west: 50.32423 (number, optional)
-    + legal_entity_id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, optional) - legal entity identifier
-    + `legal_entity_name`: `Клініка1` (string, optional) - legal entity name
-    + page: 2 (number, optional) - page number
-    + page_size: 50 (number, optional) - A limit on the number of objects to be returned, between 1 and 300. Default: 50
-
-+ Request (application/json)
-
-+ Response 200 (application/json)
-    + Attributes (`Response_Collection_V2`)
-        + data (array[`Practitioner_map`])
 
 ##Bulk data export [/api/pis/bulk]
 
@@ -1040,6 +873,10 @@ Get parties
     + depth: 5 (number, optional) - Number of days to get changes
 
 + Request (application/json)
+
+    + Headers
+
+            api-key: L0RWeXV6a2tQWEp3OTJaM0RkYzBmQT09
 
 + Response 200 (application/json)
     + Attributes (`Response_Collection_wo_Paging_with_Date`)
@@ -1053,6 +890,10 @@ Get employees
 
 + Request (application/json)
 
+     + Headers
+
+            api-key: L0RWeXV6a2tQWEp3OTJaM0RkYzBmQT09
+
 + Response 200 (application/json)
     + Attributes (`Response_Collection_wo_Paging_with_Date`)
         + data (array[`Employee_bulk`])
@@ -1064,6 +905,10 @@ Get divisions
     + depth: 5 (number, optional) - Number of days to get changes
 
 + Request (application/json)
+
+     + Headers
+
+            api-key: L0RWeXV6a2tQWEp3OTJaM0RkYzBmQT09
 
 + Response 200 (application/json)
     + Attributes (`Response_Collection_wo_Paging_with_Date`)
@@ -1077,6 +922,10 @@ Get legal_entities
 
 + Request (application/json)
 
+    + Headers
+
+            api-key: L0RWeXV6a2tQWEp3OTJaM0RkYzBmQT09
+
 + Response 200 (application/json)
     + Attributes (`Response_Collection_wo_Paging_with_Date`)
         + data (array[`Legal_entity_bulk`])
@@ -1088,6 +937,10 @@ Get employee roles
     + depth: 5 (number, optional) - Number of days to get changes
 
 + Request (application/json)
+
+    + Headers
+
+            api-key: L0RWeXV6a2tQWEp3OTJaM0RkYzBmQT09
 
 + Response 200 (application/json)
     + Attributes (`Response_Collection_wo_Paging_with_Date`)
@@ -1101,6 +954,10 @@ Get healthcare services
 
 + Request (application/json)
 
+    + Headers
+
+            api-key: L0RWeXV6a2tQWEp3OTJaM0RkYzBmQT09
+
 + Response 200 (application/json)
     + Attributes (`Response_Collection_wo_Paging_with_Date`)
         + data (array[`Healthcare_service_bulk`])
@@ -1110,15 +967,226 @@ Get declaration limit and count per practitioner
 
 + Request (application/json)
 
+    + Headers
+
+            api-key: L0RWeXV6a2tQWEp3OTJaM0RkYzBmQT09
+
 + Response 200 (application/json)
     + Attributes (`Response_Collection_wo_Paging_with_Date`)
         + data (array[`Declarations_limit_bulk`])
+
+## Get Events [/api/events]
+
+### Get events by ID [GET /api/events/{id}]
+
+This method is used to obtain events by id.
+
+Object `properties` may has a different fields depending on the `entity_type`. 
+
+Entity_type|Possible fields
+----------|-----------
+Approval|`status`
+CarePlan|`status`
+CarePlan Activity|`detail.status`
+Contract|`is_suspended` or `status`
+ContractRequest|`status`
+Declaration|`status`
+Division|`dls_verified`
+Employee|`status`
+EmployeeRequest|`status` and `employee_id`
+MedicationDispense|`status`
+MedicationRequest|`status`
+LegalEntity|`status`
+Person|`verification_status` or `status`
+Preperson|`status`
+ServiceRequest|`program_processing_status` or `status`
+DeviceRequest |`status`
+DeviceDispense|`status`
+
++ Parameters
+    + `id`: `a89f6a26-4221-4597-a1d2-542d5e40b565` (string, required)
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer c2778f3064753ea70de870a53795f5c9
+            X-Custom-PSK: a2aa05c76f3f2d91870f923a53cc8aa8f23bbc01a8238d1c2c26d4299715a7e4
+
++ Response 200 (application/json)
+    + Attributes (`Response__Process_OK`)
+         + data (array[`Get_events`])
+
+### Get events list [GET /api/events/{?date,date_to,event_type,entity_type,attribute_name,new_value,page,page_size}]
+
+This method is used to obtain list of events with filters.
+
+The period of events provided in response is also limited by configuration, not only by the request parameters.
+
+Object `properties` may has a different fields depending on the `entity_type`. 
+
+Entity_type|Possible fields
+----------|-----------
+Approval|`status`
+CarePlan|`status`
+CarePlan Activity|`detail.status`
+Contract|`is_suspended` or `status`
+ContractRequest|`status`
+Declaration|`status`
+Division|`dls_verified`
+Employee|`status`
+EmployeeRequest|`status` and `employee_id`
+MedicationDispense|`status`
+MedicationRequest|`status`
+LegalEntity|`status`
+Person|`verification_status` or `status`
+Preperson|`status`
+ServiceRequest|`program_processing_status` or `status`
+DeviceRequest |`status`
+DeviceDispense|`status`
+
++ Parameters
+    + date: `2017-12-07T12:00:00` (datetime, optional) - evets created between datetime and datetime plus 3 hours (or 'date_to' if included, but max 3 hours).
+    + date_to: `2017-12-07T15:00:00` (datetime, optional) - evets created from 'date' (if included) and before datetime, max difference 3 hours.
+    + event_type: `StatusChangeEvent` (enum, optional) - type of event.
+    + entity_type: `MedicationDispense` (enum, optional) - type of entity.
+    + attribute_name: `status` (string, optional) - name of event in properties.
+    + new_value: `COMPLETED` (enum, optional)- new status of entity.
+    + page: 2 (number, optional) - Page number.
+    + page_size: 50 (number, optional) - A limit on the number of objects to be returned, between 1 and 300. Default: 50
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer c2778f3064753ea70de870a53795f5c9
+            X-Custom-PSK: a2aa05c76f3f2d91870f923a53cc8aa8f23bbc01a8238d1c2c26d4299715a7e4
+
++ Response 200 (application/json)
+    + Attributes (`Response_Collection_V2`)
+         + data (array[`Get_events`])
+
+## UAaddresses [/api]
+
+### List of Streets by Search Params [GET /streets{?settlement_id,name,type}]
+
++ Parameters
+    + settlement_id: `eea333b5-e26d-4e3e-92e2-2ab37b131502` (string, required) - Settlement identifier
+    + name: `Незалежності` (string, optional) - Street name
+    + type: STREET (string, optional) - Street type (Dictionary STREET_TYPE)
+
++ Response 200 (application/json)
+    + Attributes (Response_Collection)
+        + meta (Response_Meta)
+            + code: 200 (number)
+        + data (array[`Response_Street`])
+
+### List Of Cities By Search Params [GET /settlements{?name,region,district,koatuu,mountain_group,type}]
+
++ Parameters
+    + name: Новосілки (string, optional) - Name of searching settlement
+    + region: Київ (string, required) - Province name
+    + district: `Києво-Святошинський` (string, optional) - Administrative district of province
+    + koatuu: `2625286301` (string, optional) - koatuu classifier id
+    + `mountain_group`: true (boolean, optional) - flag whether settlements belongs to mountian group
+    + type: `С` (string, optional) - Settlement type
+    
++ Response 200 (application/json)
+    + Attributes (Response_Collection)
+        + meta (Response_Meta)
+            + code: 200 (number)
+        + data (array[`Response_Settlement`])
+
+### List Of Regions By Search Params [GET /regions{?name,koatuu}]
++ Parameters
+    + name: Київ (string, optional) - Province name
+    + koatuu: `2625286301` (string, optional) - koatuu classifier id
+
++ Response 200 (application/json)
+    + Attributes (Response_Collection)
+        + meta (Response_Meta)
+            + code: 200 (number)
+        + data (array[`Response_Region`])
+
+### List Of Districts By Search Params [GET /districts{?region_id,region,name,koatuu}]
++ Parameters 
+    + region_id: `290f1ee-6c54-4b01-90e6-d701748f0851` (string) - Province id
+    + region: Київ (string) - Province name
+    + name: `Києво-Святошинський` (string, optional) - Administrative district of province
+    + koatuu: `2625286301` (string, optional) - koatuu classifier id
+
++ Response 200 (application/json)
+    + Attributes (Response_Collection)
+        + meta (Response_Meta)
+            + code: 200 (number)
+        + data (array[`Response_District`])
+
+### Districts by Region [GET /details/region/290f1ee-6c54-4b01-90e6-d701748f0851/districts{?name,koatuu}]
++ Parameters
+    + name: `Києво-Святошинський` (string, optional) - Filter by district name
+    + koatuu: `2625286301` (string, optional) - koatuu classifier id
+
++ Response 200 (application/json)
+    + Attributes (Response_Collection)
+        + meta (Response_Meta)
+            + code: 200 (number)
+        + data (array[`Response_District_Short`])
+
+### Settlements by district [GET /details/district/290f1ee-6c54-4b01-90e6-d701748f0851/settlements{?name,koatuu}]
+
+Get list of cities by district
+
++ Parameters
+    + name: `Київ` (string, optional) - Filter by settlement name
+    + koatuu: `2625286301` (string, optional) - koatuu classifier id
+
++ Response 200 (application/json)
+    + Attributes (Response_Collection)
+        + meta (Response_Meta)
+            + code: 200 (number)
+        + data (array[`Response_Settlement_Short`])
+
+## Dictionaries [/api/dictionaries]
+
+Methods is used to retreive eHealth dictionaries
+
+Response **$.data** object contains a list of all dictionaries.
+
+### Get dictionaries v2 [GET /api/v2/dictionaries{?name,is_active,value_code,value_description,value_is_active}]
+Each dictionary is an object that contains not only a code and description of a value, but also a status of the value. In addition, it can represent hierarchical dictionaries with subordinate (child) values
+
++ Parameters
+    + `name`: `eHealth/ICF/classifiers` (string, optional) - dictionary name
+    + `is_active`: true (boolean, optional) - dictionary status
+    + `value_code`: `b1142` (string, optional) - code of the dictionary value
+    + `value_description`: `Орієнтація в особі` (string, optional) - description of the dictionary value
+    + `value_is_active`: true (string, optional) - status of the dictionary value
+
++ Request (application/json)
+
+    + Headers
+
+        X-Custom-PSK: a2aa05c76f3f2d91870f923a53cc8aa8f23bbc01a8238d1c2c26d4299715a7e4
+
++ Response 200 (application/json)
+    + Attributes (`Response__Process_OK`)
+        + data (array[`Dictionary_v2`])
+            + (object)
+                + include `Dictionary_v2`
+                + name: `eHealth/ICPC2/condition_codes` (string, required) - Unique dictionary name
+                + description: `Коди станів за ICPC2` (string, required) - dictionary description for a user
+                + values (array, required)
+                    + (Dictionary_value)
+                        + code: `D88` (string, required) - code of the dictionary value
+                        + description: `Апендицит` (string, required) - description of the code
+
 
 # Data Structures
 
 ### `Response_OK`
 + meta (Response__Meta, fixed-type)
 + data (object, fixed-type)
++ paging (Response_Pagination, fixed-type)
 
 ### `Response__Meta`
 + code: 200 (number) - HTTP response code.
@@ -1127,6 +1195,16 @@ Get declaration limit and count per practitioner
     - object (string) - `data` attribute is a JSON object.
     - list (string) - `data` attribute is a list.
 + `request_id`: `6617aeec-15e2-4d6f-b9bd-53559c358f97#17810` (string) - [Request ID](https://docs.apimanifest.apiary.io/#introduction/interacting-with-api/request-id). Send it with `X-Request-ID` header.
+
+### `Response_Meta`
++ code: 200 (number) - HTTP response code.
++ url: http://example.com/resource (string) - URL to requested resource.
++ type (enum) - Type of data that is located in `data` attribute.
+    - object (string) - `data` attribute is a JSON object.
+    - list (string) - `data` attribute is a list.
++ code: 200 (number) - HTTP response code.
++ `idempotency_key`: `idemp-ssjssdjoa8308u0us0` (string, optional) - [Idempotency key](http://docs.apimanifest.apiary.io/#introduction/optional-features/idempotent-requests). Send it trough `X-Idempotency-Key` header.
++ `request_id`: `req-adasdoijasdojsda` (string) - [Request ID](http://docs.apimanifest.apiary.io/#introduction/interacting-with-api/request-id). Send it with `X-Request-ID` header.
 
 ### `Response__Meta_Date`
 + code: 200 (number) - HTTP response code.
@@ -1192,6 +1270,19 @@ Get declaration limit and count per practitioner
 + `created_at`: `2017-04-20T19:14:13Z` (string, required) - ISO 8601 date and time in UTC timezone.
 + `updated_at`: `2017-04-20T19:14:13Z` (string, required) - ISO 8601 date and time in UTC timezone.
 + include `Approval`
+
+### `Approval_Response_v2`
++ value: `authorization_code-cTdHUE9jN29yWHo0VTAwL3lwSVRoUT09` (string, required) - oAuth grant code
++ user_id: `3ff33ced-69dc-415a-b231-c6446898335a` (string, required) - user identifier
++ name: `authorization_code` (string, required) - oAuth token name
++ id: `3ff33ced-69dc-415a-b231-c6446898335a` - oAuth token identifier
++ expires_at: 1498749591 (number, required) - expiration date-time timestamp
++ details (object, required)
+    + `scope_request`: `capitation_contracts:view capitation_contracts:create patients:view patients:create` (string, required) - list of scopes that are granted with the token
+    + `redirect_uri`: `http://example.com/my_success_login_page` (string, required) - client Redirect URL pattern to protect from malicious redirects
+    + `grant_type`: `password` (string, required)
+    + `client_id`: `d290f1ee-6c54-4b01-90e6-d701748f0851` (string, required) - client ID of authorized user
+
 
 ### `Response_Collection`
 + meta (Response__Meta, fixed-type)
@@ -1314,8 +1405,8 @@ Get declaration limit and count per practitioner
 ### RelationshipDocument
 + type: BIRTH_CERTIFICATE (string, required) - `Dictionary DOCUMENT_RELATIONSHIP_TYPE`
 + number: АА120518 (string, required) - document issue number
-+ issued_by: `Рокитнянським РВ ГУ МВС Київської області` (string, optional) - authority which issued the document
-+ issued_at: `2017-02-28` (string, optional) - the date when document was issued
++ issued_by: `Рокитнянським РВ ГУ МВС Київської області` (string, required) - authority which issued the document
++ issued_at: `2017-02-28` (string, required) - the date when document was issued
 
 ### `Authentication_Method_Patient_Request`
 + type (enum, required)
@@ -1584,6 +1675,29 @@ Get declaration limit and count per practitioner
         + `verification_status`: `NOT_VERIFIED` (string, required) - status of person manual NHS verification according to `PERSON_VERIFICATION_STATUSES` dictionary
         + `verification_reason`: `AUTO` (string, required) - how current manual NHS verification status has been set according to `PERSON_VERIFICATION_STATUS_REASONS` dictionary
         + `verification_comment`: `Бракує даних паспорту пацієнта та його ІПН` (string, optional) - verification status description set by NHS in case NOT_VERIFIED
+    + `unzr` (object)
+        + `verification_status`: `NOT_VERIFIED` (string, required) - status of person UNZR verification according to `PERSON_VERIFICATION_STATUSES` dictionary
+        + `verification_reason`: `AUTO` (string, required) - how current UNZR verification status has been set according to `PERSON_VERIFICATION_STATUS_REASONS` dictionary
+        + `status`: 0 (number, optional) - status of the UNZR record in EIS MVS register for the person. It is set by synchronization according to `EIS_MVS_STATUS` dictionary
+    + `mvs_passport` (object)
+        + `verification_status`: `NOT_VERIFIED` (string, required) - status of MVS passport verification for the person according to `PERSON_VERIFICATION_STATUSES` dictionary
+        + `verification_reason`: `AUTO` (string, required) - how current MVS passport verification status has been set according to `PERSON_VERIFICATION_STATUS_REASONS` dictionary
+        + `status`: 1 (number, optional) - status of the record in EIS MVS register for the passport document. It is set by synchronization according to `EIS_MVS_STATUS` dictionary
+    + `dms_passport` (object)
+        + `verification_status`: `NOT_VERIFIED` (string, required) - status of DMS passport verification for the person according to `PERSON_VERIFICATION_STATUSES` dictionary
+        + `verification_reason`: `AUTO` (string, required) - how current DMS passport verification status has been set according to `PERSON_VERIFICATION_STATUS_REASONS` dictionary
+        + `status`: 1 (number, optional) - status of the record in EIS MVS register for the passport document. It is set by synchronization according to `EIS_MVS_STATUS` dictionary
+    + `dracs_birth` (object)
+        + `verification_status`: `NOT_VERIFIED` (string, required) - status of person DRACS birth verification according to `PERSON_VERIFICATION_STATUSES` dictionary
+        + `verification_reason`: `AUTO_ONLINE` (string, required) - how current DRACS birth verification status has been set according to `PERSON_VERIFICATION_STATUS_REASONS` dictionary
+        + `verification_comment`: `Необхідно повторно підтвердити дані свідоцтва про народження пацієнта` (string, optional) - DRACS birth verification status description set by NHS
+    + `dracs_name_change` (object)
+       + `verification_status`: `VERIFIED` (string, required) - Person DRACS name change verification status according to `PERSON_VERIFICATION_STATUSES` dictionary.
+       + `verification_reason`: `MANUAL_COMFIRMED` (string, required) - Verification reason according to `PERSON_VERIFICATION_STATUS_REASONS` dictionary.
+       + `verification_comment`: `Пацієнт не замінював ПІБ` (string, optional) - Verification comment
+    + `legal_capacity` (object)
+       + `verification_status`: `VERIFICATION_NOT_NEEDED` (string, required) - Person Legal capacity verification status according to `PERSON_VERIFICATION_STATUSES` dictionary.
+       + `verification_reason`: `AUTO_DATA_ABSENT` (string, required) - Verification reason according to `PERSON_VERIFICATION_STATUS_REASONS` dictionary.
 
 ### `pis_person_response`
 + id: `7e9cffd9-c75f-45fb-badf-6e8d20b6a8a8` (string, required) - person id
@@ -1628,7 +1742,7 @@ Get declaration limit and count per practitioner
     - active
 + scope (enum, required)
     - family_doctor
-+ `declaration_request_id`: `74a6fae6-4207-4e03-a136-f2e70c6b0c02` c
++ `declaration_request_id`: `74a6fae6-4207-4e03-a136-f2e70c6b0c02`
 + content: `Declaration content` (string, required) - HTML document that MUST be shown to a end-user and signed by hes key. - Should be defined on the client side.
 + inserted_at: `2017-03-02T10:45:16.000Z` (string, required)
 + updated_at: `2017-03-02T10:45:16.000Z` (string, optional)
@@ -1656,7 +1770,7 @@ Get declaration limit and count per practitioner
         + expiry_date: `2017-02-28` (string, optional)
         + `active_from_date`: `2017-02-28` (string, required)
         + what_licensed: реалізація наркотичних засобів (string, optional)
-        + order_no: ВА43234 (string, required) - номер наказу
+        + order_no: ВА43234 (string, required) - Order number
     + license (object, required)
         + id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required)
 + email: `email@example.com` (string, required)
@@ -1694,9 +1808,9 @@ Get declaration limit and count per practitioner
 + doctor (DoctorNew)
 
 ### DoctorNew
-+ educations (array[`Education`], required)  - освіта
-+ qualifications (array[`Qualification`], optional) - підвищення кваліфікації
-+ specialities (array[`Speciality`], required)  - блок інформації про отримання сертифікату спеціалісту та проходження атестацій
++ educations (array[`Education`], required)  - Information about the employee's education
++ qualifications (array[`Qualification`], optional) - Information about employee qualification improvement
++ specialities (array[`Speciality`], required)  - Block of information on obtaining a specialist certificate and passing attestations
 + science_degree (ScienceDegree, optional)
 
 ### ScienceDegree
@@ -1710,22 +1824,22 @@ Get declaration limit and count per practitioner
 
 ### Speciality
 + speciality: THERAPIST (string, required) - `Dictionary SPECIALITY_TYPE`
-+ speciality_officio: true (boolean, required) - основна спеціалазація, лише одна має бути true
++ speciality_officio: true (boolean, required) - Main specialty, only one must be true
 + level: FIRST (string, required) - `Dictionary SPECIALITY_LEVEL`
 + `qualification_type`: AWARDING (string, required) - `Dictionary SPEC_QUALIFICATION_TYPE`
-+ attestation_name: Академія Богомольця (string, required) - орган що видав
-+ attestation_date: `2017-02-28` (string, required) - дата отримання
-+ valid_to_date: `2020-02-28` (string, optional) - дата дії до
++ attestation_name: Академія Богомольця (string, required) - Authority which issued the document
++ attestation_date: `2017-02-28` (string, required) - The date when document was issued
++ valid_to_date: `2020-02-28` (string, optional) - Document expiration date
 + certificate_number: AB/21331 (string, required)
 
 ### Qualification
 + type: SPECIALIZATION (string, required) - `Dictionary QUALIFICATION_TYPE`
 + institution_name: Академія Богомольця (string, required)
 + speciality: Педіатр (string, required)
-+ issued_date: `2017-02-28` (string, required) - дата отримання сертифікату
++ issued_date: `2017-02-28` (string, required) - Document issue date
 + certificate_number: `2017-02-28` (string, required)
-+ valid_to: `2017-02-28` (string, optional) - дійсний до
-+ additional_info: додаткова інофрмація (string, optional) - додаткова інформація
++ valid_to: `2017-02-28` (string, optional) - Document expiration date
++ additional_info: додаткова інофрмація (string, optional) - Additional information
 
 ### Education
 + country: UA (string, required) - `Dictionary COUNTRY`
@@ -1775,7 +1889,7 @@ Get declaration limit and count per practitioner
 + tax_id: 3126509816 (string, optional)
 + phones (array[`Phone`], optional)
 + birth_settlement: Вінниця (string, required)
-+ birth_country: Україна (string, required) - країна народження
++ birth_country: Україна (string, required) - Country of birth
 
 ### `Person_Short_person_request`
 + first_name: Петро (string, required)
@@ -1784,10 +1898,10 @@ Get declaration limit and count per practitioner
 
 ### `MSP_Accreditation`
 + category: SECOND (string, required) - `Dictionary ACCREDITATION_CATEGORY` category of accreditation legal entity. At least one of type must be present. Each type can be represented only once.
-+ issued_date: `2017-02-28` (string, optional) - дата видачі
++ issued_date: `2017-02-28` (string, optional) - The date when document was issued
 + expiry_date: `2017-02-28` (string, optional)
-+ order_no: fd123443 (string, required) - номер наказу МОЗ
-+ order_date: `2017-02-28` (string, required) - дата наказу МОЗ
++ order_no: fd123443 (string, required) - Ministry of Health order number
++ order_date: `2017-02-28` (string, required) - Ministry of Health order date
 
 ### `Division_Declaration`
 + id: `d290f1ee-6c54-4b01-90e6-d701748f0851` (string, required)
@@ -1827,7 +1941,7 @@ Get declaration limit and count per practitioner
 + expiry_date: `2017-02-28` (string, optional)
 + `active_from_date`: `2017-02-28` (string, required)
 + what_licensed: реалізація наркотичних засобів (string, optional)
-+ order_no: ВА43234 (string, required) - номер наказу
++ order_no: ВА43234 (string, required) - Order number
 
 ### `Employee_Minimal`
 + id: `d290f1ee-6c54-4b01-90e6-d701748f0851` (string, required)
@@ -1844,8 +1958,8 @@ Get declaration limit and count per practitioner
 
 + person(`Person_info_Public`) - Object that described a Patient. Confidant person should be set for disabled persons, underage persons, etc.
     + id: `5fb57a5d-1457-430e-9678-c81cec72779f` (string,required )
-    + patient_signed: false (boolean, required) - Факт подписания заявки на декларацию.
-    + `process_disclosure_data_consent`: true (boolean, required) - Согласие на раскрытие персональных данных
+    + patient_signed: false (boolean, required) - Person's evidence of sign the declaration request
+    + `process_disclosure_data_consent`: true (boolean, required) - Person's evidence of information about consent to data disclosure
 
 
 
@@ -1859,7 +1973,7 @@ Get declaration limit and count per practitioner
 + include `Declaration_Request_Public_ResponseV2`
 + division (`Division_Declaration`, required)
 + employee (`Employee_Minimal`, required)
-                + speciality: `FAMILY_DOCTOR` (string, required) - інформація про спеціальність лікаря
+                + speciality: `FAMILY_DOCTOR` (string, required) - Information about the employee's specialty
 + `legal_entity` (`Medical_Service_Provider`, required)
                 + id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required) 
 + seed: hash (string, required)
@@ -2016,7 +2130,7 @@ Get declaration limit and count per practitioner
 + include `Declaration_Request_Public_Response`
 + status: `NEW` (string, required)
 + employee (`Employee_Minimal`, required)
-    + speciality: `FAMILY_DOCTOR` (string, required) - інформація про спеціальність лікаря
+    + speciality: `FAMILY_DOCTOR` (string, required) - Information about the employee's specialty
 + `legal_entity` (`Medical_Service_Provider`, required)
     + id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required)
 + division (`Division_Declaration`, required)
@@ -2030,7 +2144,7 @@ Get declaration limit and count per practitioner
 + include `Declaration_Request_Public_Response`
 + status: `SIGNED` (string, required)
 + employee (`Employee_Minimal`, required)
-    + speciality: `FAMILY_DOCTOR` (string, required) - інформація про спеціальність лікаря
+    + speciality: `FAMILY_DOCTOR` (string, required) - Information about the employee's specialty
 + `legal_entity` (`Medical_Service_Provider`, required)
     + id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required)
 + division (`Division_Declaration`, required)
@@ -2042,8 +2156,8 @@ Get declaration limit and count per practitioner
 + start_date: `2017-03-02` (string, required) - Should be defined on the client side.
 + end_date: `2017-03-02` (string, required) - Will be defined on eHealth side if it's not set.
 + person(`Person_Request`, required) - Object that described a Patient. Confidant person should be set for disabled persons, underage persons, etc.
-    + patient_signed: false (boolean, required) - Факт подписания заявки на декларацию.
-    + `process_disclosure_data_consent`: true (boolean, required) - Согласие на раскрытие персональных данных
+    + patient_signed: false (boolean, required) - Person's evidence of sign the declaration request
+    + `process_disclosure_data_consent`: true (boolean, required) - Person's evidence of information about consent to data disclosure
 + scope (enum, required)
     - family doctor
 + declaration_number: `0000-12H4-245D` (string, required) - unique number of declaration.
@@ -2061,8 +2175,8 @@ Get declaration limit and count per practitioner
 + person (object, required) - Object that described a Patient. Confidant person should be set for disabled persons, underage persons, etc.
     + id: `5fb57a5d-1457-430e-9678-c81cec72779f` (string,required )
     + include `Data_to_be_signed_PersonDetails`
-    + patient_signed: false (boolean, required) - Факт подписания заявки на декларацию.
-    + `process_disclosure_data_consent`: true (boolean, required) - Согласие на раскрытие персональных данных
+    + patient_signed: false (boolean, required) - Person's evidence of sign the declaration request
+    + `process_disclosure_data_consent`: true (boolean, required) - Person's evidence of information about consent to data disclosure
 + employee (`Employee_Minimal`, required)
 + `legal_entity` (`Medical_Service_Provider`, required)
     + id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required)
@@ -2178,7 +2292,7 @@ Get declaration limit and count per practitioner
     - active
 + scope (enum, required)
     - family_doctor
-+ `declaration_request_id`: `74a6fae6-4207-4e03-a136-f2e70c6b0c02` c
++ `declaration_request_id`: `74a6fae6-4207-4e03-a136-f2e70c6b0c02`
 + content: `Declaration content` (string, required) - HTML document that MUST be shown to a end-user and signed by hes key. - Should be defined on the client side.
 + inserted_at: `2017-03-02T10:45:16.000Z` (string, required)
 + updated_at: `2017-03-02T10:45:16.000Z` (string, optional)
@@ -2211,8 +2325,8 @@ Get declaration limit and count per practitioner
 + channel: `PIS` (string, optional)
 + inserted_at: `2021-11-09T00:00:00.000Z` (string, required) - ISO Datetime
 + updated_at: `2021-11-09T00:00:00.000Z` (string, optional) - ISO Datetime
-+ `patient_signed`: true (boolean, required)
-+ `process_disclosure_data_consent`: true (boolean, required) - ознакf погодження на використання персональних даних
++ `patient_signed`: true (boolean, required) - Person's evidence of sign the declaration request
++ `process_disclosure_data_consent`: true (boolean, required) - Person's evidence of information about consent to data disclosure
 + content: `Person content` (string, optional) - HTML document 
 + person (`pis_person`)
 
@@ -2227,9 +2341,9 @@ Get declaration limit and count per practitioner
 + gender: MALE (string, required)
 + working_experience: 10 (number, optional)
 + about_myself: `Закінчив всі можливі курси` (string, optional)
-+ educations (array[`Education`], required)  - освіта
-+ qualifications (array[`Qualification`], optional) - підвищення кваліфікації
-+ specialities (array[`Speciality`], required)  - блок інформації про отримання сертифікату спеціалісту та проходження атестацій
++ educations (array[`Education`], required)  - Information about the employee's education
++ qualifications (array[`Qualification`], optional) - Information about employee qualification improvement
++ specialities (array[`Speciality`], required)  - Block of information on obtaining a specialist certificate and passing attestations
 + science_degree (ScienceDegree, optional)
 + employees (array[`Employees_map`], optional)
 
@@ -2292,29 +2406,6 @@ Get declaration limit and count per practitioner
 + sat (array, optional)
 + sun (array, optional)
 
-### `Search_Legal_Entity_Response`
-+ id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required)
-+ type: PRIMARY_CARE (string, required) - type of legal entity [PRIMARY_CARE/OUTPATIENT/PHARMACY]. MIS can't be created using this WS.
-+ status: ACTIVE (string, required)
-+ `edr` (EDR_data, required)
-+ edrpou: 54323454 (string, required) -  Unified Register of Businesses and Organizations
-+ residence_address (Address, required) - address where the legal entity is physically located
-+ phones (array[`Phone`], required)
-+ email: email@example.com (string, required) - email to contact person in charge from legal entity
-+ website: `www.msp.com.ua` (string, optional) - legal entity website
-+ accreditation (MSP_Accreditation, optional)
-+ license (object)
-    + id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string)
-    + type: MSP (string, optional) - License type `Dictionary LICENSE_TYPE`
-    + license_number: fd123443 (string, optional)
-    + issued_by: Кваліфікацйна комісія (string)
-    + issued_date: `2017-02-28` (string)
-    + expiry_date: `2017-02-28` (string)
-    + `active_from_date`: `2017-02-28` (string)
-    + what_licensed: реалізація наркотичних засобів (string, optional)
-    + order_no: ВА43234 (string) - номер наказу
-+ `archive`(array[`Archive`], optional)
-
 ### `EDR_data`
 + id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required)
 + name: Клініка Ноунейм (string, required) - full official name of legal entity also the name to show on public sources [as map, portal etc]
@@ -2341,19 +2432,6 @@ Get declaration limit and count per practitioner
 ### `Archive`
 + date: `2017-02-28` (string, required) - the date when paper documents were transferred to archive
 + place: `вул. Грушевського 15` (string, required) - the address of building where paper documents are
-
-### `Search_Divisions_Response`
-+ id: `asSbcy12sYs8c` (string, required)
-+ type: CLINIC, AMBULANT_CLINIC, FAP (enum, required)
-+ name: `Aдоніс` (string, required)
-+ status: ACTIVE (string, optional)
-+ addresses (array[`Address`], required)
-+ phones (array[`Phone`], required)
-+ email: email@example.com (string, required) - division's email
-+ working_hours (`workinghours`) - optional field, business hours by each day weekly, doesn't make any influence on business process and will be shown on portal and map.
-+ location (Location, optional) - optional field. geographical location, if it's empty, division won't be shown on a map.
-+ `legal_entity` (`Legal_entity_map`, required)
-+ `healthcare_services` (array[`Healthcare_service_map`], required, fixed-type)
 
 ### `Healthcare_service_map`
 + `speciality_type`: `FAMILY_DOCTOR` (string, required) - `Dictionary SPECIALITY_TYPE`
@@ -2428,7 +2506,7 @@ Get declaration limit and count per practitioner
 + science_degree (ScienceDegree, optional)
 + about_myself: `Закінчив всі можливі курси` (string, optional)
 + working_experience: 10 (number, optional)
-+ verification_status: `VERIFICATION_NEEDED` (string, required)
++ `verification_status`: `VERIFICATION_NEEDED` (string, required)
 
 ### `Employee_bulk`
 + id: `d290f1ee-6c54-4b01-90e6-d701748f0851` (string, required)
@@ -2489,7 +2567,7 @@ Get declaration limit and count per practitioner
 + inserted_at: `2021-11-09T00:00:00.000Z` (string, required) - ISO Datetime
 + updated_at: `2021-11-09T00:00:00.000Z` (string, optional) - ISO Datetime
 + website: `www.msp.com.ua` (string, optional)
-+ status_reason: AUTO_SUSPEND (string, optional) - Division status
++ `status_reason`: AUTO_SUSPEND (string, optional) - Division status
 + residence_address (`Address`, required)
 + accreditation (MSP_Accreditation, optional)
 
@@ -2565,3 +2643,108 @@ Get declaration limit and count per practitioner
     - OTP
     - OFFLINE
 + phone_number: `+38093*****81` (string, optional)
+
+### `Response_Street`
++ aliases: Світлицького, Шевченко
++ id: `d290f1ee-6c54-4b01-90e6-d701748f0851` (string) - Address ID
++ settlement_id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string) - Settlement ID
++ type: STREET (string, required) - Type of street, validation with STREET_TYPE dictionary
+
+### `Response_Settlement_Short`
++ id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string) - Settlement ID
++ settlement_name: Новосілки (string) - City name
+
+### `Response_Settlement`
++ id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string) - Settlement ID
++ region: Київ (string) -  Region name
++ region_id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b8b` (string) - Region ID
++ district: `Києво-Святошинський` (string) - District name
++ district_id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b8b` (string) - District ID
++ name: Новосілки (string) - City name
++ mountain_group: 0 (string) - Mountain group
++ type: `CITY` (string, optional) - Settlement type
++ koatuu: 3520380802 (string, optional) - KOATUU code
++ parent_settlement: Берегово (string, optional) - Parent settlement name
++ parent_settlement_id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b8b` (string) - Parent settlement ID
+
+### `Response_Region`
++ id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string) - Region ID
++ region: Київ (string) -  Region name
++ koatuu: 3520380802 (string, optional) - KOATUU code
+
+### `Response_District_Short`
++ id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string) - District ID
++ district: `Києво-Святошинський` (string) - District name
+
+### `Response_District`
++ id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string) - District ID
++ region: Київ (string) -  Region name
++ district: `Києво-Святошинський` (string) - District name
++ koatuu: 3520380802 (string, optional) - KOATUU code
+
+### `Create_Settlement`
++ settlement (object)
+    + area_id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required) -  Area ID
+    + name: Новосілки (string, required) - City name
+
+### `Create_Street`
++ street (object)
+    + settlement_id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required) - Settlement ID
+    + type: STREET (string, required) - Type of street, validation with STREET_TYPE dictionary
+    + name: Світлицького (string, required) - The name of the street
+
+### `Response_Pagination`
++ limit: 20 (number) - A limit on the number of objects to be returned, between 1 and 100. Default: 50.
++ cursors (object)
+    + `starting_after`: 56c31536a60ad644060041af (string) - A cursor for use in pagination. An object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `obj_foo`, your subsequent call can include `starting_after=obj_foo` in order to fetch the next page of the list.
+    + `ending_before`: 56c31536a60ad644060041aa (string) - A cursor for use in pagination. An object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with `obj_bar`, your subsequent call can include `ending_before=obj_bar` in order to fetch the previous page of the list.
++ size: 1000 (number) - Total number of objects in collection.
++ has_more: false (boolean) - Is this collection have more data to load in the same style as last request loaded it.
+
+## Dictionaries
+### `Dictionary`
++ name: DOCUMENT_TYPE (string, required) - Unique dictionary name
++ values (object)
+    + key: value (string, optional) - List of dictionary entries as Key:Value pairs
++ labels (array)
+    - SYSTEM
+    - EXTERNAL
++ is_active: true (boolean, required)
+
+### `Dictionary_value`
++ code: `b1142` (string, required) - code of the dictionary value
++ description: `Орієнтація в особі` (string, required) - description of the code
++ is_active: true (boolean, required) - status of the dictionary value
++ child_values(array) - subordinate values of the dictionary
+
+### `Dictionary_v2`
++ name: `eHealth/ICF/classifiers` (string, required) - Unique dictionary name
++ description: `Класифікатори МКФ` (string, required) - dictionary description for a user
++ values (array, required)
+    + (Dictionary_value)
+        + child_values (array)
+            + (object)
+                + include `Dictionary_value`
+                + code: `b11429` (string, required) - code of the dictionary value
+                + description: `Орієнтація в особі неуточнена` (string, required) - description of the code
++ labels (array)
+    - SYSTEM
+    - EXTERNAL
++ is_active: true (boolean, required)
+
+## Events
+### `Get_events`
++ id: `df9f70ee-4b12-4740-b0f5-bb5aea116863` (string, required) - Event identifier
++ event_type: `StatusChangeEvent` (string, required) - the name of event
++ entity_type: `MedicationDispense` (string, required) - the name of entity that was changed
++ entity_id: `df9f70ee-4b12-4740-b0f5-bb5aea116863` (string, required) - uuid of changed object
++ properties (object, required)
+    + status (object, optional) - may has a different name depending on the `entity_type` (`program_processing_status`, `detail.status`, `is_suspended`, `dls_verified`, `verification_status`, `is_blocked`)
+        + include (`Event_properties`, required)
+    + `employee_id` (object, optional) - field is required if parameter `entity_type = EmployeeRequest`
+        + new_value: `e1453f4c-1077-4e85-8c98-c13ffca0063e` (string)
++ event_time: `2017-04-20T19:14:13Z` (string, required) - time, when the entity was changed
++ changed_by: `df9f70ee-4b12-4740-b0f5-bb5aea116863` (string, required) - uuid of the person who changed the entity
+
+### `Event_properties`
++ new_value: `COMPLETED` (string) - new status of entity

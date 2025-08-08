@@ -3,7 +3,7 @@ HOST: https://api.ehealth.gov.ua
 
 # eHealth PIS API
 
-**Version: 9.10.0 v2**
+**Version: 9.10.0 v.3**
 
 Environment: **PROD**
 
@@ -26,7 +26,6 @@ Env     | Host
 DEMO    | https://auth-demo.ehealth.gov.ua
 PREPROD | https://auth-preprod.ehealth.gov.ua
 PROD    | https://auth-preprod.ehealth.gov.ua
-
 
 # Group Public. Patient Information System
 
@@ -1011,8 +1010,7 @@ DeviceDispense|`status`
 
     + Headers
 
-            Authorization: Bearer c2778f3064753ea70de870a53795f5c9
-            X-Custom-PSK: a2aa05c76f3f2d91870f923a53cc8aa8f23bbc01a8238d1c2c26d4299715a7e4
+            api-key: L0RWeXV6a2tQWEp3OTJaM0RkYzBmQT09
 
 + Response 200 (application/json)
     + Attributes (`Response__Process_OK`)
@@ -1060,8 +1058,7 @@ DeviceDispense|`status`
 
     + Headers
 
-            Authorization: Bearer c2778f3064753ea70de870a53795f5c9
-            X-Custom-PSK: a2aa05c76f3f2d91870f923a53cc8aa8f23bbc01a8238d1c2c26d4299715a7e4
+            api-key: L0RWeXV6a2tQWEp3OTJaM0RkYzBmQT09
 
 + Response 200 (application/json)
     + Attributes (`Response_Collection_V2`)
@@ -1726,14 +1723,16 @@ Each dictionary is an object that contains not only a code and description of a 
 + start_date: `2017-03-02` (string, required)
 + end_date: `2017-03-02` (string, required)
 + signed_at: `2017-03-02T00:00:00.000Z` (string, required)
-+ person (`Person_declaration`, required)
++ person (required)
     + id: `b075f148-7f93-4fc2-b2ec-3d81b19a9b7b` (string, required)
-    + unzr: `19910819-00011` (string, optional) - the record number in the demographic register
-    + `emergency_contact` (`Emergency_Contact`, required)
-    + `confidant_person` (array[`Confidant_Person`], optional) - Should be set if this Person is disabled, underage, etc.
-+ employee (`Employee_Declaration_Short`, required)
-+ division (`Division_Declaration`, required)
-+ `legal_entity` (MSP_Details, required)
+    + `confidant_person` (optional) - Should be set if this Person is disabled, underage, etc.
+        + id: `8b83afa6-50f0-4d55-ae5e-e551e5374dec` (string, required)
++ employee (required)
+    + id: `ddb8835f-4cff-4fdd-8509-668429b6e18e` (string, required)
++ division (required)
+    + id: `c1f703ab-f4be-4724-acbd-dc2d9a7e4150` (string, required)
++ `legal_entity` (required)
+    + id: `ba3a41c7-ea43-4e95-952c-a46cd04cc8b7` (string, required)
 + status (enum, required)
     - terminated
     - pending_verification
@@ -2086,10 +2085,14 @@ Each dictionary is an object that contains not only a code and description of a 
     - terminated
 + reason: `manual_employee` (string, optional)
 + reason_description: `Згідно постанови 1 від 10.01.2017` (string, optional)
-+ person (Person_Minimal, required)
-+ employee (`Employee_Minimal_pis`, required)
-+ `legal_entity` (`MSP_Short`, required)
-+ division (`Division_Short_List`, required)
++ person (required)
+    + id: `b075f148-7f93-4fc2-b2ec-3d81b19a9b7b` (string, required)
++ employee (required)
+    + id: `ddb8835f-4cff-4fdd-8509-668429b6e18e` (string, required)
++ division (required)
+    + id: `c1f703ab-f4be-4724-acbd-dc2d9a7e4150` (string, required)
++ `legal_entity` (required)
+    + id: `ba3a41c7-ea43-4e95-952c-a46cd04cc8b7` (string, required)
 + inserted_at: `1991-08-19T00:00:00.000Z` (string, required)
 + updated_at: `1991-08-19T00:00:00.000Z` (string, optional)
 

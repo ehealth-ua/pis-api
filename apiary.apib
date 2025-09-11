@@ -831,10 +831,11 @@ This WS designed to get current user's person verification status & data and rel
                 + `verification_comment`: `Підтверджено на підставі свідоцтва про народження` (string, optional) - Relationship verification status description set by NHS or Doctor
 
 
-### Get Person Minfin validation requests [GET /api/pis/person/{id}/minfin_validations_details]
+### Get Person Minfin validation requests [GET /api/pis/person/{id}/minfin_validations_requests]
 This method returns current person's Minfin validation requests status.
 
 + Parameters
+    + `applicant_person_id`: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required) - Applicant person identifier
     + `person_id`: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required) - Person identifier
     + `page`: 2 (number, optional) - Page number.
     + `page_size`: 50 (number, optional) - A limit on the number of objects to be returned, between 1 and 300. Default: 50

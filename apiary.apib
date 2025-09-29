@@ -3,7 +3,7 @@ HOST: https://api.ehealth.gov.ua
 
 # eHealth PIS API
 
-**Version: 9.10.0 v.3**
+**Version: 9.10.15 v.1**
 
 Environment: **PROD**
 
@@ -26,6 +26,7 @@ Env     | Host
 DEMO    | https://auth-demo.ehealth.gov.ua
 PREPROD | https://auth-preprod.ehealth.gov.ua
 PROD    | https://auth-preprod.ehealth.gov.ua
+
 
 # Group Public. Patient Information System
 
@@ -872,7 +873,7 @@ Get parties
 + Parameters
     + depth: 5 (number, optional) - Number of days to get changes
 
-+ Request (application/json)
++ Request (application/octet-stream)
 
     + Headers
 
@@ -888,7 +889,7 @@ Get employees
 + Parameters
     + depth: 5 (number, optional) - Number of days to get changes
 
-+ Request (application/json)
++ Request (application/octet-stream)
 
      + Headers
 
@@ -904,7 +905,7 @@ Get divisions
 + Parameters
     + depth: 5 (number, optional) - Number of days to get changes
 
-+ Request (application/json)
++ Request (application/octet-stream)
 
      + Headers
 
@@ -920,7 +921,7 @@ Get legal_entities
 + Parameters
     + depth: 5 (number, optional) - Number of days to get changes
 
-+ Request (application/json)
++ Request (application/octet-stream)
 
     + Headers
 
@@ -936,7 +937,7 @@ Get employee roles
 + Parameters
     + depth: 5 (number, optional) - Number of days to get changes
 
-+ Request (application/json)
++ Request (application/octet-stream)
 
     + Headers
 
@@ -952,7 +953,7 @@ Get healthcare services
 + Parameters
     + depth: 5 (number, optional) - Number of days to get changes
 
-+ Request (application/json)
++ Request (application/octet-stream)
 
     + Headers
 
@@ -971,7 +972,7 @@ Get declaration limit and count per practitioner
 
             api-key: L0RWeXV6a2tQWEp3OTJaM0RkYzBmQT09
 
-+ Response 200 (application/json)
++ Response 200 (application/octet-stream)
     + Attributes (`Response_Collection_wo_Paging_with_Date`)
         + data (array[`Declarations_limit_bulk`])
 
@@ -1621,7 +1622,7 @@ Each dictionary is an object that contains not only a code and description of a 
     - OTP
     - THIRD_PERSON
     - OFFLINE
-+ phone_number: `+38093*****85` (string, optional) - it's required for type = OTP
++ phone_number: `+380932345485` (string, optional) - it's required for type = OTP
 + ended_at: `2020-01-10 18:23:34.217335` (string, optional) - ISO Datetime
 + started_at: `2020-01-01 18:23:34.217335` (string, optional) - ISO Datetime
 + is_active: true (boolean, required)
@@ -1651,7 +1652,7 @@ Each dictionary is an object that contains not only a code and description of a 
     + phones (array)
         + (object)
             + type: MOBILE (string, required) - `Dictionary PHONE_TYPE` type of phone Land Line or Mobile. At least one of type must be present. Each type can be represented only once.
-            + number: +38093*****85 (string, required) - confidant person phone number, masked
+            + number: +380932345685 (string, required) - confidant person phone number
 + inserted_at: `2021-11-09T00:00:00.000Z` (string, required) - ISO Datetime
 + updated_at: `2021-11-09T00:00:00.000Z` (string, optional) - ISO Datetime
 

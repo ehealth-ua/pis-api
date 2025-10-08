@@ -835,12 +835,6 @@ This WS designed to get current user's person verification status & data and rel
 This method returns current person's Minfin validation requests status.
 
 + Parameters
-    + `entity_id`: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required) - Person or Party identifier
-    + `resource`: `PARTY` (enum, required) - type of resource
-        - PARTY
-        - PERSON
-    + `page`: 2 (number, optional) - Page number.
-    + `page_size`: 50 (number, optional) - A limit on the number of objects to be returned, between 1 and 300. Default: 50
 
 
 + Request (application/json)
@@ -861,9 +855,6 @@ This method returns current person's Minfin validation requests status.
 This method returns current person's Minfin validation details.
 
 + Parameters
-    + request_id: `b075f148-7f93-4fc2-b2ec-2d81b19a9b7b` (string, required) - minfin request identifier
-    + `page`: 2 (number, optional) - Page number.
-    + `page_size`: 50 (number, optional) - A limit on the number of objects to be returned, between 1 and 300. Default: 50
 
 
 + Request (application/json)

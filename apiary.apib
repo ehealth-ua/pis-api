@@ -3,7 +3,7 @@ HOST: https://api.ehealth.gov.ua
 
 # eHealth PIS API
 
-**Version: 9.11.0 v.1**
+**Version: 9.11.0.3 v.2**
 
 Environment: **PROD**
 
@@ -962,6 +962,22 @@ Get healthcare services
 + Response 200 (application/json)
     + Attributes (`Response_Collection_wo_Paging_with_Date`)
         + data (array[`Healthcare_service_bulk`])
+
+### Get Contract Divisions [GET /api/pis/bulk/contract_divisions{?depth}]
+Get declaration limit and count per practitioner
+
++ Parameters
+    + depth: 5 (number, optional) - Number of days to get changes
+
++ Request (application/json)
+
+    + Headers
+
+            api-key: L0RWeXV6a2tQWEp3OTJaM0RkYzBmQT09
+
++ Response 200 (application/octet-stream)
+    + Attributes (`Response_Collection_wo_Paging_with_Date`)
+        + data (array[`Contract_division_bulk`])
 
 ### Get declarations limit and declarations count per practitioner [GET /api/pis/bulk/declarations_limit]
 Get declaration limit and count per practitioner
@@ -2609,6 +2625,15 @@ Each dictionary is an object that contains not only a code and description of a 
 + inserted_at: `2021-11-09T00:00:00.000Z` (string, required) - ISO Datetime
 + updated_at: `2021-11-09T00:00:00.000Z` (string, optional) - ISO Datetime
 + license_id: `cdcf456b-e235-4850-9f00-27cc3453d346` (string, optional)
+
+### `Contract_division_bulk`
++ contract_id: `1100027880` (string, required)
++ changed_at: `2025-01-25T22:25:16+02:00`(string, required) - ISO Datetime
++ division_id: `60eda236-652e-4200-bd17-fce5de3588ef`
++ contract_status: `active` (string, required)
++ contract_end_date: `2027-12-31` (string, required) - ISO Date
++ contract_start_date: `2025-01-01` (string, required) - ISO Date
++ contract_division_status: `active` (string, required)
 
 ### `Declarations_limit_bulk`
 + party_id: `cdcf456b-e235-4850-9f00-27cc3453d346` (string, required)

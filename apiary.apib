@@ -471,7 +471,7 @@ Confidant Patient Sign-in process:
 
 **Notes:**
 - If User does not exist, but patient exists in `mpi`, User is created before scopes approval step.
-- When `access_token` expires, Client must renew it using `refresh_token` with [Use Refresh Token for Access Token extension](#reference/public.-patient-information-system/sign-in/use-refresh-token-for-access-token-extension) method.
+- When `access_token` expires, Client must renew it using `refresh_token` with [Renew access token using refresh token](#reference/public.-patient-information-system/sign-in/renew-access-token-using-refresh-token) method.
 
 **API-key:**
 - For identifiers of PIS clients (as a broker) we use term api-key. PIS must **mandatory** send api-key when called any eHealth API.
@@ -565,7 +565,7 @@ Exposed client credentials may be blocked for a security reasons, you will need 
             + code: 201 (number)
         + data (`Access_Token`)
 
-### Use Refresh Token for Access Token extension [POST /oauth/tokens]
+### Renew access token using refresh token [POST /oauth/tokens]
 
 This endpoint is used to renew access token using refresh token.
 

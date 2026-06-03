@@ -1209,6 +1209,33 @@ Each dictionary is an object that contains not only a code and description of a 
                         + code: `D88` (string, required) - code of the dictionary value
                         + description: `Апендицит` (string, required) - description of the code
 
+## Configurations [/api/configurations]
+
+Methods is used to retreive eHealth configurations from PRM
+
+### Get Dictionaries Configurations by search params [GET /api/dictionaries_configurations{?name,is_active,inserted_at_from,inserted_at_to,updated_at_from,updated_at_to,page,page_size}]
+
++ Parameters
+    + `name`: `assistive_devices` (string, optional) - name of the Dictionary configuration
+    + `is_active`: `true` (boolean, optional) - Is configuration active or not.
+    + `inserted_at_from`: `2024-10-31` (date, optional) - Inserted_at filter period start date
+    + `inserted_at_to`: `2024-10-31` (date, optional) - Inserted_at filter period end date
+    + `updated_at_from`: `2024-10-31` (date, optional) - Updated_at filter period start date
+    + `updated_at_to`: `2024-10-31` (date, optional) - Updated_at filter period end date    
+    + page: 2 (number, optional) - Page number
+    + `page_size`: 50 (number, optional) - A limit on the number of objects to be returned, between 1 and 500. Default: 50
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer mF_9.B5f-4.1JqM
+            api-key: aFBLVTZ6Z2dON1V
+            X-Custom-PSK: a2aa05c76f3f2d91870f923a53cc8aa8f23bbc01a8238d1c2c26d4299715a7e4
+
++ Response 200 (application/json)
+    + Attributes (Response_Collection_V2)
+        + data (array[`Dictionaries_Configurations_Response`])
 
 # Data Structures
 
@@ -2813,3 +2840,14 @@ Each dictionary is an object that contains not only a code and description of a 
 
 ### `Event_properties`
 + new_value: `COMPLETED` (string) - new status of entity
+
+## Configurations
+### `Dictionaries_Configurations_Response`
++ `id`: `e477a845-972b-47a1-8ca3-1c71e4fd00c2` (string, required)
++ `name`: `assistive_devices` (string, required)
++ `is_active`: true (boolean, required)
++ `settings`: `[{"codes": ["18_03_06", "12_22_06", "06_03_15", "18_12_10", "09_33_07", "06_06_15", "22_27_12", "09_12_15", "09_12_12", "06_24_09", "12_06_06", "12_22_18", "12_36_12", "09_12_03", "06_18_18", "04_48_15", "12_03_12", "12_06_12", "09_33_05", "09_06_24", "06_18_03", "06_18_06", "04_33_03", "09_06_15", "18_18_06", "06_06_13", "06_18_15", "18_09_03", "18_18_03", "12_22_09", "18_03_15", "06_12_19", "09_12_09", "06_12_17", "06_12_16", "06_06_21", "06_03_12", "06_03_18", "12_03_16", "06_24_03", "12_18_06", "18_12_07", "06_24_06", "06_12_13", "12_06_03", "12_23_06", "06_24_18", "09_03_24", "06_24_40", "12_06_09", "12_07_05", "12_23_03", "09_12_25", "12_03_09", "06_03_06", "06_06_24", "06_24_15", "06_12_09", "15_03_03", "06_24_12", "06_06_06", "06_12_18", "06_06_20", "09_06_18", "04_33_06", "04_48_07", "18_09_39", "18_09_21", "12_27_15", "06_18_21", "06_06_30", "05_36_03", "06_18_12", "18_12_18", "06_18_45", "12_39_03", "09_06_12", "06_30_18", "05_36_06", "06_06_12", "06_06_19", "06_03_03", "06_12_12", "04_06_06", "06_06_03", "06_18_09", "06_12_03", "12_03_06", "22_24_06", "12_22_03", "18_30_21", "22_27_04", "06_03_09", "12_24_24", "12_36_03", "22_18_03", "12_18_09", "12_03_03", "12_31_18", "06_12_15", "06_12_06"], "system": "eHealth/assistive_devices"}]` (string,required)
++ `inserted_at`: `2017-04-20T19:14:13Z` (string, required) - ISO 8601 date and time in UTC timezone.
++ `inserted_by`: `e1453f4c-1077-4e85-8c98-c13ffca0063e` (string, required)
++ `updated_at`: `2018-08-02T10:45:16.000Z` (string, required)
++ `updated_by`: `2922a240-63db-404e-b730-09222bfeb2dd` (string, required)
